@@ -7,7 +7,8 @@ ejecutados por la base de datos) y control de altas potencialmente duplicadas �
 sobre **Qdrant** con su SDK nativo.
 
 El enunciado y los datos viven en `resources/actividad_evaluable/`. El informe
-final es [`INFORME_AURUM_MARKET.md`](INFORME_AURUM_MARKET.md) (y su PDF), los
+final es `INFORME_AURUM_MARKET.pdf` (LaTeX académico a dos columnas, fuente en
+[`docs/informe/`](docs/informe/)), los
 artefactos entregables están en [`resultados/`](resultados/) y la configuración
 exacta de la ejecución final en [`config/run_config.yaml`](config/run_config.yaml).
 
@@ -118,7 +119,7 @@ contiene secretos obligatorios: todo el recorrido evaluado es local.
 ```
 config/run_config.yaml        # configuración de la ejecución final (contrato reproducible)
 deploy/qdrant/compose.yaml    # Qdrant 1.18.2 con volumen persistente y healthcheck
-docs/                         # diagrama de arquitectura y referencias
+docs/                         # diagrama, referencias y fuente LaTeX del informe
 notebooks/                    # serie de I+D 00-05, ejecutada (generada por scripts/build_notebook.py)
 resources/actividad_evaluable # enunciado y datos (solo lectura)
 resultados/                   # artefactos entregables
@@ -155,7 +156,7 @@ validación del snapshot), `embeddings.py` (representación), `vector_store.py`
 | `make test` | Pruebas unitarias offline. |
 | `make test-integration` | Pruebas contra Qdrant (necesita `make up`). |
 | `make verify` | Lint + formato + pruebas unitarias. |
-| `make informe` | Renderiza el informe PDF desde `INFORME_AURUM_MARKET.md`. |
+| `make informe` | Compila el informe LaTeX (`docs/informe/`) a `INFORME_AURUM_MARKET.pdf`. |
 
 ## 7. Tiempos aproximados
 
@@ -184,8 +185,12 @@ multiplica la fase de embeddings por ~8.
   `make ingest` para reconstruirla desde cero.
 - **Puerto 6333 ocupado** — cambia el mapeo en `deploy/qdrant/compose.yaml` y
   `QDRANT_URL` en `.env`.
-- **PDF del informe falla** — el extra `pdf` usa WeasyPrint, que necesita Pango
-  (`apt-get install libpango-1.0-0 libpangocairo-1.0-0` en Debian/Ubuntu).
+- **PDF del informe falla** — `make informe` compila LaTeX con
+  [Tectonic](https://tectonic-typesetting.github.io/): si no está en el PATH,
+  el script descarga el binario (una vez, a `.artifacts/bin/`) y la primera
+  compilación baja los paquetes LaTeX necesarios, así que requiere red. El
+  diagrama SVG se convierte con CairoSVG, que usa la librería de sistema Cairo
+  (presente por defecto en la mayoría de distribuciones).
 
 ## 9. Seguridad operativa
 

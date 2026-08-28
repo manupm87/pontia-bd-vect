@@ -1,0 +1,515 @@
+% Informe final de la actividad evaluable — compilar con `make informe`
+% (Tectonic; descarga los paquetes LaTeX necesarios en la primera ejecución).
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[a4paper,top=2.2cm,bottom=2.4cm,left=1.9cm,right=1.9cm,columnsep=0.75cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla,es-noquoting]{babel}
+\usepackage{amssymb}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{balance}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{tinta}{RGB}{28,36,52}
+\definecolor{acento}{RGB}{31,78,121}
+
+\titleformat{\section}{\large\bfseries\color{acento}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing{\section}{0pt}{1.1em}{0.5em}
+\titlespacing{\subsection}{0pt}{0.9em}{0.35em}
+
+\captionsetup{font=small,labelfont={bf,color=acento},skip=4pt}
+\setlist{nosep,leftmargin=1.15em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Aurum Market: búsqueda semántica y control de catálogo}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\title{\bfseries\color{tinta} Aurum Market: búsqueda semántica\\ y control de catálogo}
+\author{Manuel Pérez\\
+\small Evaluación · Bases de Datos Vectoriales\\
+\small \today}
+\date{}
+
+\begin{document}
+
+\twocolumn[
+  \begin{@twocolumnfalse}
+    \maketitle
+    \vspace{-2.2em}
+    \begin{center}
+    \begin{minipage}{0.86\textwidth}
+    \small
+    \textbf{Resumen} --- El sistema entregado convierte los 15.000 productos de
+    Aurum Market en un servicio de descubrimiento medible: recupera por
+    intención, filtra por marca dentro de la propia consulta a la base de
+    datos, absorbe altas, actualizaciones y bajas sin duplicar registros, y
+    detecta altas potencialmente duplicadas con una regla calibrada solo con
+    datos de desarrollo. El motor elegido es \textbf{Qdrant} (local, Docker)
+    con su SDK nativo; la representación ganadora es
+    \textbf{multilingual-e5-small} codificando \textbf{título + marca + color}
+    en lugar del campo \code{text} completo, una decisión contraintuitiva que
+    salió de los experimentos, no del catálogo de modelos. Cada cifra de este
+    informe se regenera desde \code{config/run\_config.yaml} y queda
+    justificada, con tablas y gráficos, en la serie de notebooks de I+D
+    \code{actividad\_00}--\code{05}.
+    \end{minipage}
+    \end{center}
+    \vspace{1.6em}
+  \end{@twocolumnfalse}
+]
+
+\section{Contrato del sistema y baseline}
+
+El sistema expone una interfaz única (\code{DiscoveryService} y la CLI
+\code{make search}) que recibe una consulta y devuelve resultados
+normalizados: \code{product\_id}, posición, título, marca, \code{score}
+nativo y su semántica (\code{similarity}, mayor es mejor). Los dos recorridos
+de negocio comparten esa interfaz:
+
+\begin{itemize}
+  \item \textbf{Descubrimiento}: top-$k$ configurable, con filtro opcional de
+  marca que viaja dentro de la consulta a la base de datos.
+  \item \textbf{Control de altas}: la ficha entrante se codifica como
+  documento, la base vectorial genera los candidatos y una regla de umbral
+  decide si existe duplicado, señalando el \code{product\_id} concreto.
+\end{itemize}
+
+Como referencia interpretable se implementó un \textbf{baseline léxico BM25}
+\cite{robertson2009} ($k_1{=}1.5$, $b{=}0.75$, tokenización en minúsculas y
+sin tildes) sobre el mismo corpus. El baseline no es decorativo: fija el
+listón que la representación densa debe superar y, como se ve en la
+sección~\ref{sec:representacion}, no lo supera en todas las métricas, lo que
+delimita honestamente dónde aporta la semántica.
+
+La figura~\ref{fig:arquitectura} resume la arquitectura: datos
+$\rightarrow$ representación (embeddings con manifiesto SHA-256)
+$\rightarrow$ Qdrant (colección persistente con HNSW y payload indexado)
+$\rightarrow$ servicios de búsqueda y duplicados $\rightarrow$ evaluación y
+artefactos.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.92\textwidth]{arquitectura.pdf}
+  \caption{Arquitectura del motor de descubrimiento y control de catálogo.}
+  \label{fig:arquitectura}
+\end{figure*}
+
+\section{Representación vectorial}
+\label{sec:representacion}
+
+\textbf{Texto codificado.} Cada producto se representa con una composición
+documentada y saneada: los valores vacíos son información ausente (nunca la
+cadena \code{"nan"}) y los campos vacíos se omiten. Se compararon dos
+composiciones y dos modelos \cite{wang2024,reimers2019}, más el baseline
+léxico, siempre con búsqueda exacta para aislar la representación del índice
+(tabla~\ref{tab:experimentos}).
+
+\begin{table}[h]
+  \centering\small
+  \caption{Experimentos de representación sobre las 8 consultas de
+  desarrollo (búsqueda exacta). En negrita, la configuración elegida.}
+  \label{tab:experimentos}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Experimento & nDCG@10 & Recall@10 & MRR@10 \\
+    \midrule
+    bm25\_full\_text & 0.558 & 0.187 & 0.646 \\
+    e5\_small\_full & 0.533 & 0.205 & 0.588 \\
+    \textbf{e5\_small\_title} & \textbf{0.555} & \textbf{0.223} & \textbf{0.698} \\
+    minilm\_full & 0.273 & 0.095 & 0.310 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Dos conclusiones sostienen la elección de \code{e5\_small\_title}:
+
+\begin{enumerate}
+  \item \textbf{El campo \code{text} completo perjudica a E5.} Las fichas
+  arrastran \emph{keyword-stuffing} (títulos repetidos, listas de variantes,
+  HTML residual). Codificar solo título+marca+color mejora las tres métricas
+  frente al texto completo ($+0.02$ nDCG, $+0.018$ recall, $+0.11$ MRR). La
+  suciedad no se corrigió a mano: se neutralizó eligiendo qué codificar, que
+  es una decisión trazable del experimento.
+  \item \textbf{Cambiar de modelo se analizó, no solo se citó.} MiniLM, sin
+  prefijos y entrenado para paráfrasis genérica, se hunde (nDCG 0.273):
+  confirma que el prefijo \code{query:}/\code{passage:} y el entrenamiento de
+  recuperación de E5 son la parte que importa, no la dimensión (ambos son
+  384d).
+\end{enumerate}
+
+\textbf{Métrica, normalización y score.} Los embeddings se L2-normalizan al
+codificar y la colección usa distancia \textbf{coseno}; con vectores
+unitarios el score devuelto por Qdrant es la similitud coseno en $[-1,1]$ y
+``mayor es mejor''. Esa semántica se conserva de extremo a extremo
+(\code{score\_kind="similarity"} en el contrato de resultados) y nunca se
+compara con distancias.
+
+Los embeddings se persisten en \code{data/embeddings/} con un manifiesto que
+fija modelo, prefijos, composición, dimensión y checksums SHA-256 de entradas
+y salidas, de modo que cualquier matriz puede auditarse contra el CSV del que
+salió.
+
+\section{Índice y base de datos}
+\label{sec:indice}
+
+\textbf{Esquema.} Una colección Qdrant \cite{qdrant}
+(\code{aurum-market-eval-catalogo}) con un vector sin nombre de 384d,
+distancia coseno, e ID de punto igual al \code{record\_id} UUIDv5 del
+catálogo ---el mismo UUID que el manifiesto de datos declara, verificado en
+carga---. El payload conserva \code{product\_id}, \code{title},
+\code{brand}, \code{color}, \code{locale}, \code{catalog\_version} y
+\code{active}; \code{brand} tiene índice de payload \emph{keyword} creado
+junto con la colección para que el filtrado sea parte del plan de búsqueda.
+Los valores ausentes se guardan como cadena vacía, siempre con el mismo
+criterio.
+
+\textbf{Configuración ANN explícita.} HNSW \cite{malkov2018} con $m{=}24$,
+\code{ef\_construct}${=}120$ y \code{ef\_search}${=}128$, fijados en
+\code{config/run\_config.yaml}.
+
+\textbf{Una lección de producción: el índice que no existía.} La primera
+versión funcional del sistema pasaba todas las pruebas y reportaba fidelidad
+ANN 1.0\ldots{} porque no había índice. Qdrant solo construye el grafo HNSW
+cuando un segmento supera \code{indexing\_threshold} (10--20 MB por
+defecto), y $15.000 \times 384$ float32 repartidos en 4 segmentos no lo
+alcanzan: estado \emph{green} con \code{indexed\_vectors\_count}${=}0$, y
+cada búsqueda ``ANN'' era en realidad un escaneo exhaustivo con
+\code{ef\_search} inerte. Una revisión adversarial del código lo detectó
+verificándolo contra la colección viva. La corrección tiene dos partes:
+\code{indexing\_threshold}${=}100$~KB al crear la colección, y una
+verificación tras la ingesta ---previa a servir consultas del pipeline--- que
+exige estado \emph{green} \textbf{y} una cobertura mínima del 80\,\% de
+vectores indexados (esperar solo el estado verde no detecta nada, porque
+verde no implica indexado; en la ejecución final la cobertura es
+15.000/15.000). Tras la corrección las latencias bajan aproximadamente a la
+mitad (p50 de ${\sim}4.3$~ms a ${\sim}2.1$--$2.4$~ms). La moraleja queda en
+el sistema: la verificación del estado de indexación debe comprobar el
+índice, no el semáforo.
+
+\textbf{Ingesta por lotes e idempotente.} Lotes de 256 con \code{wait=True}
+y \emph{upsert} por \code{record\_id}: repetir la ingesta completa deja
+exactamente 15.000 registros (verificado en el informe de ingesta:
+\code{count\_before}${=}$\code{count\_after}${=}15000$,
+\code{idempotent=true}). La ingesta completa tarda ${\sim}4$~s en local y la
+colección puede reconstruirse desde cero con \code{AURUM\_ALLOW\_RESET=true}.
+
+\section{Recuperación y filtros}
+
+La búsqueda global devuelve top-$k$ con score nativo; la filtrada añade una
+condición \code{brand equals <valor>} \textbf{dentro} de
+\code{query\_points} (filtrado del lado del servidor, sobre el índice de
+payload), nunca un post-filtrado del top-10 global. Las cuatro consultas
+filtradas devuelven 10/10 resultados que cumplen la marca (Einhell, Apple,
+NIKE, SAMSUNG), verificado automáticamente en el informe de filtros de
+\code{resultados/evidencia/}.
+
+Los casos límite tienen tratamiento explícito y probado: una colección vacía
+lanza un error accionable (``ingiere con \code{make ingest}''), un filtro
+sin resultados devuelve lista vacía sin error (sondeado con una marca
+inexistente: 0 resultados), y un Qdrant caído se traduce en
+\code{VectorStoreUnavailableError} con instrucciones, en todas las
+operaciones (búsqueda, ingesta, lecturas, borrados).
+
+\section{Operaciones sobre el catálogo}
+\label{sec:operaciones}
+
+Los 24 eventos de \code{eventos\_catalogo.csv} (8 actualizaciones, 8 altas,
+8 bajas) se aplican en orden de \code{sequence} sobre una colección dedicada
+sembrada con el catálogo íntegro, de modo que los artefactos entregados
+---generados sobre el catálogo prístino--- siguen siendo reproducibles.
+Ambas colecciones comparten esquema, configuración e ingesta.
+
+\begin{itemize}
+  \item \textbf{Idempotencia}: la secuencia completa se aplica \textbf{dos
+  veces}; el recuento final es 15.000 en ambas pasadas ($8$ altas $-$ $8$
+  bajas) y el estado final se verifica \emph{registro a registro}: los 24
+  \code{record\_id} afectados se leen por ID y muestran la versión entregada
+  o han dejado de existir.
+  \item \textbf{Visibilidad}: para una operación de cada tipo se verifica
+  lectura por ID y consulta vectorial con espera activa acotada
+  (\code{wait\_until} con \emph{timeout}). Con \code{wait=True} en las
+  escrituras, la actualización muestra \code{catalog\_version}${=}2$ y
+  aparece en el top-3 de su propio vector al primer intento (${\sim}3$~ms);
+  el alta es recuperable por ambas rutas; la baja deja de serlo. El sistema
+  no cronometra proveedores: demuestra que una escritura confirmada acaba
+  siendo observable y que sabe esperar o fallar con \emph{deadline} si no lo
+  es.
+\end{itemize}
+
+\textbf{Seguridad de las operaciones.} Toda operación valida que la
+colección empiece por el prefijo \code{aurum-market-eval} antes de construir
+el cliente; recrear una colección exige \code{AURUM\_ALLOW\_RESET=true};
+borrarla exige la confirmación exacta
+\code{AURUM\_CONFIRM\_CLEANUP=DELETE:<colección>}. Todo desactivado por
+defecto, sin credenciales en el repositorio y sin servicios cloud: el
+corrector no hereda costes.
+
+\section{Control de altas duplicadas}
+\label{sec:duplicados}
+
+\textbf{Regla.} La base vectorial genera los 5 candidatos más próximos del
+alta entrante (codificada como documento, con la misma composición que el
+catálogo). Se declara duplicado si el mejor candidato alcanza
+$\mathit{score} \geq 0.955$; el margen sobre el segundo candidato se registra
+como evidencia (umbral de margen $0.0$: la rejilla lo descarta, porque hay
+duplicados reales casi empatados con una segunda copia legítima).
+
+\textbf{Calibración solo con desarrollo.} Sobre los 14 casos etiquetados, la
+rejilla explora todos los umbrales que separan scores observados. Los 7
+duplicados puntúan en $[0.980, 1.000]$ y los 7 no duplicados en
+$[0.883, 0.931]$: cualquier umbral de score en ese hueco logra $F_1{=}1.0$.
+Se eligió un umbral \textbf{centrado en el margen de separación} (0.955, con
+el punto medio exacto en 0.956) en lugar del umbral máximo que devuelve la
+rejilla (0.9797), criterio \emph{max-margin} que no se pega a ningún caso
+concreto y generaliza mejor. Con él: precision 1.0, recall 1.0, $F_1$ 1.0 en
+desarrollo, exigiendo además que el candidato señalado sea exactamente el
+producto de referencia etiquetado.
+
+\textbf{Costes asimétricos.} Un falso positivo retiene una ficha legítima en
+revisión: molesta al vendedor y añade trabajo manual, pero es reversible en
+minutos. Un falso negativo publica un duplicado que fragmenta reseñas y
+stock y degrada el propio buscador; su coste es mayor y más silencioso. Por
+eso el desempate de la calibración prima la precisión (la cola de revisión
+debe ser creíble) pero el umbral elegido queda centrado, sin sacrificar
+recall. En desarrollo no hubo ni un tipo de error ni el otro; el caso más
+difícil (DEV-NEW-007, score 0.931, un no-duplicado muy parecido) queda a
+0.024 del umbral y es el que habría que vigilar en producción.
+
+\textbf{Evaluación ciega.} Sobre \code{altas\_evaluacion.csv} la regla
+predice 7 duplicados y 7 altas nuevas; los positivos puntúan en
+$[0.958, 1.000]$ con margen medio $0.08$ y los negativos en
+$[0.883, 0.897]$: la misma separación limpia que en desarrollo, señal de que
+el umbral no está sobreajustado.
+
+\section{Evaluación}
+\label{sec:evaluacion}
+
+Todas las métricas se regeneran con un único comando (\code{make metrics}) y
+quedan en \code{resultados/metricas\_desarrollo.json}; cada experimento
+conserva configuración, métricas e IDs recuperados.
+
+\textbf{Declaración de relevancia} (fijada antes de los experimentos y sin
+cambios): nDCG@10 \cite{jarvelin2002} usa ganancias E=3, S=2, C=1, I=0;
+\textbf{Recall@10 considera relevantes E$\cup$S} con el conjunto relevante
+completo como denominador (con hasta 39 relevantes por consulta, el techo
+alcanzable con $k{=}10$ es $<1.0$; se reporta sin maquillar el denominador);
+\textbf{MRR@10 considera relevante solo E}. La tabla~\ref{tab:metricas}
+resume la ejecución final.
+
+\begin{table}[h]
+  \centering\small
+  \caption{Métricas de la configuración final medidas a través de Qdrant
+  (ruta de producción). Latencias: 12 consultas $\times$ 30 repeticiones
+  tras 5 de calentamiento, en local (WSL2, 8 vCPU); varían $\pm 0.3$~ms
+  entre ejecuciones y no comparan proveedores.}
+  \label{tab:metricas}
+  \begin{tabular}{@{}lc@{}}
+    \toprule
+    Métrica & Valor \\
+    \midrule
+    nDCG@10 & 0.555 \\
+    Recall@10 (E$\cup$S) & 0.223 \\
+    MRR@10 (E) & 0.698 \\
+    Latencia p50 / p95 & 2.32 / 3.10 ms \\
+    Fidelidad ANN@10 (media / mín.) & 1.000 / 1.000 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{La fidelidad es una medición, no una tautología.} Tras el incidente
+de la sección~\ref{sec:indice}, la fidelidad ---fracción del top-10 exacto
+que recupera el ANN--- se valida con un barrido de \code{ef\_search}
+(\code{make sweep-ef}) sobre dos grafos del mismo catálogo: el entregado
+($m{=}24$, optimizado) y uno deliberadamente débil ($m{=}4$,
+\code{ef\_construct}${=}16$) donde el compromiso emerge
+(tabla~\ref{tab:barrido}).
+
+\begin{table}[h]
+  \centering\small
+  \caption{Barrido de \code{ef\_search}: fidelidad frente al oráculo exacto
+  (20 consultas).}
+  \label{tab:barrido}
+  \begin{tabular}{@{}llcc@{}}
+    \toprule
+    Grafo & \code{ef} & Fid. media@10 & Fid. mín.@10 \\
+    \midrule
+    $m{=}24$ (entregado) & 10--128 & \textbf{1.000} & \textbf{1.000} \\
+    $m{=}4$ (débil) & 10 & 0.645 & 0.20 \\
+    $m{=}4$ (débil) & 32 & 0.820 & 0.50 \\
+    $m{=}4$ (débil) & 128 & 0.865 & 0.50 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Dos lecciones: el grafo entregado no pierde nada en todo el barrido (a esta
+escala, con un grafo bien construido, \code{ef\_search} es margen de
+seguridad, no dial crítico), y un grafo mal construido \textbf{no se arregla
+buscando más}: con $m{=}4$ la fidelidad se estanca en ${\sim}0.87$ incluso a
+\code{ef}${=}128$, porque las aristas que no existen no se pueden recorrer.
+La calidad se decide en construcción ($m$, \code{ef\_construct}); al crecer
+el catálogo este barrido es la herramienta de re-calibración.
+
+\section{Atribución de errores}
+\label{sec:atribucion}
+
+Tres fallos representativos, con la capa responsable determinada por
+evidencia. La fidelidad ANN 1.000 en la configuración final descarta el
+índice en todos ellos: el vecino que devuelve HNSW es el vecino exacto
+(verificado consulta a consulta en el notebook 05).
+
+\textbf{Caso 1 --- Representación: \guillemotleft estantes sin taladro
+habitacion\guillemotright{} (38249, MRR 0.25).} El top-3 es un libro de
+cocina \emph{sin sal}, un disco y una novela (\emph{Máscaras sin nombre}):
+E5 ancla la negación ``sin + sustantivo'' y con títulos cortos sin marca el
+parecido superficial domina. El oráculo exacto devuelve lo mismo: el vecino
+exacto ya es semánticamente malo, luego el error nace en la representación,
+no en el índice. Los estantes correctos (etiquetados E) entran en las
+posiciones 4--8. Mitigación razonable: componer el texto con una frase de
+categoría o un reranking léxico ligero del top-50.
+
+\textbf{Caso 2 --- Datos y juicios: \guillemotleft disfraz halloween talla
+grande hombre\guillemotright{} (33633, nDCG 0.088).} El sistema devuelve 10
+disfraces de Halloween reales, pero esta consulta tiene 16 juicios (solo 4
+relevantes E$\cup$S) y el único Exact etiquetado es\ldots{} una blusa de
+mujer (ruido del dataset ESCI \cite{reddy2022}). Los disfraces recuperados
+no están juzgados y computan ganancia 0. Hay también un fallo de
+representación genuino (ignora ``talla grande hombre''), pero la magnitud
+del 0.088 la explican los juicios escasos y ruidosos: es un error de la capa
+de datos/etiquetas que ninguna configuración puede remontar.
+
+\textbf{Caso 3 --- Representación en atributos finos: \guillemotleft botines
+marrones mujer tacon medio\guillemotright{} (18868, nDCG 0.329).} El puesto
+2 es un botín \emph{plateado de tacón bajo} etiquetado Irrelevant: el modelo
+acierta la categoría pero difumina color y altura de tacón, exactamente el
+tipo de atributo que la similitud coseno de un modelo pequeño comprime.
+Además, 3 de los 10 recuperados son botines marrones plausibles sin juicio.
+La mitigación estructural no es cambiar de modelo sino mover atributos duros
+(color) a metadatos filtrables, como ya se hace con la marca.
+
+\textbf{Las otras dos capas, con su propia evidencia.} La capa de
+\textbf{índice} se demuestra provocándole una pérdida real: en el grafo
+débil del barrido ($m{=}4$, \code{ef\_search}${=}10$) el ANN pierde hasta 8
+de los 10 vecinos que el oráculo recupera en una consulta, exactamente la
+forma de evidencia que define el enunciado; en la configuración entregada la
+pérdida es cero. En \textbf{persistencia/consistencia} no se observó
+discrepancia alguna: las escrituras usan \code{wait=True}, las tres
+verificaciones de visibilidad de la sección~\ref{sec:operaciones} convergen
+al primer intento y el estado final de los 24 eventos se valida registro a
+registro.
+
+\section{Decisión recomendada y evolución}
+
+\textbf{Para Aurum Market hoy:} Qdrant local con HNSW ($m{=}24$,
+\code{ef\_construct}${=}120$, \code{ef\_search}${=}128$),
+\code{multilingual-e5-small} sobre título+marca+color, filtro de marca por
+payload indexado, regla de duplicados con umbral 0.955 sobre score coseno y
+revisión humana de los positivos. Todo el recorrido corre en un portátil, es
+idempotente y se reconstruye desde cero con dos comandos.
+
+\textbf{Qué cambiaría al crecer el catálogo (15k $\rightarrow$ 1M):}
+
+\begin{itemize}
+  \item \emph{Índice}: el barrido de \code{ef\_search} pasa de curiosidad a
+  herramienta de operación; habría que re-medir fidelidad por percentil de
+  consulta y presupuestar memoria del grafo (o evaluar cuantización escalar
+  de Qdrant).
+  \item \emph{Representación}: el caso 1 de la
+  sección~\ref{sec:atribucion} escala mal; un modelo mayor (e5-base) o un
+  reranker sobre el top-100 se re-evaluarían con el mismo arnés de
+  experimentos, que ya conserva IDs y configuraciones.
+  \item \emph{Duplicados}: con más altas diarias, el umbral único debería
+  convertirse en dos (auto-rechazo / revisión humana / auto-aprobación)
+  calibrados sobre la curva precision-recall completa.
+  \item \emph{Operativa}: la colección de eventos separada se sustituiría
+  por \emph{snapshots} de Qdrant y un flujo de reingesta azul/verde; los
+  interruptores de limpieza ya existen y se mantendrían.
+\end{itemize}
+
+El objetivo no era demostrar que una base vectorial devuelve algo: era saber
+cuándo sus resultados son útiles (consultas con intención clara y atributos
+blandos), qué capa explica sus errores (representación y juicios, no el
+índice) y qué decisión resiste producción (la configuración completa está en
+\code{config/run\_config.yaml} y cada número de este informe se regenera
+desde ella).
+
+\appendix
+
+\section{Reproducción y artefactos}
+
+\textbf{Reproducción íntegra} (entorno limpio, ${\sim}10$ min sin GPU):
+\code{make setup \&\& make up \&\& make embeddings \&\& make pipeline}.
+
+\textbf{Notebooks de I+D (entregados ejecutados).} La serie
+\code{notebooks/actividad\_00}--\code{05} justifica cada bloque de
+decisiones contra el sistema vivo ---caso/datos/baseline, representación,
+índice y BD, recuperación y filtros, operaciones y duplicados, y evaluación
+completa con atribución de errores y el checklist del enunciado verificado
+por aserciones--- y explica cada concepto en su primera aparición para
+lectura secuencial. Se regeneran con \code{make notebook} y se ejecutan
+\emph{headless} con \code{make execute-notebook}.
+
+\textbf{Artefactos entregados.}
+
+\begin{description}[style=nextline,itemsep=2pt,font=\normalfont]
+  \item[\code{resultados/resultados\_busqueda.csv}] Top-10 por consulta ciega
+  ($12 \times 10$ filas, IDs únicos por consulta).
+  \item[\code{resultados/resultados\_duplicados.csv}] Decisión, candidato y
+  score de las 14 altas ciegas.
+  \item[\code{resultados/metricas\_desarrollo.json}] nDCG/Recall/MRR@10,
+  latencias p50/p95, fidelidad ANN, duplicados y entorno.
+  \item[\code{config/run\_config.yaml}] Configuración exacta de la ejecución
+  final.
+  \item[\code{docs/images/arquitectura.svg}] Diagrama de arquitectura
+  (figura~\ref{fig:arquitectura}).
+  \item[\code{resultados/evidencia/}] Copia versionada de la evidencia:
+  registro de experimentos con IDs recuperados, evaluación completa con
+  entorno, barrido \code{ef\_search}, calibración y decisiones de duplicados,
+  informes de filtros, eventos e ingesta.
+  \item[\code{.artifacts/}] Los mismos informes en su ubicación de trabajo
+  (regenerables con \code{make pipeline}).
+\end{description}
+
+\textbf{Verificación previa a la entrega.} Ingesta repetida sin aumentar
+recuento \checkmark{} · filtros nunca devuelven otra marca \checkmark{} ·
+eventos dejan el estado esperado dos veces \checkmark{} · 12 rankings ciegos
+con 10 IDs únicos y válidos \checkmark{} · toda predicción positiva señala
+candidato \checkmark{} · métricas regenerables con \code{make metrics}
+\checkmark{} · sin claves ni datos reservados en el repositorio \checkmark{}
+(55 pruebas automatizadas: \code{make test}, \code{make test-integration}).
+
+\balance
+\begin{thebibliography}{9}\small
+\bibitem{reddy2022} C.~K. Reddy \emph{et al.} (2022). Shopping Queries
+Dataset: A Large-Scale ESCI Benchmark for Improving Product Search.
+\emph{arXiv:2206.06588}.
+\bibitem{wang2024} L.~Wang \emph{et al.} (2024). Multilingual E5 Text
+Embeddings: A Technical Report. \emph{arXiv:2402.05672}.
+\bibitem{reimers2019} N.~Reimers y I.~Gurevych (2019). Sentence-BERT:
+Sentence Embeddings using Siamese BERT-Networks. \emph{arXiv:1908.10084}.
+\bibitem{malkov2018} Y.~A. Malkov y D.~A. Yashunin (2018). Efficient and
+robust approximate nearest neighbor search using Hierarchical Navigable
+Small World graphs. \emph{IEEE TPAMI}, 42(4). \emph{arXiv:1603.09320}.
+\bibitem{robertson2009} S.~Robertson y H.~Zaragoza (2009). The
+Probabilistic Relevance Framework: BM25 and Beyond. \emph{Foundations and
+Trends in Information Retrieval}, 3(4).
+\bibitem{jarvelin2002} K.~Järvelin y J.~Kekäläinen (2002). Cumulated
+gain-based evaluation of IR techniques. \emph{ACM TOIS}, 20(4).
+\bibitem{qdrant} Qdrant. Documentación: colecciones, HNSW y filtrado por
+payload. \url{https://qdrant.tech/documentation/concepts/}.
+\end{thebibliography}
+
+\end{document}

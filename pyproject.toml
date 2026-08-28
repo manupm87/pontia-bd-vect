@@ -27,8 +27,7 @@ embeddings = [
     "sentence-transformers>=3.3,<6",
 ]
 pdf = [
-    "markdown>=3.7,<4",
-    "weasyprint>=63,<70",
+    "cairosvg>=2.7,<3",
 ]
 
 [dependency-groups]
