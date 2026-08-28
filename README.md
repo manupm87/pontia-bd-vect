@@ -29,7 +29,7 @@ exacta de la ejecución final en [`config/run_config.yaml`](config/run_config.ya
 - Linux, macOS o Windows con WSL2.
 - [uv](https://docs.astral.sh/uv/) (el script de setup lo instala si falta).
 - Docker con Docker Compose (para Qdrant).
-- ~3 GB de disco para el entorno (PyTorch + sentence-transformers) y ~500 MB
+- ~3 GB de disco para el entorno (PyTorch + sentence-transformers) y ~1.5 GB
   para los modelos de embeddings descargados de Hugging Face.
 - No se necesita GPU; con GPU la generación de embeddings baja de ~6 min a <1 min.
 
@@ -50,7 +50,7 @@ Preparar entorno, levantar el motor, ingerir, evaluar y limpiar:
 ```bash
 make setup        # 1. entorno Python
 make up           # 2. Qdrant en Docker (espera al healthcheck)
-make embeddings   # 3. genera los embeddings de las 3 configuraciones
+make embeddings   # 3. genera los embeddings de las 4 configuraciones locales
 make pipeline     # 4. ingesta + experimentos + duplicados + métricas + resultados + eventos
 make down         # 5. detiene Qdrant (conserva el volumen)
 ```
@@ -111,6 +111,7 @@ contiene secretos obligatorios: todo el recorrido evaluado es local.
 | `QDRANT_API_KEY` | Vacío en local; solo para un Qdrant remoto protegido. |
 | `QDRANT_COLLECTION` | Colección principal del catálogo. |
 | `QDRANT_EVENTS_COLLECTION` | Colección dedicada a la prueba de eventos. |
+| `GEMINI_API_KEY` | Opcional. Activa el experimento `gemini_v2_title` (sesión 01); sin clave se omite. |
 | `AURUM_ALLOW_RESET` | `false` por defecto. Permite recrear colecciones desde cero. |
 | `AURUM_CONFIRM_CLEANUP` | Vacío por defecto. Exige `DELETE:<coleccion>` para borrar. |
 
@@ -141,9 +142,9 @@ validación del snapshot), `embeddings.py` (representación), `vector_store.py`
 | Comando | Efecto |
 |---|---|
 | `make up` / `make down` | Arranca/detiene Qdrant. `make down-volumes` borra también el volumen. |
-| `make embeddings` | Genera los embeddings de las tres configuraciones con manifiesto SHA-256. |
+| `make embeddings` | Genera los embeddings de cada configuración con manifiesto SHA-256. |
 | `make ingest` | Ingesta idempotente del catálogo completo y verificación de recuento. |
-| `make experiments` | Comparativa BM25 + 3 configuraciones densas sobre desarrollo. |
+| `make experiments` | Comparativa BM25 + 4 configuraciones densas sobre desarrollo (y Gemini si hay clave). |
 | `make duplicates` | Calibra la regla en desarrollo y genera `resultados_duplicados.csv`. |
 | `make evaluate` / `make metrics` | Regenera `resultados/metricas_desarrollo.json`. |
 | `make search-results` | Genera `resultados_busqueda.csv` y verifica los filtros de marca. |
@@ -166,7 +167,7 @@ multiplica la fase de embeddings por ~8.
 | Fase | Tiempo |
 |---|---|
 | `make setup` | 2–4 min (descarga de PyTorch) |
-| `make embeddings` (3 configuraciones) | ~1 min con GPU · 6–10 min con CPU |
+| `make embeddings` (4 configuraciones locales) | ~1 min con GPU · 6–10 min con CPU |
 | `make ingest` (15.000 registros) | ~30 s |
 | `make experiments` | ~1 min (BM25 domina el coste) |
 | `make duplicates` + `make evaluate` + `make search-results` | ~2 min |

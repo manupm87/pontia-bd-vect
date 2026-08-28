@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -48,6 +49,7 @@ class EmbeddingConfiguration:
     query_prefix: str
     dimension: int
     normalize: bool = True
+    provider: str = "local"
 
     def __post_init__(self) -> None:
         if self.composition not in VALID_COMPOSITIONS:
@@ -58,6 +60,11 @@ class EmbeddingConfiguration:
             )
         if self.dimension < 1:
             raise ValueError("dimension debe ser positiva.")
+        if self.provider not in ("local", "gemini"):
+            raise ValueError(
+                f"Proveedor desconocido {self.provider!r}. "
+                "Valores válidos: local, gemini."
+            )
 
     @property
     def directory(self) -> Path:
@@ -84,12 +91,31 @@ EMBEDDING_CONFIGURATIONS: dict[str, EmbeddingConfiguration] = {
             dimension=384,
         ),
         EmbeddingConfiguration(
+            name="e5_base_title",
+            model_id="intfloat/multilingual-e5-base",
+            composition="title_brand_color",
+            document_prefix="passage: ",
+            query_prefix="query: ",
+            dimension=768,
+        ),
+        EmbeddingConfiguration(
             name="minilm_full",
             model_id="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
             composition="full_text",
             document_prefix="",
             query_prefix="",
             dimension=384,
+        ),
+        # Proveedor API visto en la sesión 01. Solo se construye si existe
+        # GEMINI_API_KEY en el entorno; el recorrido evaluado no depende de él.
+        EmbeddingConfiguration(
+            name="gemini_v2_title",
+            model_id="gemini-embedding-2",
+            composition="title_brand_color",
+            document_prefix="",
+            query_prefix="",
+            dimension=768,
+            provider="gemini",
         ),
     )
 }
@@ -162,6 +188,76 @@ def encode_texts(
         show_progress_bar=False,
     )
     return np.asarray(matrix, dtype=np.float32)
+
+
+def load_gemini_client() -> Any:
+    """Create a google-genai client; never called without an explicit key.
+
+    Mirrors the session's offline-by-default philosophy: importing this module
+    or running the evaluated pipeline never touches the network. The Gemini
+    configuration only builds when GEMINI_API_KEY is present in the
+    environment (.env), and skipping it is not an error.
+    """
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError(
+            "Falta GEMINI_API_KEY en .env. La configuración Gemini es opcional: "
+            "sin clave se omite y el recorrido evaluado sigue siendo local."
+        )
+    try:
+        from google import genai
+    except ImportError as error:
+        raise RuntimeError(
+            "google-genai no está instalado. Ejecuta `uv sync --all-extras` "
+            "(extra 'api')."
+        ) from error
+    return genai.Client(api_key=api_key)
+
+
+def encode_texts_gemini(
+    client: Any,
+    texts: list[str],
+    *,
+    role: str,
+    dimension: int,
+    model_id: str = "gemini-embedding-2",
+    batch_size: int = 100,
+) -> NDArray[np.float32]:
+    """Encode texts with Gemini Embedding 2 using the course's I/O contract.
+
+    Queries and documents use the official textual roles (the model no longer
+    accepts task_type), and the reduced-dimension output is L2-normalized
+    afterwards, as in the session adapter.
+    """
+    if role not in ("query", "document"):
+        raise ValueError(f"Rol desconocido {role!r}. Valores válidos: query, document.")
+    if not texts:
+        raise ValueError("No hay textos que codificar.")
+    prepared = [
+        f"task: search result | query: {text}"
+        if role == "query"
+        else f"title: none | text: {text}"
+        for text in texts
+    ]
+    rows: list[list[float]] = []
+    for start in range(0, len(prepared), batch_size):
+        chunk = prepared[start : start + batch_size]
+        response = client.models.embed_content(
+            model=model_id,
+            contents=[{"parts": [{"text": text}]} for text in chunk],
+            config={"output_dimensionality": dimension},
+        )
+        rows.extend(list(embedding.values) for embedding in response.embeddings)
+    matrix = np.asarray(rows, dtype=np.float32)
+    if matrix.shape != (len(texts), dimension) or not np.isfinite(matrix).all():
+        raise ValueError(
+            f"Gemini devolvió una matriz inesperada: {matrix.shape}, se esperaba "
+            f"({len(texts)}, {dimension})."
+        )
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    if np.any(norms <= np.finfo(np.float32).tiny):
+        raise ValueError("Gemini devolvió al menos un vector nulo.")
+    return matrix / norms
 
 
 @dataclass(frozen=True, slots=True)
@@ -260,7 +356,9 @@ __all__ = [
     "EmbeddingSet",
     "compose_document_text",
     "encode_texts",
+    "encode_texts_gemini",
     "get_configuration",
     "load_embedding_set",
     "load_encoder",
+    "load_gemini_client",
 ]

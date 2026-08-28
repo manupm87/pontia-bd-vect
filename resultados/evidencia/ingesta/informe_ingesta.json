@@ -1,6 +1,6 @@
 {
   "collection": "aurum-market-eval-catalogo",
-  "embedding_configuration": "e5_small_title",
+  "embedding_configuration": "e5_base_title",
   "batch_size": 256,
   "records_sent": 15000,
   "count_before": 15000,
@@ -11,5 +11,5 @@
     "points_count": 15000,
     "indexed_vectors_count": 15000
   },
-  "ingestion_seconds": 4.17
+  "ingestion_seconds": 7.46
 }

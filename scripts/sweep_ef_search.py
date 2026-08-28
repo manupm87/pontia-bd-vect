@@ -107,7 +107,9 @@ def ensure_weak_collection(
     catalog_size_store: CatalogVectorStore, embedding_set, batch_size: int
 ) -> None:
     """Create and seed the weak-graph collection when absent or incomplete."""
-    catalog_size_store.ensure_collection()
+    catalog_size_store.ensure_collection(
+        allow_reset=os.getenv("AURUM_ALLOW_RESET", "false").lower() == "true"
+    )
     catalog = load_catalog()
     if catalog_size_store.count() != len(catalog):
         catalog_size_store.upsert_records(

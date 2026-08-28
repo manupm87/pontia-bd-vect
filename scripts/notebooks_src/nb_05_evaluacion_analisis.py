@@ -81,10 +81,12 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            La dispersión es la historia real: cinco consultas con MRR=1.0 conviven
-            con dos fallos claros (33633 y 38249) que la sección de atribución
-            disecciona. El recall bajo en términos absolutos tiene techo estructural:
-            con hasta 39 relevantes y k=10, el máximo alcanzable es 10/39 — se reporta
+            La dispersión es la historia real: seis consultas con MRR=1.0 conviven
+            con dos fallos que la sección de atribución disecciona — 33633 (MRR 0,
+            un problema de juicios) y la cola contaminada de 38249 (primer
+            resultado correcto, pero libros irrelevantes en el resto del top-10).
+            El recall bajo en términos absolutos tiene techo estructural: con
+            hasta 39 relevantes y k=10, el máximo alcanzable es 10/39 — se reporta
             con su denominador honesto en vez de maquillarlo.
 
             ## 2. Fidelidad ANN: el índice, contra su oráculo
@@ -164,19 +166,19 @@ def build_cells() -> list[NotebookNode]:
             r"""
             Dos lecciones, una por grafo:
 
-            1. **El grafo entregado no pierde nada**: con m=24 y el índice
-               plenamente optimizado, la fidelidad es 1.0 en todo el barrido —
-               incluso a `ef=10`. A 15.000 vectores, un grafo bien construido hace
-               que `ef_search` sea un margen de seguridad, no un dial crítico. (No
-               siempre fue así: durante la construcción, con los segmentos a medio
-               fusionar, este mismo barrido llegó a medir pérdidas del 80 % en una
-               consulta a `ef=10` — la fidelidad depende del *estado* del grafo,
-               otra razón para medirla en lugar de suponerla.)
+            1. **En el grafo entregado, `ef_search=128` no es adorno**: con 768
+               dimensiones y el barrido medido justo tras la ingesta, `ef=10`
+               pierde de media un 11 % del top-10 (mínima 0.3 en una consulta) y
+               solo `ef=128` recupera fidelidad 1.0. El mismo barrido con la
+               configuración anterior (384d, grafo totalmente optimizado) daba 1.0
+               plano en todos los valores: la fidelidad depende de la dimensión y
+               del *estado de optimización* del grafo — exactamente la razón para
+               medirla en cada cambio en lugar de suponerla.
             2. **Un grafo mal construido no se arregla buscando más**: con m=4 la
-               fidelidad media cae a 0.645 a `ef=10` (mínima 0.20) y, aunque sube
-               con `ef`, se estanca en ~0.87 a `ef=128`: las aristas que no existen
-               no se pueden recorrer. La calidad se decide en `m`/`ef_construct` (en
-               construcción), y `ef_search` solo explota el grafo que hay.
+               fidelidad media cae a 0.435 a `ef=10` (mínima 0.10) y, aunque sube
+               con `ef`, se queda en ~0.80 a `ef=128`: las aristas que no existen
+               no se pueden recorrer. La calidad se decide en `m`/`ef_construct`
+               (en construcción), y `ef_search` solo explota el grafo que hay.
 
             Al crecer el catálogo, este barrido es la herramienta de re-calibración
             (y la separación entre «pérdida del índice» y «error del modelo» que
@@ -302,10 +304,13 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            ### Caso 1 · Representación — «estantes sin taladro habitacion» (38249, MRR 0.25)
+            ### Caso 1 · Representación — «estantes sin taladro habitacion» (38249, nDCG 0.379)
 
-            El top-3 son un libro de cocina *sin sal*, un disco y una novela: E5 ancla
-            el patrón «sin + sustantivo» en títulos cortos sin marca. El oráculo exacto
+            El modelo base mejora la cabeza del ranking (el primer resultado ya es un
+            estante etiquetado E; con e5-small el MRR era 0.25), pero la cola sigue
+            contaminada: libros como *La buena cocina sin sal*, *Máscaras sin nombre*
+            o *Ángeles sin alas* ocupan varios de los diez puestos — E5 ancla el
+            patrón «sin + sustantivo» en títulos cortos sin marca. El oráculo exacto
             devuelve lo mismo (fidelidad 1.0), luego **el vecino exacto ya es malo: la
             capa responsable es la representación**. Mitigación razonable: señal de
             categoría en el texto o un reranking léxico ligero del top-50.
@@ -327,14 +332,16 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            ### Caso 2 · Datos y juicios — «disfraz halloween talla grande hombre» (33633, nDCG 0.088)
+            ### Caso 2 · Datos y juicios — «disfraz halloween talla grande hombre» (33633, MRR 0.0)
 
-            El sistema devuelve disfraces de Halloween reales, pero esta consulta
-            tiene solo 16 juicios (de los cuales apenas 4 son relevantes E∪S) y el
-            único *Exact* etiquetado es una blusa (ruido del dataset): los
-            recuperados sin juicio computan ganancia 0.
-            Hay un matiz de representación (ignora «talla grande hombre»), pero la
-            magnitud del 0.088 la explica **la capa de datos/etiquetas** — ninguna
+            El sistema devuelve disfraces de Halloween reales (recall 0.50, el más
+            alto de esta consulta en toda la rejilla), pero la consulta tiene solo
+            16 juicios (de los cuales apenas 4 son relevantes E∪S) y el único
+            *Exact* etiquetado es una blusa (ruido del dataset): el MRR es 0
+            precisamente porque el sistema **no** recupera esa blusa, y los
+            disfraces plausibles sin juicio computan ganancia 0. Hay un matiz de
+            representación (ignora «talla grande hombre»), pero la magnitud del
+            fallo la explica **la capa de datos/etiquetas** — ninguna
             configuración puede remontar juicios escasos y ruidosos.
             """
         ),
@@ -349,13 +356,15 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            ### Caso 3 · Representación en atributos finos — «botines marrones mujer tacon medio» (18868, nDCG 0.329)
+            ### Caso 3 · Representación en atributos finos — «botines marrones mujer tacon medio» (18868, nDCG 0.370)
 
-            El puesto 2 es un botín *plateado de tacón bajo* etiquetado **I**: la
-            categoría se acierta, pero color y altura de tacón se difuminan en la
-            similitud coseno de un modelo pequeño. La mitigación estructural no es
-            otro modelo, sino mover los atributos duros (color) a metadatos
-            filtrables, como ya se hace con la marca.
+            En el top-5 conviven un botín *plateado de tacón bajo* etiquetado
+            **I** y botines de *tacón alto* sin juicio: la categoría se acierta,
+            pero color y altura de tacón se difuminan en la similitud coseno —
+            el patrón persiste al pasar de e5-small a e5-base, señal de que no es
+            cuestión de capacidad. La mitigación estructural no es otro modelo,
+            sino mover los atributos duros (color) a metadatos filtrables, como ya
+            se hace con la marca.
             """
         ),
         code(

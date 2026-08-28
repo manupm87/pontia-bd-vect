@@ -1,9 +1,9 @@
 {
-  "ndcg_at_10": 0.555,
-  "recall_at_10": 0.2232,
-  "mrr_at_10": 0.6979,
-  "latency_p50_ms": 2.32,
-  "latency_p95_ms": 3.1,
+  "ndcg_at_10": 0.5628,
+  "recall_at_10": 0.2481,
+  "mrr_at_10": 0.7917,
+  "latency_p50_ms": 2.71,
+  "latency_p95_ms": 3.43,
   "recall_relevant_labels": [
     "E",
     "S"
@@ -16,10 +16,10 @@
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
-    "score_threshold": 0.955,
+    "score_threshold": 0.937,
     "margin_threshold": 0.0
   },
-  "embedding_configuration": "e5_small_title",
+  "embedding_configuration": "e5_base_title",
   "collection": "aurum-market-eval-catalogo",
   "record_count": 15000,
   "latency_protocol": {

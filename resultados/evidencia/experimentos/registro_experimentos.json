@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T19:27:34.162030+00:00",
+  "generated_at": "2026-08-28T21:51:46.155783+00:00",
   "k": 10,
   "recall_relevant_labels": [
     "E",
@@ -7,6 +7,9 @@
   ],
   "mrr_relevant_labels": [
     "E"
+  ],
+  "skipped_configurations": [
+    "gemini_v2_title"
   ],
   "experiments": [
     {
@@ -16,7 +19,7 @@
         "k1": 1.5,
         "b": 0.75
       },
-      "seconds": 2.4,
+      "seconds": 2.09,
       "metrics": {
         "ndcg_at_10": 0.5575925803958484,
         "recall_at_10": 0.18726416952223401,
@@ -188,6 +191,188 @@
       }
     },
     {
+      "experiment": "e5_base_title",
+      "kind": "dense_exact",
+      "parameters": {
+        "model_id": "intfloat/multilingual-e5-base",
+        "composition": "title_brand_color",
+        "document_prefix": "passage: ",
+        "query_prefix": "query: ",
+        "normalized": true,
+        "dimension": 768
+      },
+      "seconds": 0.05,
+      "metrics": {
+        "ndcg_at_10": 0.5627840657952312,
+        "recall_at_10": 0.24808529284335734,
+        "mrr_at_10": 0.7916666666666666
+      },
+      "per_query": [
+        {
+          "query_id": "13357",
+          "ndcg_at_10": 0.716881793402458,
+          "recall_at_10": 0.25806451612903225,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 31
+        },
+        {
+          "query_id": "18868",
+          "ndcg_at_10": 0.37046218819305804,
+          "recall_at_10": 0.2222222222222222,
+          "mrr_at_10": 1.0,
+          "judged_count": 16,
+          "relevant_count": 9
+        },
+        {
+          "query_id": "28703",
+          "ndcg_at_10": 0.49276192198755825,
+          "recall_at_10": 0.1282051282051282,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 39
+        },
+        {
+          "query_id": "31224",
+          "ndcg_at_10": 0.3872317973481977,
+          "recall_at_10": 0.2,
+          "mrr_at_10": 0.3333333333333333,
+          "judged_count": 16,
+          "relevant_count": 15
+        },
+        {
+          "query_id": "33633",
+          "ndcg_at_10": 0.3057360664736449,
+          "recall_at_10": 0.5,
+          "mrr_at_10": 0.0,
+          "judged_count": 16,
+          "relevant_count": 4
+        },
+        {
+          "query_id": "38249",
+          "ndcg_at_10": 0.37850091886658266,
+          "recall_at_10": 0.08571428571428572,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "43240",
+          "ndcg_at_10": 0.8506978400903503,
+          "recall_at_10": 0.2571428571428571,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "61533",
+          "ndcg_at_10": 1.0,
+          "recall_at_10": 0.3333333333333333,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 30
+        }
+      ],
+      "retrieved_ids": {
+        "DEV-13357": [
+          "B015FMZ4MQ",
+          "B091BWS8VF",
+          "B091BB18QV",
+          "B07S852KTG",
+          "B01MV80F5C",
+          "B07S946NHS",
+          "B00YMT0IKW",
+          "B09BW133YW",
+          "B07S37RMMP",
+          "B07BFFKCHC"
+        ],
+        "DEV-18868": [
+          "B07H97VGBP",
+          "B07JZ62WYD",
+          "B0714N7942",
+          "B079FTG3Z7",
+          "B07VQJFQBD",
+          "B07GJNCV8R",
+          "B071P9Y9GD",
+          "B079FXFQ7C",
+          "B07NW4S3HM",
+          "B072FRGG6S"
+        ],
+        "DEV-28703": [
+          "B083BM815K",
+          "B07B94G52C",
+          "B07N6CZ98K",
+          "B00O6T7N2O",
+          "B00EZSFO6S",
+          "B081QM6MCL",
+          "B08PFJXSW5",
+          "B08M3LJX5H",
+          "B08GYFBKD4",
+          "B08MCDPVCJ"
+        ],
+        "DEV-31224": [
+          "B006Q8VAL8",
+          "B01NARXQ2E",
+          "B07HP6XKC6",
+          "B07YFFGWR5",
+          "B01MU31H1P",
+          "B08MQF68VD",
+          "B082SVJLZQ",
+          "B08F4ZR7K4",
+          "B07FPFLGNL",
+          "B01L0LVDJO"
+        ],
+        "DEV-33633": [
+          "B07NY97H69",
+          "B07TG2VB9F",
+          "B07XD9D2HB",
+          "B000GWJ9PY",
+          "B07Z8N7Z3K",
+          "B07TFKMTJ8",
+          "B07XZ8HHVQ",
+          "B08HCN5W8Z",
+          "B004RZL7UG",
+          "B07WTD1VGB"
+        ],
+        "DEV-38249": [
+          "B09BHVMCC3",
+          "1683258703",
+          "B098GX2DDJ",
+          "B08BWTFMV4",
+          "B07WCXZ2MZ",
+          "B06XKKSPGG",
+          "B07V78QNQM",
+          "B07TJKBT7T",
+          "B071X52JKQ",
+          "B071S374G9"
+        ],
+        "DEV-43240": [
+          "B08MQ42Z6P",
+          "B08KPYKNWZ",
+          "B08LZYZ1FJ",
+          "B07DWTB3MT",
+          "B08L6GSP7S",
+          "B08MSR1SJS",
+          "B08LYB2GP9",
+          "B08LVQPZQD",
+          "B08GY7NPYN",
+          "B08N6MJYNM"
+        ],
+        "DEV-61533": [
+          "B079ZYKLFD",
+          "B01I5JVBZK",
+          "B085WY78SG",
+          "B01MSTVEZN",
+          "B0837V9T36",
+          "B07QB8484X",
+          "B00WGOY7O8",
+          "B07QB8484Y",
+          "B01M31TMH8",
+          "B084BPS1LS"
+        ]
+      }
+    },
+    {
       "experiment": "e5_small_full",
       "kind": "dense_exact",
       "parameters": {
@@ -198,7 +383,7 @@
         "normalized": true,
         "dimension": 384
       },
-      "seconds": 0.1,
+      "seconds": 0.05,
       "metrics": {
         "ndcg_at_10": 0.5333070150658129,
         "recall_at_10": 0.20505730828311475,
@@ -380,7 +565,7 @@
         "normalized": true,
         "dimension": 384
       },
-      "seconds": 0.08,
+      "seconds": 0.03,
       "metrics": {
         "ndcg_at_10": 0.5549627339945311,
         "recall_at_10": 0.22315102012682655,
@@ -562,7 +747,7 @@
         "normalized": true,
         "dimension": 384
       },
-      "seconds": 0.08,
+      "seconds": 0.04,
       "metrics": {
         "ndcg_at_10": 0.27334679012971985,
         "recall_at_10": 0.09508497774626806,

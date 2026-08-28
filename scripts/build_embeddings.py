@@ -37,7 +37,9 @@ from aurum_discovery.embeddings import (
     EmbeddingConfiguration,
     compose_document_text,
     encode_texts,
+    encode_texts_gemini,
     load_encoder,
+    load_gemini_client,
 )
 from aurum_discovery.operations import sha256_file
 
@@ -114,24 +116,42 @@ def build_configuration(
             load_filtered_queries()["query_text"].tolist(),
         ),
     }
-    encoder = load_encoder(configuration.model_id)
+    if configuration.provider == "gemini":
+        try:
+            gemini_client = load_gemini_client()
+        except RuntimeError as reason:
+            print(f"AVISO {configuration.name}: {reason}")
+            return
+        encoder = None
+    else:
+        gemini_client = None
+        encoder = load_encoder(configuration.model_id)
     directory.mkdir(parents=True, exist_ok=True)
     identifiers: dict[str, list[str]] = {}
     counts: dict[str, int] = {}
     started_at = datetime.now(UTC)
     for set_name, (set_identifiers, texts) in {**document_sets, **query_sets}.items():
-        prefix = (
-            configuration.document_prefix
-            if set_name in document_sets
-            else configuration.query_prefix
-        )
-        matrix = encode_texts(
-            encoder,
-            texts,
-            prefix=prefix,
-            normalize=configuration.normalize,
-            batch_size=batch_size,
-        )
+        if configuration.provider == "gemini":
+            matrix = encode_texts_gemini(
+                gemini_client,
+                texts,
+                role="document" if set_name in document_sets else "query",
+                dimension=configuration.dimension,
+                model_id=configuration.model_id,
+            )
+        else:
+            prefix = (
+                configuration.document_prefix
+                if set_name in document_sets
+                else configuration.query_prefix
+            )
+            matrix = encode_texts(
+                encoder,
+                texts,
+                prefix=prefix,
+                normalize=configuration.normalize,
+                batch_size=batch_size,
+            )
         np.save(directory / f"{set_name}.npy", matrix, allow_pickle=False)
         identifiers[set_name] = list(set_identifiers)
         counts[set_name] = len(texts)
@@ -139,6 +159,7 @@ def build_configuration(
     metadata = {
         "model_id": configuration.model_id,
         "configuration": configuration.name,
+        "provider": configuration.provider,
         "composition": configuration.composition,
         "generated_at": started_at.isoformat(),
         "dimension": configuration.dimension,

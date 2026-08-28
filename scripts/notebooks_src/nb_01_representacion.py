@@ -24,16 +24,21 @@ def build_cells() -> list[NotebookNode]:
             ## Qué es exactamente un embedding (y por qué el coseno)
 
             Un **modelo de embeddings** es una red neuronal entrenada para que
-            textos con significado parecido acaben en vectores cercanos. Los dos
-            modelos de este notebook producen vectores de **384 dimensiones**; la
-            diferencia está en *para qué* fueron entrenados, no en su tamaño:
+            textos con significado parecido acaben en vectores cercanos. Los
+            candidatos de este notebook separan dos variables que conviene no
+            mezclar — *para qué* fue entrenado el modelo y *cuánta capacidad*
+            tiene:
 
-            - **multilingual-e5-small** se entrenó con pares consulta-documento
-              (objetivo de *recuperación*): aprende a acercar una pregunta a su
-              respuesta, aunque no compartan vocabulario.
-            - **paraphrase-multilingual-MiniLM** se entrenó con pares de paráfrasis:
-              aprende a acercar frases que *dicen lo mismo*, que no es lo mismo que
-              acercar una consulta a un producto.
+            - **multilingual-e5-small** (384d) se entrenó con pares
+              consulta-documento (objetivo de *recuperación*): aprende a acercar
+              una pregunta a su respuesta, aunque no compartan vocabulario.
+            - **multilingual-e5-base** (768d) comparte entrenamiento y contrato
+              con e5-small, con el doble de dimensiones y ~2.5x parámetros: mide
+              cuánto paga la *capacidad* a igualdad de todo lo demás.
+            - **paraphrase-multilingual-MiniLM** (384d) se entrenó con pares de
+              paráfrasis: aprende a acercar frases que *dicen lo mismo*, que no es
+              lo mismo que acercar una consulta a un producto. Frente a e5-small
+              (misma dimensión) aísla el efecto del *objetivo de entrenamiento*.
 
             La cercanía se mide con la **similitud coseno**: el coseno del ángulo
             entre dos vectores,
@@ -57,12 +62,22 @@ def build_cells() -> list[NotebookNode]:
 
             ## Las candidatas
 
-            | Configuración | Modelo | Texto codificado | Prefijos |
-            |---|---|---|---|
-            | `e5_small_full` | multilingual-e5-small | campo `text` completo | `passage:` / `query:` |
-            | `e5_small_title` | multilingual-e5-small | título + marca + color | `passage:` / `query:` |
-            | `minilm_full` | paraphrase-multilingual-MiniLM | campo `text` completo | ninguno |
-            | `bm25_full_text` | BM25 (léxico) | campo `text` completo | — |
+            | Configuración | Modelo | Dim. | Texto codificado | Prefijos |
+            |---|---|---|---|---|
+            | `e5_small_full` | multilingual-e5-small | 384 | campo `text` completo | `passage:` / `query:` |
+            | `e5_small_title` | multilingual-e5-small | 384 | título + marca + color | `passage:` / `query:` |
+            | `e5_base_title` | multilingual-e5-base | 768 | título + marca + color | `passage:` / `query:` |
+            | `minilm_full` | paraphrase-multilingual-MiniLM | 384 | campo `text` completo | ninguno |
+            | `bm25_full_text` | BM25 (léxico) | — | campo `text` completo | — |
+            | `gemini_v2_title` *(opcional)* | gemini-embedding-2 (API) | 768 | título + marca + color | roles `query`/`title\|text` |
+
+            La última fila es el proveedor API visto en la sesión 01: el código
+            está preparado (`make embeddings` la construye automáticamente si
+            existe `GEMINI_API_KEY` en `.env`) pero **no forma parte del recorrido
+            evaluado** — el enunciado exige que el corrector no herede costes ni
+            credenciales, y un modelo servido por API no permite congelar los
+            embeddings con checksums reproducibles (el proveedor puede cambiar o
+            retirar el modelo, como ya pasó con `gemini-embedding-001`).
 
             Saneado común: los valores vacíos son información ausente y **se omiten**
             (nunca se codifica la cadena `"nan"`); si `text` está vacío se recompone
@@ -138,16 +153,22 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            Tres lecturas, en orden de importancia:
+            Cuatro lecturas, en orden de importancia:
 
-            1. **La composición manda**: mismo modelo, y `title_brand_color` supera a
-               `full_text` en las tres métricas. El texto sucio no es gratis.
-            2. **El entrenamiento de recuperación manda más que la dimensión**: MiniLM
-               (384d, como E5) se hunde sin prefijos `query:`/`passage:` ni objetivo de
-               recuperación.
-            3. **BM25 no desaparece**: gana por poco en nDCG y pierde en recall y MRR.
-               La ventaja densa está en el emparejamiento por intención, no en el
-               orden fino de lo ya encontrado léxicamente.
+            1. **La composición manda**: mismo modelo (e5-small), y
+               `title_brand_color` supera a `full_text` en las tres métricas. El
+               texto sucio no es gratis.
+            2. **El objetivo de entrenamiento manda más que la dimensión**: MiniLM
+               (384d, como e5-small) se hunde sin prefijos `query:`/`passage:` ni
+               objetivo de recuperación.
+            3. **La capacidad paga, una vez arreglada la composición**: e5-base
+               sobre el mismo texto ganador añade +0.008 nDCG, +0.025 recall y
+               +0.094 MRR sobre e5-small. Es la mejora más barata de todas: mismo
+               contrato, mismo pipeline, solo más modelo.
+            4. **BM25 no desaparece**: empata en nDCG con la familia E5 y pierde
+               con claridad en recall y MRR. La ventaja densa está en el
+               emparejamiento por intención, no en el orden fino de lo ya
+               encontrado léxicamente.
             """
         ),
         code(
@@ -166,15 +187,15 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            El desglose por consulta evita conclusiones de trazo grueso:
-            `e5_small_title` no gana en todas partes (33633 es mala para todos — el
-            notebook 05 la disecciona — y BM25 la supera en nDCG en 13357, 28703 y
-            38249). Los derrumbes a cero solo los sufren `e5_small_full` (una
-            consulta) y `minilm_full` (tres); BM25 tampoco se hunde, pero paga su
-            dependencia léxica donde más duele en descubrimiento: en el **MRR**,
-            `e5_small_title` pone un resultado exacto en primera posición en 5 de 8
-            consultas frente a 4 de BM25, y en 13357 y 18868 la diferencia es 1.0
-            frente a 0.167 y 0.5.
+            El desglose por consulta evita conclusiones de trazo grueso: la
+            familia E5 no gana en todas partes (33633 es mala para todos — el
+            notebook 05 la disecciona — y BM25 supera a los densos en nDCG en
+            13357, 28703 y 38249). Los derrumbes a cero solo los sufren `e5_small_full`
+            (una consulta) y `minilm_full` (tres); BM25 tampoco se hunde, pero
+            paga su dependencia léxica donde más duele en descubrimiento: en el
+            **MRR**, `e5_base_title` pone un resultado exacto en primera posición
+            en 6 de 8 consultas frente a 4 de BM25, y en 13357 y 18868 la
+            diferencia es 1.0 frente a 0.167 y 0.5.
             """
         ),
         markdown(
@@ -235,14 +256,41 @@ def build_cells() -> list[NotebookNode]:
             recogen como MRR (primera satisfacción): el usuario del buscador ve el
             primer resultado, no el cuarto.
 
+            ## ¿Por qué estos candidatos y no otros?
+
+            La rejilla no es un zoo de modelos: cada candidato responde una
+            pregunta (¿qué texto?, ¿qué objetivo de entrenamiento?, ¿cuánta
+            capacidad?), porque el enunciado advierte que *cambiar solo el nombre
+            del modelo sin analizar el resultado no constituye un experimento*.
+            Los descartes también tienen motivo:
+
+            - **APIs comerciales (OpenAI, Cohere, Gemini)** — vistas en la sesión
+              01 — quedan fuera del recorrido evaluado por las reglas operativas
+              del enunciado (sin credenciales en el repo, el corrector no hereda
+              costes) y porque rompen la reproducibilidad bit a bit del manifiesto
+              de embeddings. Gemini Embedding 2 queda **preparado** como
+              experimento opcional (`gemini_v2_title`, se activa con
+              `GEMINI_API_KEY`).
+            - **Modelos más grandes aún (e5-large, bge-m3, GTE…)**: candidatos
+              legítimos para una segunda iteración; a esta escala el cuello de
+              botella demostrado era la composición y los juicios, y e5-base ya
+              captura la mayor parte de la ganancia de capacidad con coste local
+              trivial.
+            - **Modelos solo-español**: hay pocos afinados para *recuperación*
+              mantenidos, y los E5 multilingües los superan en benchmarks de
+              retrieval además de tolerar el ruido en inglés del catálogo.
+
             ## Decisión
 
-            **`e5_small_title`** queda fijada en `config/run_config.yaml` como
-            configuración de la ejecución final: multilingual-e5-small, título+marca+
-            color, prefijos `query:`/`passage:`, L2-normalización y métrica coseno.
-            El manifiesto de embeddings (`data/embeddings/e5_small_title/embedding_metadata.json`)
-            encadena checksums SHA-256 de entradas y salidas para que el experimento
-            sea auditable.
+            **`e5_base_title`** queda fijada en `config/run_config.yaml` como
+            configuración de la ejecución final: multilingual-e5-base (768d),
+            título+marca+color, prefijos `query:`/`passage:`, L2-normalización y
+            métrica coseno. El coste del salto desde e5-small es asumible
+            (embeddings 6 s con GPU, p50 de búsqueda ~2.7 ms frente a ~2.3 ms) y
+            compra +0.094 de MRR. El manifiesto de embeddings
+            (`data/embeddings/e5_base_title/embedding_metadata.json`) encadena
+            checksums SHA-256 de entradas y salidas para que el experimento sea
+            auditable.
 
             → Continúa en `actividad_02_indice_y_bbdd.ipynb`.
             """

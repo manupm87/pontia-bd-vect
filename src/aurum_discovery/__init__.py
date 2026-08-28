@@ -48,9 +48,11 @@ from .embeddings import (
     EmbeddingSet,
     compose_document_text,
     encode_texts,
+    encode_texts_gemini,
     get_configuration,
     load_embedding_set,
     load_encoder,
+    load_gemini_client,
 )
 from .evaluation import (
     ESCI_GAINS,
@@ -116,6 +118,7 @@ __all__ = [
     "compose_document_text",
     "confusion_metrics",
     "encode_texts",
+    "encode_texts_gemini",
     "evaluate_query",
     "gains_for_query",
     "get_configuration",
@@ -128,6 +131,7 @@ __all__ = [
     "load_encoder",
     "load_evaluation_queries",
     "load_filtered_queries",
+    "load_gemini_client",
     "load_incoming_products",
     "load_manifest",
     "load_run_config",

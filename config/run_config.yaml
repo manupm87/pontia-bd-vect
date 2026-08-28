@@ -7,7 +7,7 @@ random_seed: 42
 embedding:
   # Configuración ganadora de los experimentos de desarrollo (ver
   # .artifacts/experimentos/registro_experimentos.json y el informe).
-  configuration: e5_small_title
+  configuration: e5_base_title
 
 collection:
   distance: cosine
@@ -36,5 +36,5 @@ latency:
 duplicates:
   # Umbrales calibrados sobre altas_desarrollo.csv (ver
   # .artifacts/duplicados/calibracion.json). No se ajustan con la evaluación.
-  score_threshold: 0.955
+  score_threshold: 0.937
   margin_threshold: 0.0

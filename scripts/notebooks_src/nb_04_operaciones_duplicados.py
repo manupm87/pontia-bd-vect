@@ -200,21 +200,22 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            Los 7 duplicados puntúan en [0.980, 1.000] y los 7 no duplicados en
-            [0.883, 0.931]: **cualquier umbral de score dentro del hueco separa
+            Los 7 duplicados puntúan en [0.974, 1.000] y los 7 no duplicados en
+            [0.870, 0.899]: **cualquier umbral de score dentro del hueco separa
             perfectamente** el desarrollo (con margen exigido 0). La rejilla explora
             104 combinaciones de umbral × margen y deja dos lecciones:
 
             - Sobre el **score**, todo umbral en el hueco alcanza F1=1.0. Elegir el
-              extremo superior que devuelve la rejilla (0.9797) sería pegarse al
+              extremo superior que devuelve la rejilla (0.9734) sería pegarse al
               duplicado más débil, así que la configuración final fija un valor
-              centrado (**0.955**, criterio *max-margin*: maximizar la distancia de
-              la frontera al ejemplo más cercano de cada clase, la misma idea que
-              hace robustas a las máquinas de vectores soporte).
+              centrado (**0.937**, punto medio 0.9365; criterio *max-margin*:
+              maximizar la distancia de la frontera al ejemplo más cercano de cada
+              clase, la misma idea que hace robustas a las máquinas de vectores
+              soporte).
             - Sobre el **margen**, la rejilla lo descarta activamente: exigir margen
               ≥ 0.005 ya rompe la separación perfecta, porque hay duplicados reales
               casi empatados con un segundo candidato (DEV-DUP-001 gana a su
-              siguiente vecino por solo 0.003 — el catálogo contiene productos
+              siguiente vecino por solo 0.002 — el catálogo contiene productos
               legítimamente casi idénticos entre sí). El margen queda registrado
               como evidencia por caso, pero con umbral 0: no filtra.
 
@@ -255,8 +256,8 @@ def build_cells() -> list[NotebookNode]:
             una ficha legítima en revisión humana: coste visible, acotado y reversible.
             Un FN publica un duplicado: fragmenta reseñas y stock y degrada el propio
             buscador — coste mayor y silencioso. En desarrollo no hay ni unos ni
-            otros; el caso a vigilar es `DEV-NEW-007` (no duplicado, score 0.931, a
-            0.024 del umbral): productos casi idénticos de catálogo legítimo son el
+            otros; el caso a vigilar es `DEV-NEW-007` (no duplicado, score 0.899, a
+            0.038 del umbral): productos casi idénticos de catálogo legítimo son el
             modo de fallo natural de esta regla al crecer el catálogo.
 
             ## Decisión sobre el conjunto ciego
@@ -298,7 +299,7 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            Positivos en [0.958, 1.000] y negativos en [0.883, 0.897]: la frontera
+            Positivos en [0.941, 1.000] y negativos en [0.862, 0.881]: la frontera
             aprendida en desarrollo se sostiene sin retoques — señal de que el umbral
             no está sobreajustado a los 14 casos con los que se calibró.
 

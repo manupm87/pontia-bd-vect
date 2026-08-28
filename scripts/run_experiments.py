@@ -119,9 +119,14 @@ def main() -> None:
         )
     )
 
+    skipped: list[str] = []
     for name in sorted(EMBEDDING_CONFIGURATIONS):
         dense_started = perf_counter()
-        embedding_set = load_embedding_set(name)
+        try:
+            embedding_set = load_embedding_set(name)
+        except FileNotFoundError:
+            skipped.append(name)
+            continue
         product_matrix = embedding_set.matrix(SET_PRODUCTS)
         query_matrix = embedding_set.matrix(SET_DEVELOPMENT_QUERIES)
         query_ids = embedding_set.identifiers[SET_DEVELOPMENT_QUERIES]
@@ -160,6 +165,7 @@ def main() -> None:
         "k": DEFAULT_TOP_K,
         "recall_relevant_labels": list(config.recall_relevant_labels),
         "mrr_relevant_labels": list(config.mrr_relevant_labels),
+        "skipped_configurations": skipped,
         "experiments": experiments,
     }
     path = write_json_artifact(
@@ -175,6 +181,11 @@ def main() -> None:
     table_path = ARTIFACTS_DIRECTORY / "experimentos" / "tabla_comparativa.csv"
     table.to_csv(table_path, index=False)
     print(table.to_string(index=False))
+    if skipped:
+        print(
+            f"Configuraciones omitidas (sin embeddings generados): {skipped}. "
+            "Las de proveedor API requieren su clave en .env."
+        )
     print(f"Registro escrito en {path.relative_to(PROJECT_ROOT)}")
     print(f"Tabla escrita en {table_path.relative_to(PROJECT_ROOT)}")
 

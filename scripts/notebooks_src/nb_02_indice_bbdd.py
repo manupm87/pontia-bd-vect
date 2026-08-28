@@ -69,7 +69,7 @@ def build_cells() -> list[NotebookNode]:
             | Decisión | Valor | Por qué |
             |---|---|---|
             | ID de punto | `record_id` (UUIDv5 del `product_id`) | idempotencia estructural: reingerir = upsert |
-            | Vector | 384d float32, L2-normalizado | contrato del modelo E5 |
+            | Vector | 768d float32, L2-normalizado | contrato del modelo E5 (base) |
             | Métrica | coseno | score = similitud, mayor es mejor |
             | Payload | product_id, title, brand, color, locale, catalog_version, active | filtros y presentación |
             | Índice de payload | `brand` (keyword) | filtro dentro del plan de búsqueda |
@@ -157,7 +157,7 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            ## Una medición honesta: a esta escala, el índice todavía no gana
+            ## Una medición honesta: dónde empieza a ganar el índice
 
             La misma colección responde en modo exacto (`SearchParams.exact=true`, el
             oráculo) y en modo HNSW. Medimos ambas rutas con el protocolo compartido
@@ -203,19 +203,22 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            La lectura honesta de esta medición es que **a 15.000 vectores el índice
-            no aporta ventaja de latencia** — ambas rutas responden en ~2-3 ms y el
-            HNSW puede incluso salir un pelo más lento: recorrer un grafo por capas
-            tiene un coste fijo (saltos, colas de candidatos con `ef=128`) que un
-            escaneo secuencial de 15.000×384 floats — un recorrido trivial y muy
-            amigo de la caché — todavía no amortiza. Lo que compra el índice es la
-            **curva de crecimiento**: el escaneo es $O(N)$ y se multiplica por ~67 al
-            pasar a un millón de productos, mientras que la búsqueda HNSW crece de
-            forma aproximadamente logarítmica. La decisión de indexar no se toma por
-            la foto de hoy sino por la pendiente; tenerla medida — y no supuesta — es
+            La lectura honesta de esta medición es que **este catálogo está justo en
+            la frontera donde indexar empieza a compensar** — y la frontera se mueve
+            con $N \times d$. Con la configuración anterior (384d), el escaneo
+            secuencial de 15.000×384 floats era tan barato y tan amigo de la caché
+            que empataba o incluso ganaba al grafo, cuyo coste fijo (saltos por
+            capas, cola de candidatos con `ef=128`) no se amortizaba. Al pasar a
+            768 dimensiones el coste del escaneo se duplica, el del grafo apenas
+            cambia, y el HNSW ya araña unas décimas de milisegundo al exhaustivo.
+            Lo que de verdad compra el índice es la **curva de crecimiento**: el
+            escaneo es $O(N \cdot d)$ y se multiplica por ~67 al pasar a un millón
+            de productos, mientras que la búsqueda HNSW crece de forma
+            aproximadamente logarítmica. La decisión de indexar no se toma por la
+            foto de hoy sino por la pendiente; tenerla medida — y no supuesta — es
             precisamente lo que este notebook deja registrado. El notebook 05
-            completa la figura con la otra cara: cuánta fidelidad pierde el índice a
-            cambio (ninguna, con `ef_search=128`).
+            completa la figura con la otra cara: cuánta fidelidad pierde el índice
+            a cambio (ninguna, con `ef_search=128`).
 
             ## Ingesta por lotes e idempotente
 
