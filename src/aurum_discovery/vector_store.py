@@ -164,6 +164,13 @@ class CatalogVectorStore:
         )
         return int(result.count)
 
+    def collection_info(self) -> Any:
+        """Full collection description (schema, HNSW, optimizers, payload)."""
+        return self._guarded(
+            "get_collection",
+            lambda: self._client.get_collection(self._collection_name),
+        )
+
     def wait_until_indexed(
         self, *, timeout_seconds: float = 180.0, minimum_coverage: float = 0.8
     ) -> dict[str, Any]:

@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup up down down-volumes embeddings ingest experiments evaluate search-results duplicates events pipeline metrics search notebook execute-notebook lab test test-integration lint format verify informe clean
+.PHONY: setup up down down-volumes embeddings ingest experiments evaluate sweep-ef search-results duplicates events evidence pipeline metrics search notebook execute-notebook lab test test-integration lint format verify informe clean
 
 setup:
 	bash scripts/setup.sh
@@ -25,6 +25,9 @@ experiments:
 evaluate:
 	uv run python scripts/evaluate_system.py
 
+sweep-ef:
+	uv run python scripts/sweep_ef_search.py
+
 search-results:
 	uv run python scripts/generate_search_results.py
 
@@ -35,7 +38,10 @@ duplicates:
 events:
 	uv run python scripts/apply_events.py
 
-pipeline: embeddings ingest experiments duplicates evaluate search-results events
+evidence:
+	uv run python scripts/collect_evidence.py
+
+pipeline: embeddings ingest experiments duplicates evaluate sweep-ef search-results events evidence
 
 metrics: evaluate
 

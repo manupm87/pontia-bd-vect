@@ -1,0 +1,243 @@
+{
+  "snapshot_id": "aurum-market-vector-search-evaluation-v1",
+  "embedding_configuration": "e5_small_title",
+  "collection": "aurum-market-eval-catalogo",
+  "record_count": 15000,
+  "score_kind": "similarity",
+  "higher_is_better": true,
+  "top_k": 10,
+  "per_query": [
+    {
+      "query_id": "13357",
+      "ndcg_at_10": 0.6821305944560524,
+      "recall_at_10": 0.22580645161290322,
+      "mrr_at_10": 1.0,
+      "judged_count": 40,
+      "relevant_count": 31
+    },
+    {
+      "query_id": "18868",
+      "ndcg_at_10": 0.32929972283827386,
+      "recall_at_10": 0.2222222222222222,
+      "mrr_at_10": 1.0,
+      "judged_count": 16,
+      "relevant_count": 9
+    },
+    {
+      "query_id": "28703",
+      "ndcg_at_10": 0.6652907408280683,
+      "recall_at_10": 0.15384615384615385,
+      "mrr_at_10": 1.0,
+      "judged_count": 40,
+      "relevant_count": 39
+    },
+    {
+      "query_id": "31224",
+      "ndcg_at_10": 0.3981553487351996,
+      "recall_at_10": 0.2,
+      "mrr_at_10": 0.3333333333333333,
+      "judged_count": 16,
+      "relevant_count": 15
+    },
+    {
+      "query_id": "33633",
+      "ndcg_at_10": 0.08768367130980216,
+      "recall_at_10": 0.25,
+      "mrr_at_10": 0.0,
+      "judged_count": 16,
+      "relevant_count": 4
+    },
+    {
+      "query_id": "38249",
+      "ndcg_at_10": 0.4011248950259844,
+      "recall_at_10": 0.14285714285714285,
+      "mrr_at_10": 0.25,
+      "judged_count": 40,
+      "relevant_count": 35
+    },
+    {
+      "query_id": "43240",
+      "ndcg_at_10": 0.8760168987628689,
+      "recall_at_10": 0.2571428571428571,
+      "mrr_at_10": 1.0,
+      "judged_count": 40,
+      "relevant_count": 35
+    },
+    {
+      "query_id": "61533",
+      "ndcg_at_10": 1.0,
+      "recall_at_10": 0.3333333333333333,
+      "mrr_at_10": 1.0,
+      "judged_count": 40,
+      "relevant_count": 30
+    }
+  ],
+  "ndcg_at_10": 0.5549627339945311,
+  "recall_at_10": 0.22315102012682655,
+  "mrr_at_10": 0.6979166666666666,
+  "recall_relevant_labels": [
+    "E",
+    "S"
+  ],
+  "mrr_relevant_labels": [
+    "E"
+  ],
+  "ann_fidelity": {
+    "k": 10,
+    "query_count": 20,
+    "mean_overlap": 1.0,
+    "min_overlap": 1.0,
+    "per_query": {
+      "DEV-13357": 1.0,
+      "DEV-18868": 1.0,
+      "DEV-28703": 1.0,
+      "DEV-31224": 1.0,
+      "DEV-33633": 1.0,
+      "DEV-38249": 1.0,
+      "DEV-43240": 1.0,
+      "DEV-61533": 1.0,
+      "EVAL-100455-context": 1.0,
+      "EVAL-100455-direct": 1.0,
+      "EVAL-100455-semantic": 1.0,
+      "EVAL-101352-context": 1.0,
+      "EVAL-101352-direct": 1.0,
+      "EVAL-101352-semantic": 1.0,
+      "EVAL-93437-context": 1.0,
+      "EVAL-93437-direct": 1.0,
+      "EVAL-93437-semantic": 1.0,
+      "EVAL-96202-context": 1.0,
+      "EVAL-96202-direct": 1.0,
+      "EVAL-96202-semantic": 1.0
+    },
+    "oracle": "misma colección con búsqueda exhaustiva (SearchParams.exact)"
+  },
+  "latency": {
+    "p50_ms": 2.319990500836866,
+    "p95_ms": 3.0994883985840724,
+    "warmup": 5,
+    "repeats": 30,
+    "query_count": 12
+  },
+  "duplicates": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "score_threshold": 0.955,
+    "margin_threshold": 0.0
+  },
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "qdrant_client": "1.19.0",
+    "qdrant_url": "http://localhost:6333",
+    "hnsw": {
+      "m": 24,
+      "ef_construct": 120
+    },
+    "ef_search": 128
+  },
+  "notes": [
+    "Las latencias describen esta ejecución local y no comparan proveedores.",
+    "development_rankings conserva los IDs recuperados por consulta."
+  ],
+  "generated_at": "2026-08-28T21:08:20.203418+00:00",
+  "schema_version": "1.0",
+  "development_rankings": {
+    "DEV-13357": [
+      "B015FMZ4MQ",
+      "B091BB18QV",
+      "B091BWS8VF",
+      "B07S852KTG",
+      "B01MV80F5C",
+      "B07S946NHS",
+      "B00L2IQYWW",
+      "B07S37RMMP",
+      "B00YMT0IKW",
+      "B07S4CB9VT"
+    ],
+    "DEV-18868": [
+      "B07H97VGBP",
+      "B079FTG3Z7",
+      "B07JZ62WYD",
+      "B07PL1648Y",
+      "B079FXFQ7C",
+      "B07S8V24XR",
+      "B0714N7942",
+      "B07XBNRNZQ",
+      "B07VQJFQBD",
+      "B07GJNCV8R"
+    ],
+    "DEV-28703": [
+      "B083BM815K",
+      "B08FC69VMH",
+      "B092JB6FPY",
+      "B07B94G52C",
+      "B08822GWJV",
+      "B08M3LJX5H",
+      "B08HZ3YBPH",
+      "B08PFJXSW5",
+      "B077NHFMM4",
+      "B00O6T7N2O"
+    ],
+    "DEV-31224": [
+      "B006Q8VAL8",
+      "B01NARXQ2E",
+      "B01MU31H1P",
+      "B07HP6XKC6",
+      "B07CQ5RQX9",
+      "B08MQF68VD",
+      "B083SZZ5KR",
+      "B091284CCX",
+      "B0921VFJ2C",
+      "B08BYKQLZC"
+    ],
+    "DEV-33633": [
+      "B004RZL7UG",
+      "B07NY97H69",
+      "B00X1ASPGM",
+      "B000GWJ9PY",
+      "B07X9XZNQS",
+      "B07Z87ZBFZ",
+      "B0161N7XAO",
+      "B002OE385O",
+      "B07XD9D2HB",
+      "B07TG2VB9F"
+    ],
+    "DEV-38249": [
+      "1683258703",
+      "B08KSL2NGZ",
+      "B098GX2DDJ",
+      "B091T4NPSM",
+      "B08BWTFMV4",
+      "B09BHVMCC3",
+      "B09B1RP7G1",
+      "B094FWB6J5",
+      "B07TJKBT7T",
+      "B071X52JKQ"
+    ],
+    "DEV-43240": [
+      "B08LZYZ1FJ",
+      "B092VN3C4H",
+      "B08DKWQD8R",
+      "B08G42DW2L",
+      "B08MQ42Z6P",
+      "B09CTXLHZS",
+      "B08MJBJWLP",
+      "B08FT5QDWJ",
+      "8499501710",
+      "B08KPYKNWZ"
+    ],
+    "DEV-61533": [
+      "B0837V9T36",
+      "B01M31TMH8",
+      "B084BPS1LS",
+      "B01I5JVBZK",
+      "B07BXN33GQ",
+      "B07QB8484Y",
+      "B00WGOY7O8",
+      "B085WY78SG",
+      "B07QB8484X",
+      "B01MSTVEZN"
+    ]
+  }
+}

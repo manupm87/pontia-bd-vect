@@ -1,0 +1,120 @@
+{
+  "queries": 20,
+  "k": 10,
+  "warmup": 5,
+  "repeats_latency": 10,
+  "final_config": {
+    "collection": "aurum-market-eval-catalogo",
+    "hnsw": {
+      "m": 24,
+      "ef_construct": 120
+    },
+    "sweep": [
+      {
+        "ef_search": 10,
+        "mean_overlap_at_10": 1.0,
+        "min_overlap_at_10": 1.0,
+        "worst_query_id": "DEV-13357",
+        "p50_ms": 2.368,
+        "p95_ms": 3.091
+      },
+      {
+        "ef_search": 16,
+        "mean_overlap_at_10": 1.0,
+        "min_overlap_at_10": 1.0,
+        "worst_query_id": "DEV-13357",
+        "p50_ms": 2.332,
+        "p95_ms": 3.211
+      },
+      {
+        "ef_search": 24,
+        "mean_overlap_at_10": 1.0,
+        "min_overlap_at_10": 1.0,
+        "worst_query_id": "DEV-13357",
+        "p50_ms": 2.332,
+        "p95_ms": 3.592
+      },
+      {
+        "ef_search": 32,
+        "mean_overlap_at_10": 1.0,
+        "min_overlap_at_10": 1.0,
+        "worst_query_id": "DEV-13357",
+        "p50_ms": 2.365,
+        "p95_ms": 3.111
+      },
+      {
+        "ef_search": 64,
+        "mean_overlap_at_10": 1.0,
+        "min_overlap_at_10": 1.0,
+        "worst_query_id": "DEV-13357",
+        "p50_ms": 2.326,
+        "p95_ms": 3.249
+      },
+      {
+        "ef_search": 128,
+        "mean_overlap_at_10": 1.0,
+        "min_overlap_at_10": 1.0,
+        "worst_query_id": "DEV-13357",
+        "p50_ms": 2.301,
+        "p95_ms": 2.921
+      }
+    ]
+  },
+  "weak_graph": {
+    "collection": "aurum-market-eval-hnsw-debil",
+    "hnsw": {
+      "m": 4,
+      "ef_construct": 16
+    },
+    "sweep": [
+      {
+        "ef_search": 10,
+        "mean_overlap_at_10": 0.6449999999999999,
+        "min_overlap_at_10": 0.2,
+        "worst_query_id": "DEV-61533",
+        "p50_ms": 2.226,
+        "p95_ms": 2.836
+      },
+      {
+        "ef_search": 16,
+        "mean_overlap_at_10": 0.755,
+        "min_overlap_at_10": 0.2,
+        "worst_query_id": "EVAL-101352-semantic",
+        "p50_ms": 2.174,
+        "p95_ms": 2.655
+      },
+      {
+        "ef_search": 24,
+        "mean_overlap_at_10": 0.7650000000000001,
+        "min_overlap_at_10": 0.2,
+        "worst_query_id": "EVAL-101352-semantic",
+        "p50_ms": 2.331,
+        "p95_ms": 4.761
+      },
+      {
+        "ef_search": 32,
+        "mean_overlap_at_10": 0.82,
+        "min_overlap_at_10": 0.5,
+        "worst_query_id": "DEV-38249",
+        "p50_ms": 2.181,
+        "p95_ms": 2.51
+      },
+      {
+        "ef_search": 64,
+        "mean_overlap_at_10": 0.8400000000000001,
+        "min_overlap_at_10": 0.5,
+        "worst_query_id": "DEV-38249",
+        "p50_ms": 2.22,
+        "p95_ms": 2.693
+      },
+      {
+        "ef_search": 128,
+        "mean_overlap_at_10": 0.865,
+        "min_overlap_at_10": 0.5,
+        "worst_query_id": "EVAL-101352-context",
+        "p50_ms": 2.23,
+        "p95_ms": 2.757
+      }
+    ]
+  }
+}

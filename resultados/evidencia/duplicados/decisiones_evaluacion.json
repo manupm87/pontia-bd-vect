@@ -1,0 +1,457 @@
+{
+  "rule": {
+    "score_threshold": 0.955,
+    "margin_threshold": 0.0
+  },
+  "embedding_configuration": "e5_small_title",
+  "decisions": [
+    {
+      "incoming_id": "EVAL-DUP-001",
+      "decision": {
+        "incoming_id": "EVAL-DUP-001",
+        "predicted_duplicate": true,
+        "matched_product_id": "B081JP8CC6",
+        "score": 0.99351114
+      },
+      "margin": 0.10143988999999998,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "096e4fea-09d7-54de-b2a4-3e11a4007cfc",
+          "product_id": "B081JP8CC6",
+          "title": "Joyfeel Buy Bolsa para portátil de 15,6 pulgadas, impermeable, impermeable, para portátil, de negocios, multifuncional, color rosa",
+          "brand": "Joyfeel buy",
+          "native_score": 0.99351114,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "af62ddae-6309-5913-8ff1-9b5ffa55ed4f",
+          "product_id": "B07RXTFJ3H",
+          "title": "LEUYUAN Bolsa de Aseo de Viaje, Impermeable, con Cremallera",
+          "brand": "LEUYUAN",
+          "native_score": 0.89207125,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-DUP-002",
+      "decision": {
+        "incoming_id": "EVAL-DUP-002",
+        "predicted_duplicate": true,
+        "matched_product_id": "B07GWRF23V",
+        "score": 0.9761647
+      },
+      "margin": 0.07292080000000001,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "addd4d10-3065-535a-b7dc-8191a730c472",
+          "product_id": "B07GWRF23V",
+          "title": "Sudaderas Capucha para Mujer, BBestseller Suéter de Doble Capa de Lana Polar Top Cardigan Tejido Sudaderas para Mujer Blusa Camiseta Tops Otoño e Invierno",
+          "brand": "BBestseller-Tops de mujer",
+          "native_score": 0.9761647,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "45207c6b-2f3d-52e9-b3a6-d118018f42ca",
+          "product_id": "B07WJZFDYD",
+          "title": "Sudaderas con Capucha Mujer,Otoño Invierno Sudaderas Estampada para Mujer Casual Mujer Chandal con Capucha de Manga Larga Moda Sudadera Chaquetas Abrigos Pullover Camisetas Tops Calle Jersey Deporte",
+          "brand": "FELZ",
+          "native_score": 0.9032439,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-DUP-003",
+      "decision": {
+        "incoming_id": "EVAL-DUP-003",
+        "predicted_duplicate": true,
+        "matched_product_id": "B07S7B3SN2",
+        "score": 0.999439
+      },
+      "margin": 0.11399039999999994,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "1202c20e-88eb-58d9-9247-fa1d3fd0aef2",
+          "product_id": "B07S7B3SN2",
+          "title": "HANEU Motocicleta Amortiguador Anti-robo de bloqueo para Yamaha Xmax 125, 250, 300, 400 Nmax 125 155 Aerox PCX 125 de 155 Forza 300 (Oro)",
+          "brand": "HANEU",
+          "native_score": 0.999439,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "880d6f66-9df4-5070-83bf-8cf126fc4b4e",
+          "product_id": "B00I9EY60Y",
+          "title": "Amortiguador con suspensión para bicicleta BTT (varios tamaños)",
+          "brand": "EXA FORM",
+          "native_score": 0.8854486,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-DUP-004",
+      "decision": {
+        "incoming_id": "EVAL-DUP-004",
+        "predicted_duplicate": true,
+        "matched_product_id": "8417441271",
+        "score": 0.9581778
+      },
+      "margin": 0.04908703999999997,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "5a0bbf29-4e42-5d81-b512-6048b2f5acc1",
+          "product_id": "8417441271",
+          "title": "Batman: El contraataque del Caballero Oscuro (Tercera edición) (Grandes autores Batman: Frank Miller)",
+          "brand": "Ecc Ediciones",
+          "native_score": 0.9581778,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "233115dd-10ee-5f32-85b6-c6c56f0b47ac",
+          "product_id": "8417063064",
+          "title": "Batman y Superman - Colección Novelas Gráficas 19: Batman: ¿Qué le sucedió al Cruzado de la Capa?",
+          "brand": "ECC Ediciones",
+          "native_score": 0.90909076,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-DUP-005",
+      "decision": {
+        "incoming_id": "EVAL-DUP-005",
+        "predicted_duplicate": true,
+        "matched_product_id": "B00JOH9FRO",
+        "score": 0.97648287
+      },
+      "margin": 0.08560634,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "e8869496-d4ee-59b7-821b-d4141a126312",
+          "product_id": "B00JOH9FRO",
+          "title": "Revlon Professional UniqOne Champú y Acondicionador 1000 ml",
+          "brand": "REVLON PROFESSIONAL",
+          "native_score": 0.97648287,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "ea51401f-52bd-5ee7-8a32-8df82dd62ad5",
+          "product_id": "B004WG4CQ6",
+          "title": "Química Alemana QA01- Endurecedor de Uñas, 14 ml",
+          "brand": "Química Alemana",
+          "native_score": 0.89087653,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-DUP-006",
+      "decision": {
+        "incoming_id": "EVAL-DUP-006",
+        "predicted_duplicate": true,
+        "matched_product_id": "B01JADTEKE",
+        "score": 1.0
+      },
+      "margin": 0.05969477000000001,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "b74c55ca-eb85-5964-83ba-d79812b95e30",
+          "product_id": "B01JADTEKE",
+          "title": "oodji Ultra Hombre Pantalones de Algodón con 5 Bolsillos, Azul, 40",
+          "brand": "oodji Ultra",
+          "native_score": 1.0,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "495ae776-d7f4-585c-b610-dcba4b5639f3",
+          "product_id": "B01M6YTQAM",
+          "title": "oodji Ultra Hombre Pantalones Chinos con Cinturón, Azul, 38",
+          "brand": "oodji Ultra",
+          "native_score": 0.94030523,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-DUP-007",
+      "decision": {
+        "incoming_id": "EVAL-DUP-007",
+        "predicted_duplicate": true,
+        "matched_product_id": "B01M0G3WP0",
+        "score": 0.9948771
+      },
+      "margin": 0.09844419999999998,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "e1f0913e-2abb-55e6-a1d9-7e9b321d3cba",
+          "product_id": "B01M0G3WP0",
+          "title": "s.Oliver 38899953635 Cinturón, negro, 100 para Mujer",
+          "brand": "s.Oliver",
+          "native_score": 0.9948771,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "c5cbeef0-4d5b-5068-8b1b-83960db047cc",
+          "product_id": "B07KJT8Y9Y",
+          "title": "Esprit Octavia Cinturón, Negro (Black 001), 75 para Mujer",
+          "brand": "Esprit",
+          "native_score": 0.8964329,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-001",
+      "decision": {
+        "incoming_id": "EVAL-NEW-001",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.8834402
+      },
+      "margin": 0.001541899999999985,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "db8cb433-e3c1-518f-a6d0-b0c9b99643d3",
+          "product_id": "8408166352",
+          "title": "Colorear ¡es fácil! Perro: Con adhesivos",
+          "brand": "Yoyo",
+          "native_score": 0.8834402,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "9294679c-5ea4-5f7a-95bf-db208290dba2",
+          "product_id": "B07HMYPW1N",
+          "title": "Balancín plegable Rojo de Amazon Basics",
+          "brand": "Amazon Basics",
+          "native_score": 0.8818983,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-002",
+      "decision": {
+        "incoming_id": "EVAL-NEW-002",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.8969685
+      },
+      "margin": 0.004025499999999904,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "99b32e43-118a-59b8-a601-5a9331609602",
+          "product_id": "B01ARBSND2",
+          "title": "BUBM Estuche para Electrónicos Organizador de Accesesorio Bolsa de Viaje para Cables Cargador,Gadget de Memoria USB, Negro",
+          "brand": "BUBM",
+          "native_score": 0.8969685,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "82ab5caa-555d-5404-a1a9-78e91536a637",
+          "product_id": "B08QHCNKQF",
+          "title": "Vestigia® - Cable de Carga de Goma de la Tapa del Orificio para Ninebot ES1 ES2 ES4 - Segway Scooter eléctrico - Puerto Cargador de Repuesto - Piezas de Repuesto para E-Scooter",
+          "brand": "Vestigia",
+          "native_score": 0.892943,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-003",
+      "decision": {
+        "incoming_id": "EVAL-NEW-003",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.89507955
+      },
+      "margin": 0.005855319999999997,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "d95c0cf2-932c-5717-8660-d2e202ec19db",
+          "product_id": "B00VG85DA2",
+          "title": "Lupex Shop Fundas para asiento de coche, color gris y negro",
+          "brand": "Lupex Shop",
+          "native_score": 0.89507955,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "f140455a-2f6b-5ec9-96ee-8ad42e54bfdc",
+          "product_id": "B074J9G535",
+          "title": "Winomo - 1&nbsp;par de llaveros de coche para parejas, piel",
+          "brand": "WINOMO",
+          "native_score": 0.88922423,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-004",
+      "decision": {
+        "incoming_id": "EVAL-NEW-004",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.88490146
+      },
+      "margin": 0.002019960000000043,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "fba6a192-7595-52f0-8b2e-8474d0a4cf73",
+          "product_id": "B07XH4GZXH",
+          "title": "Carta de colores de gel de uñas Carta de visualización de esmalte de uñas",
+          "brand": "Xinwoer",
+          "native_score": 0.88490146,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "db8cb433-e3c1-518f-a6d0-b0c9b99643d3",
+          "product_id": "8408166352",
+          "title": "Colorear ¡es fácil! Perro: Con adhesivos",
+          "brand": "Yoyo",
+          "native_score": 0.8828815,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-005",
+      "decision": {
+        "incoming_id": "EVAL-NEW-005",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.8951696
+      },
+      "margin": 0.003766200000000053,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "a4fb3b9d-f10e-568c-b0cb-b40d3e32b534",
+          "product_id": "B01M0PGJ9W",
+          "title": "Solac Cb8981 - Bolsa de Agua Térmica Caldea, 360 W, Ergonómica, 120 Minutos de Autonomía, Conector Extraíble, Tacto Suave, Tejido Transpirable, Color Azul Oscuro",
+          "brand": "Solac",
+          "native_score": 0.8951696,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "30807478-fe00-53cc-9846-545015fb37f2",
+          "product_id": "B000SHVZXQ",
+          "title": "Pentel Superb - Bolígrafo de bola azul (12 unidades)",
+          "brand": "Pentel",
+          "native_score": 0.8914034,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-006",
+      "decision": {
+        "incoming_id": "EVAL-NEW-006",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.8836489
+      },
+      "margin": 0.0032858499999999236,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "c0be1841-ed9b-54b5-9185-b541c20cee72",
+          "product_id": "B07BS5QN37",
+          "title": "A",
+          "brand": "Elesong",
+          "native_score": 0.8836489,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "02d73af1-44ca-50e5-a00b-b6f42cf64a9d",
+          "product_id": "B08YN9Q4Q3",
+          "title": "ecoYoga Cronómetro con Cuenta Regresiva",
+          "brand": "ecoYoga",
+          "native_score": 0.88036305,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "EVAL-NEW-007",
+      "decision": {
+        "incoming_id": "EVAL-NEW-007",
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.8918791
+      },
+      "margin": 0.0009661000000000808,
+      "candidates": [
+        {
+          "rank": 1,
+          "record_id": "bd247d54-18b2-50a6-9f3d-f2f4628c0812",
+          "product_id": "8497932145",
+          "title": "Diario de una ninfómana (Best Seller)",
+          "brand": "Debolsillo",
+          "native_score": 0.8918791,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "a2eec8af-83a9-554b-b276-ce57d6fd1c97",
+          "product_id": "B00DN276FY",
+          "title": "Dispensador de jabón recargable Aitana de plástico AC70000, blanco",
+          "brand": "Jofel",
+          "native_score": 0.890913,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    }
+  ]
+}

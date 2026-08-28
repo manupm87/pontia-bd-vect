@@ -101,18 +101,21 @@ def main() -> None:
         operations, warmup=config.latency_warmup, repeats=config.latency_repeats
     )
 
-    duplicates_block: dict[str, object] = {}
     calibration_path = ARTIFACTS_DIRECTORY / "duplicados" / "calibracion.json"
-    if calibration_path.exists():
-        calibration = json.loads(calibration_path.read_text(encoding="utf-8"))
-        configured = calibration["configured_rule"]
-        duplicates_block = {
-            "precision": configured["precision"],
-            "recall": configured["recall"],
-            "f1": configured["f1"],
-            "score_threshold": config.duplicate_score_threshold,
-            "margin_threshold": config.duplicate_margin_threshold,
-        }
+    if not calibration_path.exists():
+        raise FileNotFoundError(
+            "Falta la calibración de duplicados (mínimo exigido en las métricas). "
+            "Ejecuta `make duplicates` antes de `make metrics`."
+        )
+    calibration = json.loads(calibration_path.read_text(encoding="utf-8"))
+    configured = calibration["configured_rule"]
+    duplicates_block: dict[str, object] = {
+        "precision": configured["precision"],
+        "recall": configured["recall"],
+        "f1": configured["f1"],
+        "score_threshold": config.duplicate_score_threshold,
+        "margin_threshold": config.duplicate_margin_threshold,
+    }
 
     run = EvaluationRun(
         snapshot_id=config.snapshot_id,
@@ -168,6 +171,7 @@ def main() -> None:
             "repeats": config.latency_repeats,
             "query_count": latency.query_count,
         },
+        "environment": run.environment,
     }
     metrics_path = write_json_artifact(
         metrics, RESULTS_DIRECTORY / "metricas_desarrollo.json"

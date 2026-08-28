@@ -88,6 +88,45 @@ def apply_event_pass(
     return outcomes
 
 
+def verify_final_state(
+    store: CatalogVectorStore, events: pd.DataFrame
+) -> dict[str, object]:
+    """Verify every event's final state by ID, not just the total count.
+
+    The last event per record wins: each UPSERT must be readable with its
+    delivered catalog_version and title, and each DELETE must be gone.
+    """
+    final_events = events.drop_duplicates("record_id", keep="last")
+    verified_upserts = verified_deletes = 0
+    for _, event in final_events.iterrows():
+        payload = store.retrieve(event["record_id"])
+        if event["operation"] == "UPSERT":
+            if payload is None:
+                raise RuntimeError(
+                    f"El evento {event['event_id']} no es legible tras aplicarse."
+                )
+            if (
+                int(str(payload["catalog_version"])) != int(event["catalog_version"])
+                or payload["title"] != event["title"]
+            ):
+                raise RuntimeError(
+                    f"El estado de {event['event_id']} no coincide con el evento: "
+                    f"{payload!r}."
+                )
+            verified_upserts += 1
+        else:
+            if payload is not None:
+                raise RuntimeError(
+                    f"La eliminación {event['event_id']} sigue siendo legible."
+                )
+            verified_deletes += 1
+    return {
+        "records_verified_by_id": len(final_events),
+        "upserts_with_expected_state": verified_upserts,
+        "deletes_not_retrievable": verified_deletes,
+    }
+
+
 def check_visibility(
     store: CatalogVectorStore,
     events: pd.DataFrame,
@@ -214,6 +253,7 @@ def main() -> None:
             f"Recuento inesperado tras los eventos: {count_after_first} y "
             f"{count_after_second} frente a {expected_count} esperados."
         )
+    final_state_checks = verify_final_state(store, events)
     visibility = check_visibility(store, events, catalog, embedding_set)
 
     report = {
@@ -224,6 +264,7 @@ def main() -> None:
         "count_after_first_pass": count_after_first,
         "count_after_second_pass": count_after_second,
         "idempotent": count_after_first == count_after_second == expected_count,
+        "final_state_checks": final_state_checks,
         "first_pass": first_pass,
         "second_pass_elapsed_ms": [outcome["elapsed_ms"] for outcome in second_pass],
         "visibility": visibility,

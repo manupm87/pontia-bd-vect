@@ -1,0 +1,737 @@
+{
+  "generated_at": "2026-08-28T19:27:34.162030+00:00",
+  "k": 10,
+  "recall_relevant_labels": [
+    "E",
+    "S"
+  ],
+  "mrr_relevant_labels": [
+    "E"
+  ],
+  "experiments": [
+    {
+      "experiment": "bm25_full_text",
+      "kind": "lexical_baseline",
+      "parameters": {
+        "k1": 1.5,
+        "b": 0.75
+      },
+      "seconds": 2.4,
+      "metrics": {
+        "ndcg_at_10": 0.5575925803958484,
+        "recall_at_10": 0.18726416952223401,
+        "mrr_at_10": 0.6458333333333333
+      },
+      "per_query": [
+        {
+          "query_id": "13357",
+          "ndcg_at_10": 0.729642167154697,
+          "recall_at_10": 0.25806451612903225,
+          "mrr_at_10": 0.16666666666666666,
+          "judged_count": 40,
+          "relevant_count": 31
+        },
+        {
+          "query_id": "18868",
+          "ndcg_at_10": 0.155823744736126,
+          "recall_at_10": 0.1111111111111111,
+          "mrr_at_10": 0.5,
+          "judged_count": 16,
+          "relevant_count": 9
+        },
+        {
+          "query_id": "28703",
+          "ndcg_at_10": 0.7951657524814091,
+          "recall_at_10": 0.20512820512820512,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 39
+        },
+        {
+          "query_id": "31224",
+          "ndcg_at_10": 0.23230120691461892,
+          "recall_at_10": 0.13333333333333333,
+          "mrr_at_10": 0.5,
+          "judged_count": 16,
+          "relevant_count": 15
+        },
+        {
+          "query_id": "33633",
+          "ndcg_at_10": 0.04209923526420769,
+          "recall_at_10": 0.0,
+          "mrr_at_10": 0.0,
+          "judged_count": 16,
+          "relevant_count": 4
+        },
+        {
+          "query_id": "38249",
+          "ndcg_at_10": 0.6964894245341995,
+          "recall_at_10": 0.2,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "43240",
+          "ndcg_at_10": 0.809219112081529,
+          "recall_at_10": 0.2571428571428571,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "61533",
+          "ndcg_at_10": 1.0,
+          "recall_at_10": 0.3333333333333333,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 30
+        }
+      ],
+      "retrieved_ids": {
+        "DEV-13357": [
+          "B093QP3335",
+          "B0937C9GTY",
+          "B09BW133YW",
+          "B08DTXGJJW",
+          "B06WV791ZY",
+          "B01MV80F5C",
+          "B07DBQNP1X",
+          "B091BWS8VF",
+          "B08L81WGD7",
+          "B015FMZ4MQ"
+        ],
+        "DEV-18868": [
+          "B07X9RKKRH",
+          "B07H97VGBP",
+          "B079Q8V9HG",
+          "B07VQJFQBD",
+          "B07FTNS8CR",
+          "B09HT19XR9",
+          "B07JZ62WYD",
+          "B08T9X4XT6",
+          "B079FXFQ7C",
+          "B079FTG3Z7"
+        ],
+        "DEV-28703": [
+          "B08GYFBKD4",
+          "B08SWF4FZ2",
+          "B08PFJVLGD",
+          "B07FK1M4KM",
+          "B08TX2KN7L",
+          "B08RZ19NDS",
+          "B08BJRJFF5",
+          "B08V54D9JP",
+          "B08FC69VMH",
+          "B083BM815K"
+        ],
+        "DEV-31224": [
+          "B07JLWWQZX",
+          "B07HP6XKC6",
+          "B09C23ZY58",
+          "B0797RRZY2",
+          "B00KT4MBT0",
+          "B07KKMBLRP",
+          "B07J4ZXQKB",
+          "B07XWXQ62J",
+          "B01MU31H1P",
+          "B08948W298"
+        ],
+        "DEV-33633": [
+          "B075VX8Y7Q",
+          "B09H42YXHC",
+          "B07TG2VB9F",
+          "B07WPJSVR1",
+          "B00EM9ZVAY",
+          "B0753RX9VR",
+          "B08JCX3CJP",
+          "B07JCK13L4",
+          "B0161N8LR8",
+          "B07Z8N7Z3K"
+        ],
+        "DEV-38249": [
+          "B09BHVMCC3",
+          "B09BQTS4FF",
+          "B07F6QTVK4",
+          "B082PR44HT",
+          "B00OXNEU5Q",
+          "B075CT3ZT8",
+          "B07WLWYNF3",
+          "B071X52JKQ",
+          "B08HQJQRHT",
+          "B0819M6VTF"
+        ],
+        "DEV-43240": [
+          "B08FT5QDWJ",
+          "B09CTXLHZS",
+          "B08PPFGGK3",
+          "B08GWN3GMX",
+          "B09BCW927H",
+          "B08G42DW2L",
+          "B08DKWQD8R",
+          "B08ZS57R32",
+          "B096ZQXB5P",
+          "B07DWTB3MT"
+        ],
+        "DEV-61533": [
+          "B01MSTVEZN",
+          "B07QB8484X",
+          "B01I5JVBZK",
+          "B07QB8484Y",
+          "B00WGOY7O8",
+          "B079ZYKLFD",
+          "B085WY78SG",
+          "B07FNQ3DHK",
+          "B084BPS1LS",
+          "B07BXN33GQ"
+        ]
+      }
+    },
+    {
+      "experiment": "e5_small_full",
+      "kind": "dense_exact",
+      "parameters": {
+        "model_id": "intfloat/multilingual-e5-small",
+        "composition": "full_text",
+        "document_prefix": "passage: ",
+        "query_prefix": "query: ",
+        "normalized": true,
+        "dimension": 384
+      },
+      "seconds": 0.1,
+      "metrics": {
+        "ndcg_at_10": 0.5333070150658129,
+        "recall_at_10": 0.20505730828311475,
+        "mrr_at_10": 0.5875
+      },
+      "per_query": [
+        {
+          "query_id": "13357",
+          "ndcg_at_10": 0.6278294894379945,
+          "recall_at_10": 0.22580645161290322,
+          "mrr_at_10": 0.5,
+          "judged_count": 40,
+          "relevant_count": 31
+        },
+        {
+          "query_id": "18868",
+          "ndcg_at_10": 0.3147087763301357,
+          "recall_at_10": 0.3333333333333333,
+          "mrr_at_10": 0.5,
+          "judged_count": 16,
+          "relevant_count": 9
+        },
+        {
+          "query_id": "28703",
+          "ndcg_at_10": 0.8357804136936718,
+          "recall_at_10": 0.20512820512820512,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 39
+        },
+        {
+          "query_id": "31224",
+          "ndcg_at_10": 0.43719209802327536,
+          "recall_at_10": 0.2,
+          "mrr_at_10": 1.0,
+          "judged_count": 16,
+          "relevant_count": 15
+        },
+        {
+          "query_id": "33633",
+          "ndcg_at_10": 0.0,
+          "recall_at_10": 0.0,
+          "mrr_at_10": 0.0,
+          "judged_count": 16,
+          "relevant_count": 4
+        },
+        {
+          "query_id": "38249",
+          "ndcg_at_10": 0.1487639058405727,
+          "recall_at_10": 0.05714285714285714,
+          "mrr_at_10": 0.2,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "43240",
+          "ndcg_at_10": 0.9021814372008532,
+          "recall_at_10": 0.2857142857142857,
+          "mrr_at_10": 0.5,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "61533",
+          "ndcg_at_10": 1.0,
+          "recall_at_10": 0.3333333333333333,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 30
+        }
+      ],
+      "retrieved_ids": {
+        "DEV-13357": [
+          "B091BB18QV",
+          "B015FMZ4MQ",
+          "B07S852KTG",
+          "B07S946NHS",
+          "B091BWS8VF",
+          "B00YMT0IKW",
+          "B07S37RMMP",
+          "B00L2IQYWW",
+          "B07S4CB9VT",
+          "B00YMSZDZS"
+        ],
+        "DEV-18868": [
+          "B07VQJFQBD",
+          "B0714N7942",
+          "B07XBNRNZQ",
+          "B06X9WSSLL",
+          "B079FTG3Z7",
+          "B071RN7FHT",
+          "B07PL1648Y",
+          "B00CBSC9YE",
+          "B07S8V24XR",
+          "B079FXFQ7C"
+        ],
+        "DEV-28703": [
+          "B08FC69VMH",
+          "B08GYFBKD4",
+          "B083BM815K",
+          "B00O6T7N2O",
+          "B08M3LJX5H",
+          "B08822GWJV",
+          "B08HZ3YBPH",
+          "B092JB6FPY",
+          "B08TX2KN7L",
+          "B08SWF4FZ2"
+        ],
+        "DEV-31224": [
+          "B07HP6XKC6",
+          "B006Q8VAL8",
+          "B01NARXQ2E",
+          "B07FPFLGNL",
+          "B00CES5A60",
+          "B08753P4LZ",
+          "B01MU31H1P",
+          "0130085316",
+          "B07YFFGWR5",
+          "B07CQ5RQX9"
+        ],
+        "DEV-33633": [
+          "B07TG2VB9F",
+          "B07YG1C7D8",
+          "B07JCK13L4",
+          "B0753RX9VR",
+          "B09H42YXHC",
+          "B004RZL7UG",
+          "B07HHX8TNL",
+          "B0161N7XAO",
+          "B00EM9ZVAY",
+          "B00X1ASPGM"
+        ],
+        "DEV-38249": [
+          "1683258703",
+          "B08KSL2NGZ",
+          "B098GX2DDJ",
+          "B07TJKBT7T",
+          "B08BWTFMV4",
+          "1661380700",
+          "B00000JALK",
+          "B07WGWMTCG",
+          "B06XKKSPGG",
+          "B09BHVMCC3"
+        ],
+        "DEV-43240": [
+          "B08ZS57R32",
+          "B08LYB2GP9",
+          "B08KPYKNWZ",
+          "B08MJBJWLP",
+          "B08FT5QDWJ",
+          "B09BCW927H",
+          "B08L6GSP7S",
+          "B08LZYZ1FJ",
+          "B08MQ42Z6P",
+          "B08DKWQD8R"
+        ],
+        "DEV-61533": [
+          "B01M31TMH8",
+          "B01I5JVBZK",
+          "B084BPS1LS",
+          "B01MSTVEZN",
+          "B0837V9T36",
+          "B07QB8484Y",
+          "B00WGOY7O8",
+          "B079ZYKLFD",
+          "B07FNQ3DHK",
+          "B07QB8484X"
+        ]
+      }
+    },
+    {
+      "experiment": "e5_small_title",
+      "kind": "dense_exact",
+      "parameters": {
+        "model_id": "intfloat/multilingual-e5-small",
+        "composition": "title_brand_color",
+        "document_prefix": "passage: ",
+        "query_prefix": "query: ",
+        "normalized": true,
+        "dimension": 384
+      },
+      "seconds": 0.08,
+      "metrics": {
+        "ndcg_at_10": 0.5549627339945311,
+        "recall_at_10": 0.22315102012682655,
+        "mrr_at_10": 0.6979166666666666
+      },
+      "per_query": [
+        {
+          "query_id": "13357",
+          "ndcg_at_10": 0.6821305944560524,
+          "recall_at_10": 0.22580645161290322,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 31
+        },
+        {
+          "query_id": "18868",
+          "ndcg_at_10": 0.32929972283827386,
+          "recall_at_10": 0.2222222222222222,
+          "mrr_at_10": 1.0,
+          "judged_count": 16,
+          "relevant_count": 9
+        },
+        {
+          "query_id": "28703",
+          "ndcg_at_10": 0.6652907408280683,
+          "recall_at_10": 0.15384615384615385,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 39
+        },
+        {
+          "query_id": "31224",
+          "ndcg_at_10": 0.3981553487351996,
+          "recall_at_10": 0.2,
+          "mrr_at_10": 0.3333333333333333,
+          "judged_count": 16,
+          "relevant_count": 15
+        },
+        {
+          "query_id": "33633",
+          "ndcg_at_10": 0.08768367130980216,
+          "recall_at_10": 0.25,
+          "mrr_at_10": 0.0,
+          "judged_count": 16,
+          "relevant_count": 4
+        },
+        {
+          "query_id": "38249",
+          "ndcg_at_10": 0.4011248950259844,
+          "recall_at_10": 0.14285714285714285,
+          "mrr_at_10": 0.25,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "43240",
+          "ndcg_at_10": 0.8760168987628689,
+          "recall_at_10": 0.2571428571428571,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "61533",
+          "ndcg_at_10": 1.0,
+          "recall_at_10": 0.3333333333333333,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 30
+        }
+      ],
+      "retrieved_ids": {
+        "DEV-13357": [
+          "B015FMZ4MQ",
+          "B091BB18QV",
+          "B091BWS8VF",
+          "B07S852KTG",
+          "B01MV80F5C",
+          "B07S946NHS",
+          "B00L2IQYWW",
+          "B07S37RMMP",
+          "B00YMT0IKW",
+          "B07S4CB9VT"
+        ],
+        "DEV-18868": [
+          "B07H97VGBP",
+          "B079FTG3Z7",
+          "B07JZ62WYD",
+          "B07PL1648Y",
+          "B079FXFQ7C",
+          "B07S8V24XR",
+          "B0714N7942",
+          "B07XBNRNZQ",
+          "B07VQJFQBD",
+          "B07GJNCV8R"
+        ],
+        "DEV-28703": [
+          "B083BM815K",
+          "B08FC69VMH",
+          "B092JB6FPY",
+          "B07B94G52C",
+          "B08822GWJV",
+          "B08M3LJX5H",
+          "B08HZ3YBPH",
+          "B08PFJXSW5",
+          "B077NHFMM4",
+          "B00O6T7N2O"
+        ],
+        "DEV-31224": [
+          "B006Q8VAL8",
+          "B01NARXQ2E",
+          "B01MU31H1P",
+          "B07HP6XKC6",
+          "B07CQ5RQX9",
+          "B08MQF68VD",
+          "B083SZZ5KR",
+          "B091284CCX",
+          "B0921VFJ2C",
+          "B08BYKQLZC"
+        ],
+        "DEV-33633": [
+          "B004RZL7UG",
+          "B07NY97H69",
+          "B00X1ASPGM",
+          "B000GWJ9PY",
+          "B07X9XZNQS",
+          "B07Z87ZBFZ",
+          "B0161N7XAO",
+          "B002OE385O",
+          "B07XD9D2HB",
+          "B07TG2VB9F"
+        ],
+        "DEV-38249": [
+          "1683258703",
+          "B08KSL2NGZ",
+          "B098GX2DDJ",
+          "B091T4NPSM",
+          "B08BWTFMV4",
+          "B09BHVMCC3",
+          "B09B1RP7G1",
+          "B094FWB6J5",
+          "B07TJKBT7T",
+          "B071X52JKQ"
+        ],
+        "DEV-43240": [
+          "B08LZYZ1FJ",
+          "B092VN3C4H",
+          "B08DKWQD8R",
+          "B08G42DW2L",
+          "B08MQ42Z6P",
+          "B09CTXLHZS",
+          "B08MJBJWLP",
+          "B08FT5QDWJ",
+          "8499501710",
+          "B08KPYKNWZ"
+        ],
+        "DEV-61533": [
+          "B0837V9T36",
+          "B01M31TMH8",
+          "B084BPS1LS",
+          "B01I5JVBZK",
+          "B07BXN33GQ",
+          "B07QB8484Y",
+          "B00WGOY7O8",
+          "B085WY78SG",
+          "B07QB8484X",
+          "B01MSTVEZN"
+        ]
+      }
+    },
+    {
+      "experiment": "minilm_full",
+      "kind": "dense_exact",
+      "parameters": {
+        "model_id": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "composition": "full_text",
+        "document_prefix": "",
+        "query_prefix": "",
+        "normalized": true,
+        "dimension": 384
+      },
+      "seconds": 0.08,
+      "metrics": {
+        "ndcg_at_10": 0.27334679012971985,
+        "recall_at_10": 0.09508497774626806,
+        "mrr_at_10": 0.30952380952380953
+      },
+      "per_query": [
+        {
+          "query_id": "13357",
+          "ndcg_at_10": 0.4934428018377475,
+          "recall_at_10": 0.16129032258064516,
+          "mrr_at_10": 0.0,
+          "judged_count": 40,
+          "relevant_count": 31
+        },
+        {
+          "query_id": "18868",
+          "ndcg_at_10": 0.08232493070956846,
+          "recall_at_10": 0.1111111111111111,
+          "mrr_at_10": 0.14285714285714285,
+          "judged_count": 16,
+          "relevant_count": 9
+        },
+        {
+          "query_id": "28703",
+          "ndcg_at_10": 0.3312392961638528,
+          "recall_at_10": 0.10256410256410256,
+          "mrr_at_10": 0.3333333333333333,
+          "judged_count": 40,
+          "relevant_count": 39
+        },
+        {
+          "query_id": "31224",
+          "ndcg_at_10": 0.0,
+          "recall_at_10": 0.0,
+          "mrr_at_10": 0.0,
+          "judged_count": 16,
+          "relevant_count": 15
+        },
+        {
+          "query_id": "33633",
+          "ndcg_at_10": 0.0,
+          "recall_at_10": 0.0,
+          "mrr_at_10": 0.0,
+          "judged_count": 16,
+          "relevant_count": 4
+        },
+        {
+          "query_id": "38249",
+          "ndcg_at_10": 0.0,
+          "recall_at_10": 0.0,
+          "mrr_at_10": 0.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "43240",
+          "ndcg_at_10": 0.9388633982505332,
+          "recall_at_10": 0.2857142857142857,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 35
+        },
+        {
+          "query_id": "61533",
+          "ndcg_at_10": 0.34090389407605665,
+          "recall_at_10": 0.1,
+          "mrr_at_10": 1.0,
+          "judged_count": 40,
+          "relevant_count": 30
+        }
+      ],
+      "retrieved_ids": {
+        "DEV-13357": [
+          "B07S37RMMP",
+          "B07BFFKCHC",
+          "B07S4CB9VT",
+          "B078WV3BL1",
+          "B087K9G4YP",
+          "B01GHSQUZM",
+          "B0757157MF",
+          "B006L3GG44",
+          "B007KOWP7U",
+          "B01CI8TVR4"
+        ],
+        "DEV-18868": [
+          "8493534366",
+          "B0092C3HCK",
+          "B08T9X4XT6",
+          "B01MU6Q0WA",
+          "B01M4P02RT",
+          "B07GC8B4Y2",
+          "B07H2Y8R6Y",
+          "8491782257",
+          "B07S8V24XR",
+          "B07VQJFQBD"
+        ],
+        "DEV-28703": [
+          "B07XM6HX1R",
+          "B07DFQ9RW5",
+          "B08RZ19NDS",
+          "B07T7MF7YW",
+          "B09D2VPTP7",
+          "B07XT5ZSJD",
+          "B083BM815K",
+          "B08L66P2D9",
+          "B09B25VH5V",
+          "B0087EGR7G"
+        ],
+        "DEV-31224": [
+          "B08MQF68VD",
+          "B08R7KKBMM",
+          "B01NARXQ2E",
+          "B08HQTCC86",
+          "B089MB4G2Y",
+          "B07SP9MQJ7",
+          "B08SLXP9XP",
+          "B07T2VY3Q8",
+          "B07PZCDN95",
+          "B08P3DLJ8D"
+        ],
+        "DEV-33633": [
+          "B000GWJ9PY",
+          "B07WZKX54M",
+          "B07VNQ8K8N",
+          "B012GHPWNO",
+          "B07XL9JR86",
+          "B07JLW97QY",
+          "B07H3NB8GT",
+          "B0753RX9VR",
+          "B07YCL8PZS",
+          "B07JCK13L4"
+        ],
+        "DEV-38249": [
+          "B08GYYMTLS",
+          "B095X69ZD4",
+          "B07JQ6MCZ9",
+          "8448141725",
+          "B004ERFCWG",
+          "B08Z74K623",
+          "B08M66L392",
+          "B08YNBRMJZ",
+          "B09C1WGDJR",
+          "B07C1KMSZM"
+        ],
+        "DEV-43240": [
+          "B08CXPPSX8",
+          "B08DKWQD8R",
+          "B08G42DW2L",
+          "B08GY7NPYN",
+          "B08MQ42Z6P",
+          "B08LVQPZQD",
+          "B08MSR1SJS",
+          "B08LYZLJ35",
+          "B08FT5QDWJ",
+          "B08MJBJWLP"
+        ],
+        "DEV-61533": [
+          "B084BPS1LS",
+          "B07FXXPKHB",
+          "B01K7RSOBC",
+          "B01C47Q6UE",
+          "B00RRODUFO",
+          "B0837V9T36",
+          "B08QRZWGT7",
+          "B084QXGKRS",
+          "B07654RHX9",
+          "B01M4LWO0J"
+        ]
+      }
+    }
+  ]
+}

@@ -58,7 +58,7 @@ Los embeddings se persisten en `data/embeddings/<configuración>/` con un manifi
 
 **Configuración ANN explícita.** HNSW con `m=24`, `ef_construct=120` y `ef_search=128`, los mismos parámetros trabajados en la sesión de índices, fijados en `config/run_config.yaml`.
 
-**Una lección de producción: el índice que no existía.** La primera versión funcional del sistema pasaba todas las pruebas y reportaba fidelidad ANN 1.0… porque no había índice. Qdrant solo construye el grafo HNSW cuando un segmento supera `indexing_threshold` (10–20 MB por defecto), y 15.000×384 float32 repartidos en 4 segmentos no lo alcanzan: `status=green` con `indexed_vectors_count=0`, y cada búsqueda "ANN" era en realidad un escaneo exhaustivo con `ef_search` inerte. Una revisión adversarial del código lo detectó verificándolo contra la colección viva. La corrección tiene dos partes: `optimizers_config.indexing_threshold=100` KB al crear la colección, y una verificación de arranque que no acepta consultas hasta que la colección está *green* **y** `indexed_vectors_count` cubre los puntos (esperar solo el estado verde no detecta nada, porque verde no implica indexado). Tras la corrección: 15.000/15.000 vectores indexados y las latencias bajan aproximadamente a la mitad (p50 de ~4.3 ms a ~2.1–2.4 ms). La moraleja queda en el sistema: la "verificación del estado de indexación" que exige el enunciado debe comprobar el índice, no el semáforo.
+**Una lección de producción: el índice que no existía.** La primera versión funcional del sistema pasaba todas las pruebas y reportaba fidelidad ANN 1.0… porque no había índice. Qdrant solo construye el grafo HNSW cuando un segmento supera `indexing_threshold` (10–20 MB por defecto), y 15.000×384 float32 repartidos en 4 segmentos no lo alcanzan: `status=green` con `indexed_vectors_count=0`, y cada búsqueda "ANN" era en realidad un escaneo exhaustivo con `ef_search` inerte. Una revisión adversarial del código lo detectó verificándolo contra la colección viva. La corrección tiene dos partes: `optimizers_config.indexing_threshold=100` KB al crear la colección, y una verificación tras la ingesta —previa a servir consultas del pipeline— que exige estado *green* **y** una cobertura mínima del 80 % de vectores indexados (esperar solo el estado verde no detecta nada, porque verde no implica indexado; en la ejecución final la cobertura es 15.000/15.000). Tras la corrección: 15.000/15.000 vectores indexados y las latencias bajan aproximadamente a la mitad (p50 de ~4.3 ms a ~2.1–2.4 ms). La moraleja queda en el sistema: la "verificación del estado de indexación" que exige el enunciado debe comprobar el índice, no el semáforo.
 
 **Ingesta por lotes e idempotente.** Lotes de 256 con `wait=True` y upsert por `record_id`: repetir la ingesta completa deja exactamente 15.000 registros (verificado en el informe de ingesta: `count_before=15000, count_after=15000, idempotent=true`). La ingesta completa tarda ~4 s en local y la colección puede reconstruirse desde cero con `AURUM_ALLOW_RESET=true`.
 
@@ -98,19 +98,19 @@ Todas las métricas se regeneran con un único comando (`make metrics`) y quedan
 | nDCG@10 | 0.555 | El orden del top-10 captura algo más de la mitad de la ganancia ideal. |
 | Recall@10 | 0.223 | Coherente con 10 resultados frente a conjuntos de hasta 39 relevantes. |
 | MRR@10 | 0.698 | En 5 de 8 consultas el primer resultado ya es Exact. |
-| Latencia p50 / p95 | 2.12 / 2.55 ms | 12 consultas × 30 repeticiones tras 5 de calentamiento, HNSW en local (WSL2, 8 vCPU); varía ±0.3 ms entre ejecuciones; describe esta ejecución, no compara proveedores. |
+| Latencia p50 / p95 | 2.32 / 3.10 ms | 12 consultas × 30 repeticiones tras 5 de calentamiento, HNSW en local (WSL2, 8 vCPU); varía ±0.3 ms entre ejecuciones; describe esta ejecución, no compara proveedores. |
 | Fidelidad ANN@10 | 1.000 (mín 1.000) | 20 consultas contra oráculo exacto en la misma colección (`SearchParams.exact=true`). |
 
-**La fidelidad es una medición, no una tautología.** Tras el incidente de §3, la fidelidad se valida con un barrido de `ef_search` que demuestra que el índice puede perder y cuánto:
+**La fidelidad es una medición, no una tautología.** Tras el incidente de §3, la fidelidad se valida con un barrido de `ef_search` (`make sweep-ef`) sobre dos grafos del mismo catálogo: el entregado (m=24, optimizado) y uno deliberadamente débil (m=4, ef_construct=16) donde el compromiso emerge:
 
-| ef_search | Fidelidad media@10 | Fidelidad mínima | p50 (ms) |
+| Grafo | ef_search | Fidelidad media@10 | Fidelidad mínima |
 |---|---|---|---|
-| 10 | 0.905 | 0.20 | 2.30 |
-| 16 | 0.990 | 0.90 | 2.35 |
-| 64 | 0.995 | 0.90 | 2.42 |
-| **128** | **1.000** | **1.000** | 2.41 |
+| m=24 (entregado) | 10 – 128 | **1.000** | **1.000** |
+| m=4 (débil) | 10 | 0.645 | 0.20 |
+| m=4 (débil) | 32 | 0.820 | 0.50 |
+| m=4 (débil) | 128 | 0.865 | 0.50 |
 
-A 15.000 vectores el coste de `ef_search=128` es indistinguible del de 10 (~2.3–2.4 ms), así que se compra fidelidad perfecta gratis. La consulta que cae a 0.20 con ef=10 avisa de que el margen no es infinito: al crecer el catálogo este barrido es la herramienta de re-calibración.
+Dos lecciones: el grafo entregado no pierde nada en todo el barrido (a esta escala, con un grafo bien construido, `ef_search` es margen de seguridad, no dial crítico), y un grafo mal construido **no se arregla buscando más** — con m=4 la fidelidad se estanca en ~0.87 incluso a ef=128, porque las aristas que no existen no se pueden recorrer. La calidad se decide en construcción (`m`, `ef_construct`); al crecer el catálogo este barrido es la herramienta de re-calibración.
 
 ## 8. Atribución de errores
 
@@ -122,7 +122,7 @@ Tres fallos representativos, con la capa responsable determinada por evidencia. 
 
 **Caso 3 — Representación en atributos finos: "botines marrones mujer tacon medio" (18868, nDCG 0.329).** El puesto 2 es un botín *plateado de tacón bajo* etiquetado Irrelevant: el modelo acierta la categoría pero difumina color y altura de tacón, exactamente el tipo de atributo que la similitud coseno de un modelo pequeño comprime. Además, 3 de los 10 recuperados son botines marrones plausibles sin juicio. La mitigación estructural no es cambiar de modelo sino mover atributos duros (color) a metadatos filtrables, como ya se hace con la marca.
 
-**Persistencia/consistencia:** ninguna discrepancia observada; las tres verificaciones de visibilidad de §5 convergen en el primer intento porque las escrituras usan `wait=True`.
+**Las otras dos capas, con su propia evidencia.** La capa de **índice** se demuestra provocándole una pérdida real: en el grafo débil del barrido (m=4, `ef_search=10`) el ANN pierde hasta 8 de los 10 vecinos que el oráculo recupera en una consulta, exactamente la forma de evidencia que define el enunciado; en la configuración entregada la pérdida es cero, lo que descarta el índice en los tres casos anteriores — verificado además consulta a consulta, no solo en la media (notebook 05). En **persistencia/consistencia** no se observó discrepancia alguna: las escrituras usan `wait=True`, las tres verificaciones de visibilidad de §5 convergen al primer intento y el estado final de los 24 eventos se valida registro a registro.
 
 ## 9. Decisión recomendada y evolución
 
@@ -147,11 +147,13 @@ El objetivo no era demostrar que una base vectorial devuelve algo: era saber cu�
 make setup && make up && make embeddings && make pipeline
 ```
 
-**Demo ejecutable:** `notebooks/actividad_aurum_market.ipynb` recorre cada
-decisión con el sistema vivo (datos, experimento de representación, índice,
-búsqueda con filtros, fidelidad, duplicados, mutaciones y artefactos); se
-regenera con `make notebook`, se ejecuta headless con `make execute-notebook` y
-se abre con `make lab`.
+**Notebooks de I+D (entregados ejecutados):** la serie `notebooks/actividad_00`
+a `actividad_05` justifica cada bloque de decisiones contra el sistema vivo —
+caso/datos/baseline, representación, índice y BD, recuperación y filtros,
+operaciones y duplicados, y evaluación completa con atribución de errores y el
+checklist del enunciado verificado por aserciones. Se regeneran con `make
+notebook`, se ejecutan headless con `make execute-notebook` y se abren con
+`make lab`.
 
 **Artefactos entregados:**
 
@@ -162,7 +164,8 @@ se abre con `make lab`.
 | `resultados/metricas_desarrollo.json` | nDCG/Recall/MRR@10, latencias p50/p95, fidelidad ANN, duplicados. |
 | `config/run_config.yaml` | Configuración exacta de la ejecución final. |
 | `docs/images/arquitectura.svg` | Diagrama de arquitectura. |
-| `.artifacts/` | Informes de ingesta, filtros, eventos, calibración y barrido ef (regenerables). |
+| `resultados/evidencia/` | Copia versionada de la evidencia de la ejecución final: registro de experimentos con IDs recuperados, evaluación completa con entorno, barrido `ef_search` (`make sweep-ef`), calibración y decisiones de duplicados, informes de filtros, eventos e ingesta. |
+| `.artifacts/` | Los mismos informes en su ubicación de trabajo (regenerables con `make pipeline`). |
 
 **Verificación previa a la entrega:** ingesta repetida sin aumentar recuento ✔ · filtros nunca devuelven otra marca ✔ · eventos dejan el estado esperado dos veces ✔ · 12 rankings ciegos con 10 IDs únicos y válidos ✔ · toda predicción positiva señala candidato ✔ · métricas regenerables con `make metrics` ✔ · sin claves ni datos reservados en el repositorio ✔ (55 pruebas automatizadas: `make test`, `make test-integration`).
 

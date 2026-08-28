@@ -1,0 +1,463 @@
+{
+  "collection": "aurum-market-eval-catalogo",
+  "embedding_configuration": "e5_small_title",
+  "queries": [
+    {
+      "workload_id": "FILTER-001",
+      "query_text": "herramienta inalámbrica para perforar",
+      "filter": {
+        "field": "brand",
+        "operator": "equals",
+        "value": "Einhell"
+      },
+      "result_count": 10,
+      "all_results_match_brand": true,
+      "hits": [
+        {
+          "rank": 1,
+          "record_id": "b4aea638-9b4a-5bf3-9132-4d3f2fb7b349",
+          "product_id": "B00IYEEY0Q",
+          "title": "Einhell Martillo perforador TC-RH 900 (900 W, 3 J, capacidad de perforación en hormigón 26 mm, soporte SDS-Plus, tope de profundidad metálico, maletín)",
+          "brand": "Einhell",
+          "native_score": 0.8743448,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "ee0e0bc7-867b-56fb-bf91-b0545509cdea",
+          "product_id": "B01AB2KU5G",
+          "title": "Einhell Expert Martillo perforador y cincelador Power X-Change (TE-HD 18 Li Kit) 18V con luz led, 5700 rpm (incluye batería 1.5Ah, cargador rápido y maletín)(ref. 4513810)",
+          "brand": "Einhell",
+          "native_score": 0.8712885,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 3,
+          "record_id": "79f2c256-2305-5a1f-accf-38ac28f4b11a",
+          "product_id": "B08ZMZZRJH",
+          "title": "Einhell Kit Martillo perforador con batería HEROCCO+5 Power X-Change (iones de litio, 18 V, 2.2 J, 18 Nm, SDS-Plus, incl. batería 3,0 Ah, cargador, 3 brocas, cincel plano, cincel punta y E-Box)",
+          "brand": "Einhell",
+          "native_score": 0.8634063,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 4,
+          "record_id": "389e7c04-a557-527e-8dfd-bcc9df5d4134",
+          "product_id": "B01N6Y6G16",
+          "title": "Einhell Atornillador inalámbrico TE-CD 18 Li-i Brushless Power X-Change (con función de impacto, Li-Ion, 18 V, 2 velocidades, 60 Nm, luz LED, maletín, incl. 2 baterías de 2,0 Ah y cargador)",
+          "brand": "Einhell",
+          "native_score": 0.8557675,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 5,
+          "record_id": "b7cd2847-a7c3-5709-911f-6991820cbc5b",
+          "product_id": "B0798C8QF6",
+          "title": "Einhell Herramienta multifuncional TC-MG 220/1 E (220 W, incluido adaptador de extracción de polvo, placa de lijado triangular, 1 papel de lija, raspador, hoja de sierra de incisión HCS)",
+          "brand": "Einhell",
+          "native_score": 0.8512517,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 6,
+          "record_id": "274ef4d6-f47d-5d17-bd98-3a1b4e55c13b",
+          "product_id": "B01BMABAXM",
+          "title": "Einhell 4259950 CC-IW 950 Llave de impacto (950W, 2,300 rpm, 450 Nm, agarre suave, interruptor basculante para rotación derecha / izquierda, incl. 4 enchufes y estuche de transporte)",
+          "brand": "Einhell",
+          "native_score": 0.8415417,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 7,
+          "record_id": "17961e06-2b25-5b3a-9add-8051f28a15aa",
+          "product_id": "B00G66VIOY",
+          "title": "Einhell Lijadora Delta TC-DS 19 (190W, 20000 rpm, empuñadura suave ergonómica, Extreme Fix, adaptador de extracción de polvo, incluye 3 piezas de papel de lija)",
+          "brand": "Einhell",
+          "native_score": 0.84062445,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 8,
+          "record_id": "9713ca2b-3856-5f1e-ad06-1b822215a6f7",
+          "product_id": "B01N1Q5GCJ",
+          "title": "Einhell Cortasetos eléctrico GC-EH 5747 (570 W, interruptor de seguridad a dos manos con parada de la cuchilla, cuchillas de seguridad de corte a contracorriente y de doble cara)",
+          "brand": "Einhell",
+          "native_score": 0.83953035,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 9,
+          "record_id": "b9e6bb30-bf54-5e3f-aa8e-a1a80ae33015",
+          "product_id": "B00T6JXOOU",
+          "title": "Einhell Lijadora de disco de pie TC-US 400 (375 W, 1.450 1/min de velocidad, mesa de apoyo de aluminio, tope en cruz, incl. cinta de lijado y papel de lija)",
+          "brand": "Einhell",
+          "native_score": 0.83950865,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 10,
+          "record_id": "54341d0b-9e36-51b2-9786-f53c849c588b",
+          "product_id": "B07N483ZNR",
+          "title": "Einhell Aspirador de cenizas TC-AV 1618 D (1200 W, recogedor de 18 l con cierres de apertura rápida, filtro pliegues y prefiltro, función de soplado)",
+          "brand": "Einhell",
+          "native_score": 0.83794737,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "workload_id": "FILTER-002",
+      "query_text": "tableta ligera para estudiar y tomar apuntes",
+      "filter": {
+        "field": "brand",
+        "operator": "equals",
+        "value": "Apple"
+      },
+      "result_count": 10,
+      "all_results_match_brand": true,
+      "hits": [
+        {
+          "rank": 1,
+          "record_id": "25ec2e54-04c7-5226-93ec-ccf13177dd68",
+          "product_id": "B07YDY7MVN",
+          "title": "Apple iPad Mini 16GB 3G 4G Negro - Tablet (Minitableta, Pizarra, iOS, Negro, Polímero de Litio, 0 - 35 °C) (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.822318,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "298ab298-047c-515d-8b33-f24eed290106",
+          "product_id": "B0721XQDY5",
+          "title": "Apple iPad Pro (12,9 pulgadas y 512 GB con Wi-Fi + Cellular) - Plata (Modelo Anterior)",
+          "brand": "Apple",
+          "native_score": 0.8141568,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 3,
+          "record_id": "65912aaf-2eaa-5850-b01a-d932856dec95",
+          "product_id": "B09335VHTN",
+          "title": "2021 Apple iPad Pro (de 12,9 Pulgadas, con Wi-Fi, 256 GB) - Plata (5.ª generación)",
+          "brand": "Apple",
+          "native_score": 0.81327474,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 4,
+          "record_id": "5e51686e-5bf9-5c29-b545-b6fc2188a94e",
+          "product_id": "B01EY3YAOA",
+          "title": "Altavoz portátil Beats Pill+ - Negro",
+          "brand": "Apple",
+          "native_score": 0.807377,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 5,
+          "record_id": "a1a386e1-6706-53a4-9002-33a971f4a340",
+          "product_id": "B07NYSGTLP",
+          "title": "Apple iPad Pro 12.9 (2.ª Generación) 64GB Wi-Fi - Plata (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.80736005,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 6,
+          "record_id": "fb9ea722-64b5-5104-903d-307072f8bd1e",
+          "product_id": "B08XYHFHRL",
+          "title": "Apple MacBook Air 13.3\" (i5-5350u 8gb 256gb SSD) QWERTY U.S Teclado MQD32LL/A Mitad 2017 Plata (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.80675983,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 7,
+          "record_id": "fb89a137-f491-55d0-9954-61a9b7b5eb0a",
+          "product_id": "B07YM1BLQ3",
+          "title": "Apple iPad Pro 12.9 (2.ª Generación) 64GB 4G - Plata - Desbloqueado (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.805627,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 8,
+          "record_id": "a4e0b899-ead9-516b-b76c-56e621d0cf59",
+          "product_id": "B07G37L13D",
+          "title": "Apple iPad 2 16GB Wi-Fi - Negro (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.8048211,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 9,
+          "record_id": "ed3db287-1d0b-5135-9101-fd341440a29c",
+          "product_id": "B086M8CGRT",
+          "title": "Apple iPad Pro 12.9 (4.ª Generación) 256GB Wi-Fi - Gris Espacial (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.80468655,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 10,
+          "record_id": "af1078fa-975c-5a85-9e92-26c1affa263d",
+          "product_id": "B07DTGK472",
+          "title": "Apple iPad Pro 12.9 (2.ª Generación) 256GB Wi-Fi - Gris Espacial (Reacondicionado)",
+          "brand": "Apple",
+          "native_score": 0.8040855,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "workload_id": "FILTER-003",
+      "query_text": "zapatillas cómodas para salir a correr",
+      "filter": {
+        "field": "brand",
+        "operator": "equals",
+        "value": "NIKE"
+      },
+      "result_count": 10,
+      "all_results_match_brand": true,
+      "hits": [
+        {
+          "rank": 1,
+          "record_id": "c3556d54-afe1-5c30-8174-6fe824b53147",
+          "product_id": "B084GDT32J",
+          "title": "Nike ACG React Terra Gobe Trail Zapatillas de correr para hombre, Apenas Volt 701, 45 EU",
+          "brand": "NIKE",
+          "native_score": 0.88210726,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "67d19d89-f0e2-5e68-9159-f29bd0c4a8a5",
+          "product_id": "B01MZ412XL",
+          "title": "Nike Wmns Air Zoom Pegasus 34, Zapatillas de Running Mujer, Multicolor (Light Bone/Chrome/Pale Grey/Sail 004), 38 EU",
+          "brand": "NIKE",
+          "native_score": 0.8807948,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 3,
+          "record_id": "ba776f97-8a55-502a-99d6-7237a9d1df89",
+          "product_id": "B014ZV7548",
+          "title": "Nike MD Runner 2 (GS), Zapatillas de Correr Mujer, Negro (Black/Wolf Grey/White), 36 EU",
+          "brand": "NIKE",
+          "native_score": 0.8803013,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 4,
+          "record_id": "cf661480-de13-515e-bd5c-d53433e84a72",
+          "product_id": "B014ZV76UG",
+          "title": "Nike MD Runner 2 (GS), Zapatillas de Correr Unisex Adulto, Negro (Black/Wolf Grey/White), 39 EU",
+          "brand": "NIKE",
+          "native_score": 0.8781288,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 5,
+          "record_id": "7fd1ffae-e3a7-5d70-98c5-258839d4c0f3",
+          "product_id": "B014ZV6S1Y",
+          "title": "Nike MD Runner 2 GS, Zapatillas de Correr Mujer, Negro (Black/Wolf Grey/White), 37.5 EU",
+          "brand": "NIKE",
+          "native_score": 0.8779632,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 6,
+          "record_id": "7c16a3fe-b987-54ae-97ad-0787de19aafc",
+          "product_id": "B002JF2296",
+          "title": "Nike Air Huarache Run, Zapatillas Mujer, Gris (Wolf Grey/Cool Grey-Black), 39 EU",
+          "brand": "NIKE",
+          "native_score": 0.87694246,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 7,
+          "record_id": "b7c0e12a-7f81-5973-a4ba-745860cbe1b8",
+          "product_id": "B07ZTW38C9",
+          "title": "Nike Air MAX 270 React (GS), Zapatillas para Correr, Negro (Black Cerulean Thunder Grey Barely Volt), 38 EU",
+          "brand": "NIKE",
+          "native_score": 0.876523,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 8,
+          "record_id": "17737884-8e06-52ec-ac07-2be3118a28db",
+          "product_id": "B071J2PQNF",
+          "title": "Nike Air Zoom Pegasus 36, Zapatillas de Running para Asfalto Hombre, Multicolor (White/Wolf Grey/Black 101), 45 EU",
+          "brand": "NIKE",
+          "native_score": 0.8757893,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 9,
+          "record_id": "750e2a65-30e2-571a-aa83-1f56c8cc1ec0",
+          "product_id": "B00PZ8ZLKG",
+          "title": "Nike MD Runner 2, Zapatillas de Running Mujer, Negro (Black / Black-White), 40",
+          "brand": "NIKE",
+          "native_score": 0.8748864,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 10,
+          "record_id": "d98901d4-d07b-5ff4-bd47-a9776039be64",
+          "product_id": "B07JN9H6LW",
+          "title": "Nike Air Zoom Pegasus 36 (GS), Zapatillas de Correr, Negro (Black/White/Thunder Grey 001), 36.5 EU",
+          "brand": "NIKE",
+          "native_score": 0.872702,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "workload_id": "FILTER-004",
+      "query_text": "monitor para trabajar con varias ventanas",
+      "filter": {
+        "field": "brand",
+        "operator": "equals",
+        "value": "SAMSUNG"
+      },
+      "result_count": 10,
+      "all_results_match_brand": true,
+      "hits": [
+        {
+          "rank": 1,
+          "record_id": "0b780b52-4304-5de7-ba8b-66692e4db4b1",
+          "product_id": "B07Y8WBSP8",
+          "title": "Samsung S24F354 - Monitor de 24\" Full HD (1920x1080, 4 ms, 60 Hz, LED, 16:9, 1000:1, 250 cd/m², 178°, HDMI, VGA, Base Redonda) Negro",
+          "brand": "SAMSUNG",
+          "native_score": 0.8503021,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "254df1b2-104a-5105-9a50-4c82ec875d6f",
+          "product_id": "B083QTRM4P",
+          "title": "Samsung S24R352 - Monitor de 24'' sin marcos (Full HD, 5 ms, 75 Hz, FreeSync, Flicker-Free, LED, IPS, 16:9, 1000:1, 250 cd/m², 178°, HDMI, InfinityEdge, Base en V) Plata / Negro",
+          "brand": "SAMSUNG",
+          "native_score": 0.84910405,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 3,
+          "record_id": "cab0fb73-e716-5f2c-9c8b-c62fc2d93b91",
+          "product_id": "B083VGYB3T",
+          "title": "Samsung S27R350 - Monitor de 27'' sin Marcos (Full HD, 5 ms, 75 Hz, FreeSync, Flicker-Free, LED, IPS, 16:9, 1000:1, 250 CD/m², 178°, HDMI, InfinityEdge, Base en V) Plata/Negro/Gris Oscuro",
+          "brand": "SAMSUNG",
+          "native_score": 0.8484402,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 4,
+          "record_id": "4d559c5d-0cbc-555b-acef-8e6bc349d3fa",
+          "product_id": "B0913JG3QF",
+          "title": "Samsung LS32A704NWUXEN - Monitor de 32\" 4K UHD (3,840 x 2,160, panel IPS), HDR10, 5ms, Flicker free, HDMI, Display Port, inclinable",
+          "brand": "SAMSUNG",
+          "native_score": 0.84702814,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 5,
+          "record_id": "f8a8fe1a-e263-57fa-8fc9-6a95f5ff450b",
+          "product_id": "B08KNX9YYH",
+          "title": "Samsung G33T Monitor Gaming Odyssey de 27\", VA, Full HD 1920 x 1080, 16:09, 144 Hz, 1 ms, Freesync Premium, 1 Display Port, 1 HDMI, Eye Saver Mode, Flicker Free Technology, negro",
+          "brand": "SAMSUNG",
+          "native_score": 0.84438235,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 6,
+          "record_id": "9589afdd-5408-5690-a540-7a072108ac00",
+          "product_id": "B07SPHG265",
+          "title": "Samsung C32JG56 - Monitor Curvo Gaming de 32\" (QHD, 4 ms, 144 Hz, FreeSync, LED, 16:9, 3000:1, 1800R, 2x HDMI, Inclinacion ajustable) Gris Oscuro",
+          "brand": "SAMSUNG",
+          "native_score": 0.8437501,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 7,
+          "record_id": "04574021-30bb-5097-8a41-2092cce650f8",
+          "product_id": "B082WSF76L",
+          "title": "Samsung U28R552 - Monitor de 28\" sin marcos 4K (3840x2160, 4 ms, 60 Hz, HDR10, FreeSync, LED, IPS, 16:9, 1000:1, 300 cd/m², 178°, HDMI 2.0, Base en V) Gris Oscuro",
+          "brand": "SAMSUNG",
+          "native_score": 0.8435321,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 8,
+          "record_id": "f9db96a2-93ea-53d2-99aa-13cc5d390c4c",
+          "product_id": "B07JCF1TQ4",
+          "title": "Samsung U32R592 - Monitor Curvo sin marcos de 32'' 4K (3840x2160, LED, UHD, 60Hz, 4ms, 1500R, 2500:1, ajuste de inclinación), Gris Oscuro",
+          "brand": "SAMSUNG",
+          "native_score": 0.8407986,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 9,
+          "record_id": "8deb8f00-ca38-55ee-bcde-3a623f1bd481",
+          "product_id": "B08MDCQY9H",
+          "title": "Smart Monitor M7 32\", Panel VA 32\", resolución UHD 4K (3,840 x 2,160), HDR10, Tizen, Smart Hub, USB Tipo-C, Negro",
+          "brand": "SAMSUNG",
+          "native_score": 0.839106,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 10,
+          "record_id": "8632ee3e-d89d-5f89-b979-f6f5e0293132",
+          "product_id": "B07PQ4MPT6",
+          "title": "Samsung C49RG94SSU Pantalla para PC 124,5 cm (49\") UltraWide Dual Quad HD LCD Curva Negro - Monitor (124,5 cm (49\"), 5120 x 1440 Pixeles, UltraWide Dual Quad HD, LCD, 4 ms, Negro)",
+          "brand": "SAMSUNG",
+          "native_score": 0.8351712,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    }
+  ],
+  "empty_filter_probe": {
+    "brand": "MarcaInexistenteAurum",
+    "result_count": 0,
+    "behavior": "lista vacía sin error"
+  }
+}

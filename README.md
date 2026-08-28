@@ -66,21 +66,31 @@ consultas filtradas → `resultados/resultados_busqueda.csv`) y `events`
 
 Las métricas se regeneran desde un único comando: `make metrics`.
 
-### Demo
+### Los notebooks de I+D
 
-La demostración de la entrega es `notebooks/actividad_aurum_market.ipynb`: un
-recorrido ejecutable por cada decisión (datos, experimento de representación,
-índice, búsqueda con filtros, fidelidad ANN, duplicados, mutaciones con registro
-canario y artefactos finales) contra el sistema vivo. Como en las sesiones del
-curso, el notebook es un artefacto generado: `scripts/build_notebook.py` lo
-construye celda a celda y `scripts/execute_notebook.py` lo ejecuta en headless.
+La justificación de cada decisión vive en una serie de seis notebooks
+ejecutables contra el sistema vivo (entregados ya ejecutados, con tablas y
+gráficos), uno por bloque del enunciado:
+
+| Notebook | Bloque |
+|---|---|
+| `actividad_00_caso_datos_y_baseline` | Problema, exploración de datos y baseline BM25 |
+| `actividad_01_representacion` | Composición del texto, modelos, experimentos que decidieron |
+| `actividad_02_indice_y_bbdd` | Esquema, HNSW explícito, ingesta idempotente, persistencia |
+| `actividad_03_recuperacion_y_filtros` | Interfaz común, filtros por marca, casos límite |
+| `actividad_04_operaciones_y_duplicados` | Eventos con visibilidad, regla de duplicados calibrada |
+| `actividad_05_evaluacion_y_analisis` | §5 completo: métricas, fidelidad, latencia, atribución de errores y checklist |
+
+Como en las sesiones del curso, los notebooks son artefactos generados:
+`scripts/build_notebook.py` los construye celda a celda desde
+`scripts/notebooks_src/` y `scripts/execute_notebook.py` los ejecuta en headless.
 
 ```bash
 make lab               # abre JupyterLab (kernel "Python (Aurum Market · Actividad)")
-make execute-notebook  # lo regenera y ejecuta entero sin interfaz (~15 s)
+make execute-notebook  # regenera la serie y la ejecuta entera sin interfaz (~35 s)
 ```
 
-Requiere haber ejecutado antes el recorrido principal (Qdrant arriba, embeddings
+Requieren haber ejecutado antes el recorrido principal (Qdrant arriba, embeddings
 e ingesta hechos). También hay consulta interactiva desde terminal:
 
 ```bash
@@ -109,7 +119,7 @@ contiene secretos obligatorios: todo el recorrido evaluado es local.
 config/run_config.yaml        # configuración de la ejecución final (contrato reproducible)
 deploy/qdrant/compose.yaml    # Qdrant 1.18.2 con volumen persistente y healthcheck
 docs/                         # diagrama de arquitectura y referencias
-notebooks/                    # demo ejecutable (generada por scripts/build_notebook.py)
+notebooks/                    # serie de I+D 00-05, ejecutada (generada por scripts/build_notebook.py)
 resources/actividad_evaluable # enunciado y datos (solo lectura)
 resultados/                   # artefactos entregables
 scripts/                      # pipeline por etapas (un script = una responsabilidad)
@@ -136,10 +146,12 @@ validación del snapshot), `embeddings.py` (representación), `vector_store.py`
 | `make duplicates` | Calibra la regla en desarrollo y genera `resultados_duplicados.csv`. |
 | `make evaluate` / `make metrics` | Regenera `resultados/metricas_desarrollo.json`. |
 | `make search-results` | Genera `resultados_busqueda.csv` y verifica los filtros de marca. |
-| `make events` | Aplica los 24 eventos (dos veces) y mide la visibilidad. |
+| `make events` | Aplica los 24 eventos (dos veces), verifica el estado registro a registro y mide la visibilidad. |
+| `make sweep-ef` | Barrido de `ef_search`: fidelidad ANN y latencia por valor. |
+| `make evidence` | Copia la evidencia de la ejecución final a `resultados/evidencia/`. |
 | `make pipeline` | Todo lo anterior en orden. |
-| `make notebook` / `make execute-notebook` | Regenera la demo y la ejecuta headless. |
-| `make lab` | Abre la demo en JupyterLab. |
+| `make notebook` / `make execute-notebook` | Regenera la serie de notebooks y la ejecuta headless. |
+| `make lab` | Abre los notebooks en JupyterLab. |
 | `make test` | Pruebas unitarias offline. |
 | `make test-integration` | Pruebas contra Qdrant (necesita `make up`). |
 | `make verify` | Lint + formato + pruebas unitarias. |

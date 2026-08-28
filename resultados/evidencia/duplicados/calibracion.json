@@ -1,0 +1,452 @@
+{
+  "collection": "aurum-market-eval-catalogo",
+  "embedding_configuration": "e5_small_title",
+  "candidate_count": 5,
+  "cases": [
+    {
+      "incoming_id": "DEV-DUP-001",
+      "is_duplicate": true,
+      "reference_product_id": "B000G3T55M",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "e1a0e559-6a49-5be5-b617-ec8a4899e975",
+          "product_id": "B000G3T55M",
+          "title": "NIKE Legasee Legging Swoosh Pantalones Deportivos, Mujer, Negro (Black/White 011), S",
+          "brand": "NIKE",
+          "native_score": 0.9984317,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "2a6e8399-d44d-5fc4-ba3d-2f3362530a7c",
+          "product_id": "B00MG5Q8TE",
+          "title": "NIKE Legasee Legging Swoosh Pantalones Deportivos, Mujer, Negro (Black/White 011), XL",
+          "brand": "NIKE",
+          "native_score": 0.99573463,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-DUP-002",
+      "is_duplicate": true,
+      "reference_product_id": "B07NV4L2W5",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "0df8a596-0bc2-5deb-bc84-69b63972f975",
+          "product_id": "B07NV4L2W5",
+          "title": "Interruptor Universal Inteligente con Wi-Fi, con Control Remoto Meross App. Compatible con Alexa, Google Assistant y SmartThings. Modelo MSS710, Paquete de 4.",
+          "brand": "meross",
+          "native_score": 0.9979313,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "dc0a27e2-6b15-5310-a0bc-655bc37fbb43",
+          "product_id": "B07PG68NDX",
+          "title": "Interruptor Universal Inteligente con Wi-Fi con Control Remoto Meross App. Compatible con Alexa, Google Assistant y SmartThings. Modelo MSS710, Paquete de 2.",
+          "brand": "meross",
+          "native_score": 0.9915824,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-DUP-003",
+      "is_duplicate": true,
+      "reference_product_id": "B00BEFAR80",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "f5726a4e-1d31-5c25-b109-2f3fb8aa6567",
+          "product_id": "B00BEFAR80",
+          "title": "Gel de contacto 250g. axion | Mejora la conductividad de los electrodos TENS y EMS bien usados o de caucho | Gel conductor para electrodos de caucho o parches",
+          "brand": "axion",
+          "native_score": 0.99151814,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "3ca918f1-4592-5ce5-88f1-ea76052879b9",
+          "product_id": "B001NM0TQY",
+          "title": "Gel conductor para uso con masajeadores de circulación, dolores médicos y máquinas TENS – Tubo de 100 ml: Actualizar",
+          "brand": "Pain Doctor Conductive Gel",
+          "native_score": 0.90349036,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-DUP-004",
+      "is_duplicate": true,
+      "reference_product_id": "B076HKFZ8N",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "35c0c946-4061-50f6-a672-96e62991f53b",
+          "product_id": "B076HKFZ8N",
+          "title": "Teka - Campana Extractora, Touch Control y Motor ECOPOWER, Modelo DLH 986, Negro, 67 x 90 x 48 cm",
+          "brand": "Teka",
+          "native_score": 0.9995699,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "8a889040-67cf-5f30-b05a-f3ba7e3e07b2",
+          "product_id": "B010A0T2WQ",
+          "title": "Teka DVT 685 De pared Negro 786m³/h A - Campana (786 m³/h, Canalizado/Recirculación, A, A, C, 52 dB), 41,8 x 60 x 78 cm",
+          "brand": "Teka",
+          "native_score": 0.91809565,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-DUP-005",
+      "is_duplicate": true,
+      "reference_product_id": "B07JYHSK27",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "7b2d843d-0607-54a8-863f-934716fda42e",
+          "product_id": "B07JYHSK27",
+          "title": "G-Shock [Casio] de CASIO Frogman 35 Aniversario océano de Magma Solar de Radio GWF-1035F-1JR Hombres",
+          "brand": "G-Shock",
+          "native_score": 0.9932668,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "ecc246bc-777f-5508-a03b-5ddb29972c4c",
+          "product_id": "8893673681",
+          "title": "Harry Potter. Diario de Hogwarts",
+          "brand": "MAGAZZINI SALANI (DEP)",
+          "native_score": 0.8796748,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-DUP-006",
+      "is_duplicate": true,
+      "reference_product_id": "B07N379P73",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "e28de4d9-bb45-5a32-b163-4484c54f5bcf",
+          "product_id": "B07N379P73",
+          "title": "MOMBEBE COSLAND Traje Cocinero Niño Halloween Conjunto de Camiseta Manga Larga 2 Años Blanco",
+          "brand": "MOMBEBE COSLAND",
+          "native_score": 0.9801533,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "a755de62-80c6-5dfe-9c33-54fa7d4edaf7",
+          "product_id": "B076WYMBK3",
+          "title": "K-youth® Navidad Christmas Bebe Niña Disfraz Traje de Navidad Vestido de Manga Larga Chal Sombrero (7-8 Años, Rojo)",
+          "brand": "K-youth",
+          "native_score": 0.87629986,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-DUP-007",
+      "is_duplicate": true,
+      "reference_product_id": "B077FZDNJ2",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "e5a3a7fb-8fb3-5e91-9c54-814075d63ee6",
+          "product_id": "B077FZDNJ2",
+          "title": "Bedsure Manta Cama 90 Invierno - Manta Sofa Grande Polar Reversible de Franela y Sherpa, Manta Sofa Gruesa 150x200 cm de Microfibra Suave y Borreguito, Gris",
+          "brand": "Bedsure",
+          "native_score": 1.0,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "e40de232-07e2-5f6a-b04e-eadc0cb629cd",
+          "product_id": "B077D1V7SJ",
+          "title": "Bedsure Manta Sofa Grande Invierno - Manta Cama 90 de Franela Extra Suave, Mantas 150x200 cm Cubre Sofas, Gris",
+          "brand": "Bedsure",
+          "native_score": 0.9762416,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-001",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "81036a30-b4d2-53bf-ab08-54bfc26ff51b",
+          "product_id": "0241313333",
+          "title": "Gira y aprende: Tablas de Multiplicar (Aprendizaje y desarrollo)",
+          "brand": "DK",
+          "native_score": 0.884557,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "a482b7c5-4e98-5a89-b52e-3f5205e76898",
+          "product_id": "B00XXOSS9U",
+          "title": "Juego tradicional de torre en bloques M.Y.",
+          "brand": "M.Y",
+          "native_score": 0.8828063,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-002",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "ecb35fa6-5e69-524b-86a2-5d53e051ba00",
+          "product_id": "B08KSVGWYK",
+          "title": "MOSOTECH Organizador Cables, Cubre Cables de 2 x 3m, Flexible Funda Organizador Cables, Organizador de Cables Mesa, Recoge Cables para Office y PC Escritorio-Blanca (Ø2.6cm y Ø2.2cm)",
+          "brand": "MOSOTECH",
+          "native_score": 0.891992,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "ea763c29-42b8-53ef-a5a0-8cf0e915f9d8",
+          "product_id": "B002CJM276",
+          "title": "Omenex 491142 - Cable de alimentación (1.5 Metros, C6, CEE7/4), Negro",
+          "brand": "Omenex",
+          "native_score": 0.88412136,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-003",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "e980d92b-7bb3-5b79-a7c8-b8ee02bb1adc",
+          "product_id": "B06W57TN6G",
+          "title": "A",
+          "brand": "LUOEM",
+          "native_score": 0.8873236,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "14fe68b3-766e-515b-b8e1-edca522a8045",
+          "product_id": "B01MV6DCDC",
+          "title": "Impala Iluminador en barra, Color champán cremoso de larga duración",
+          "brand": "Impala",
+          "native_score": 0.8841219,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-004",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "12fbee59-7041-50f9-89da-f21e764b2f10",
+          "product_id": "B083TXK6ZS",
+          "title": "Lampara Escritorio, Iluminacion De Escritorio 5 Modos, 10 Niveles De Brillo, Lámpara Para Escritorio ​Temporizador De 60min & 30 Minutos Para Leer, Estudiar, Cuidado De Ojos, Color Blanco",
+          "brand": "ACADGQ",
+          "native_score": 0.8832434,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "a106f5a1-adf6-5ab5-8e57-81f18bd89f47",
+          "product_id": "B07SSPKHTX",
+          "title": "YouN - Luz LED anular para cámara de Estudio (Regulable, con trípode)",
+          "brand": "YouN",
+          "native_score": 0.8827691,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-005",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "8a7bf5dd-a466-594e-a7b1-866f4571fb80",
+          "product_id": "B07HB81GLJ",
+          "title": "Plato para Maceta Mediterranea (30-40 cm)",
+          "brand": "PAMEX",
+          "native_score": 0.89140975,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "dbb3e951-1a7b-5798-a62b-df346bddfa44",
+          "product_id": "B085Q5NH21",
+          "title": "vidaXL Madera de Pino Impregnada Jardinera con Celosía Macetero Plantador Soporte Terraza Cultivo Huerto Parque Aire Libre Vivero Casero Balcón",
+          "brand": "vidaXL",
+          "native_score": 0.8863386,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-006",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "d20e1085-4058-5b74-add9-8aae607890ee",
+          "product_id": "B00WT3VJQ0",
+          "title": "Alfaparf Kit de Recuperación Exprés - 180 ml",
+          "brand": "AlfaParf",
+          "native_score": 0.89659023,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "7a97fc95-905c-5075-b95a-4a0e1192327d",
+          "product_id": "B085PHZ9F6",
+          "title": "RFEF - Réplica oficial minikit primera equipación rfef 2020",
+          "brand": "RFEF",
+          "native_score": 0.8938253,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    },
+    {
+      "incoming_id": "DEV-NEW-007",
+      "is_duplicate": false,
+      "reference_product_id": "",
+      "top_candidates": [
+        {
+          "rank": 1,
+          "record_id": "afa84c55-9def-52d6-91ec-d64a2978bf72",
+          "product_id": "B07F3YMKCL",
+          "title": "Luz de Lectura OMERIL Luz de Libro Recargable, 6 LED con 3 Modos de Brillo (Luz Cálido y Blanco), 360 ° Flexible Lampara de Lectura Pinza para Lectores Noche, E-Reader, Estudio, Cama, Tablet",
+          "brand": "OMERIL",
+          "native_score": 0.9312037,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        },
+        {
+          "rank": 2,
+          "record_id": "0186076c-c03f-5a2c-a6e6-2b379bff27a1",
+          "product_id": "B07VZLJTDJ",
+          "title": "LITOM Luz de Lectura, Luz de Libro Recargable con 60H de Autonomía, 7 LED con 9 Modos de Luz, 360° Flexible Lampara de Lectura Pinza para Lectores Noche, E-Reader, Libro, PC y Tablet",
+          "brand": "LITOM",
+          "native_score": 0.9084079,
+          "score_kind": "similarity",
+          "higher_is_better": true
+        }
+      ]
+    }
+  ],
+  "calibration": {
+    "best": {
+      "rule": {
+        "score_threshold": 0.9797,
+        "margin_threshold": 0.0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "true_positive": 7,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_negative": 7,
+      "errors": []
+    },
+    "explored": 104,
+    "score_grid": [
+      0.8827,
+      0.8837,
+      0.8841,
+      0.8851,
+      0.8868,
+      0.8878,
+      0.8909,
+      0.8915,
+      0.8919,
+      0.8925,
+      0.8961,
+      0.8971,
+      0.9307,
+      0.9317,
+      0.9797,
+      0.9807,
+      0.991,
+      0.992,
+      0.9928,
+      0.9938,
+      0.9974,
+      0.9979,
+      0.9984,
+      0.9989,
+      0.9991,
+      0.9995,
+      1.0001,
+      1.0005
+    ],
+    "margin_candidates": [
+      0.0,
+      0.005,
+      0.01,
+      0.02
+    ]
+  },
+  "configured_rule": {
+    "rule": {
+      "score_threshold": 0.955,
+      "margin_threshold": 0.0
+    },
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "true_positive": 7,
+    "false_positive": 0,
+    "false_negative": 0,
+    "true_negative": 7,
+    "errors": []
+  }
+}

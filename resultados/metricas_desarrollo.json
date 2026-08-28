@@ -2,8 +2,8 @@
   "ndcg_at_10": 0.555,
   "recall_at_10": 0.2232,
   "mrr_at_10": 0.6979,
-  "latency_p50_ms": 2.12,
-  "latency_p95_ms": 2.55,
+  "latency_p50_ms": 2.32,
+  "latency_p95_ms": 3.1,
   "recall_relevant_labels": [
     "E",
     "S"
@@ -26,5 +26,16 @@
     "warmup": 5,
     "repeats": 30,
     "query_count": 12
+  },
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "qdrant_client": "1.19.0",
+    "qdrant_url": "http://localhost:6333",
+    "hnsw": {
+      "m": 24,
+      "ef_construct": 120
+    },
+    "ef_search": 128
   }
 }

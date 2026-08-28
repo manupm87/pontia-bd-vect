@@ -44,10 +44,10 @@
   <text x="350" y="112" text-anchor="middle" class="texto">multilingual-e5-small</text>
   <text x="350" y="128" text-anchor="middle" class="detalle">384d · L2-normalizado</text>
   <text x="350" y="144" text-anchor="middle" class="detalle">passage: / query:</text>
-  <text x="350" y="160" text-anchor="middle" class="detalle">composición: texto completo</text>
+  <text x="350" y="160" text-anchor="middle" class="detalle">composición: título+marca+color</text>
   <rect x="265" y="194" width="170" height="58" class="caja"/>
   <text x="350" y="216" text-anchor="middle" class="texto">alternativas evaluadas</text>
-  <text x="350" y="232" text-anchor="middle" class="detalle">solo título · MiniLM · BM25</text>
+  <text x="350" y="232" text-anchor="middle" class="detalle">texto completo · MiniLM · BM25</text>
   <rect x="265" y="270" width="170" height="72" class="caja"/>
   <text x="350" y="292" text-anchor="middle" class="texto">data/embeddings/</text>
   <text x="350" y="308" text-anchor="middle" class="detalle">.npy + metadatos SHA-256</text>
