@@ -1,0 +1,9 @@
+query_id,original_query,semantic_query,lexical_gap
+28703,convertibles 2 en 1 portátil tactil,quiero un ordenador que pueda transformarse en tableta y manejarse con los dedos,"convertible, 2 en 1 y táctil se expresan mediante una descripción funcional"
+38249,estantes sin taladro habitacion,necesito poner baldas en el dormitorio sin hacer agujeros en la pared,"estantes, habitación y taladro se sustituyen por sinónimos o consecuencias"
+43240,funda ipad air 4 sin tapa,quiero proteger por detrás mi iPad Air de cuarta generación dejando la pantalla descubierta,"sin tapa se expresa como una restricción sobre la pantalla"
+61533,lentejas sin gluten,busco legumbres que pueda comer una persona celíaca,"la propiedad sin gluten se expresa mediante el perfil de la persona"
+93437,sillas oficina ergonomicas,necesito un asiento cómodo para trabajar ocho horas con buen apoyo para la espalda,"silla de oficina ergonómica se expresa mediante el problema que resuelve"
+96202,soporte aire acondicionado ventana,cómo puedo fijar el aparato de aire en la ventana para que no se caiga,"el sustantivo soporte se convierte en la acción de fijar"
+100455,taladro 24v batería,quiero una herramienta inalámbrica potente para perforar sin depender de un enchufe,"taladro y batería se expresan por función y restricción"
+101352,television 28 pulgadas,busco un televisor pequeño de unas setenta centímetros para la cocina,"la medida cambia de unidad y se añade el contexto de uso"

@@ -1,0 +1,40 @@
+# Configuración utilizada en la ejecución final de la actividad Aurum Market.
+# Este fichero es el contrato reproducible del sistema: los scripts lo leen al
+# arrancar y las métricas entregadas se regeneran a partir de estos valores.
+snapshot_id: aurum-market-vector-search-evaluation-v1
+random_seed: 42
+
+embedding:
+  # Configuración ganadora de los experimentos de desarrollo (ver
+  # .artifacts/experimentos/registro_experimentos.json y el informe).
+  configuration: e5_small_title
+
+collection:
+  distance: cosine
+  hnsw:
+    m: 24
+    ef_construct: 120
+  ef_search: 128
+  batch_size: 256
+
+retrieval:
+  top_k: 10
+
+metrics:
+  # Declaración explícita de qué etiquetas ESCI cuentan como relevantes.
+  # No puede cambiar silenciosamente entre experimentos.
+  recall_relevant_labels: ["E", "S"]
+  mrr_relevant_labels: ["E"]
+
+fidelity:
+  k: 10
+
+latency:
+  warmup: 5
+  repeats: 30
+
+duplicates:
+  # Umbrales calibrados sobre altas_desarrollo.csv (ver
+  # .artifacts/duplicados/calibracion.json). No se ajustan con la evaluación.
+  score_threshold: 0.955
+  margin_threshold: 0.0

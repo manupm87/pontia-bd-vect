@@ -1,0 +1,22 @@
+name: bbdd-vectoriales-s03-chroma
+services:
+  chroma:
+    image: chromadb/chroma:1.5.9
+    container_name: bbdd-vectoriales-s03-chroma
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma-data:/data
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /data
+      ANONYMIZED_TELEMETRY: "FALSE"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/localhost/8000"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  chroma-data:
+    name: bbdd-vectoriales-s03-chroma-data

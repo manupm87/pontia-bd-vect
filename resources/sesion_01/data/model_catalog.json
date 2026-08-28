@@ -1,0 +1,1005 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-07-11",
+  "scope": "Fotografía docente de modelos de embeddings, métodos de representación y benchmarks relevantes para recuperación semántica. No es un ranking ni sustituye una evaluación sobre los datos del proyecto.",
+  "methodology_notes": [
+    "Las capacidades y estados de las APIs se comprobaron en documentación oficial el 2026-07-11.",
+    "API y open_weight describen el modo de acceso, no equivalen a una licencia abierta ni garantizan uso comercial.",
+    "single-vector produce un vector por elemento; multi-vector conserva varias representaciones y requiere un índice y una función de scoring compatibles.",
+    "Las dimensiones reducidas solo deben usarse cuando el proveedor o el entrenamiento Matryoshka las soportan; una proyección arbitraria no es equivalente.",
+    "Los resultados de leaderboards cambian con modelos, tareas y versiones. La selección debe validarse con calidad, latencia, coste, privacidad y dominio propios.",
+    "Cambiar de modelo, de dimensión o de espacio vectorial obliga normalmente a re-embedder el corpus y reconstruir el índice."
+  ],
+  "models": [
+    {
+      "id": "openai-text-embedding-3-small",
+      "display_name": "text-embedding-3-small",
+      "provider": "OpenAI",
+      "access": "api",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 8192,
+      "dimensions": {
+        "default": 1536,
+        "minimum": 1,
+        "maximum": 1536,
+        "options": [],
+        "matryoshka": true,
+        "reduction": "Parámetro dimensions de la API hasta la dimensión nativa.",
+        "normalization": "La API entrega embeddings normalizados con L2."
+      },
+      "languages": "multilingual",
+      "license": "Servicio propietario; sujeto a los términos de la API de OpenAI",
+      "summary": "Opción API de propósito general con menor coste y huella de almacenamiento que el modelo large.",
+      "caveats": [
+        "La residencia de datos, el precio y los límites son propiedades del servicio y pueden cambiar.",
+        "Una dimensión menor reduce memoria y cómputo, pero debe validarse sobre la tarea real."
+      ],
+      "sources": [
+        {
+          "title": "OpenAI embeddings guide",
+          "url": "https://developers.openai.com/api/docs/guides/embeddings",
+          "kind": "official-docs"
+        },
+        {
+          "title": "text-embedding-3-small model page",
+          "url": "https://developers.openai.com/api/docs/models/text-embedding-3-small",
+          "kind": "official-model-page"
+        }
+      ]
+    },
+    {
+      "id": "openai-text-embedding-3-large",
+      "display_name": "text-embedding-3-large",
+      "provider": "OpenAI",
+      "access": "api",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 8192,
+      "dimensions": {
+        "default": 3072,
+        "minimum": 1,
+        "maximum": 3072,
+        "options": [],
+        "matryoshka": true,
+        "reduction": "Parámetro dimensions de la API hasta la dimensión nativa.",
+        "normalization": "La API entrega embeddings normalizados con L2."
+      },
+      "languages": "multilingual",
+      "license": "Servicio propietario; sujeto a los términos de la API de OpenAI",
+      "summary": "Modelo API de mayor capacidad de la familia text-embedding-3; permite intercambiar calidad por tamaño mediante dimensions.",
+      "caveats": [
+        "La dimensión nativa duplica el almacenamiento de small antes de considerar metadatos e índice.",
+        "La ventaja frente a modelos más baratos depende del dominio y debe medirse."
+      ],
+      "sources": [
+        {
+          "title": "OpenAI embeddings guide",
+          "url": "https://developers.openai.com/api/docs/guides/embeddings",
+          "kind": "official-docs"
+        },
+        {
+          "title": "text-embedding-3-large model page",
+          "url": "https://developers.openai.com/api/docs/models/text-embedding-3-large",
+          "kind": "official-model-page"
+        }
+      ]
+    },
+    {
+      "id": "cohere-embed-v4",
+      "display_name": "embed-v4.0",
+      "provider": "Cohere",
+      "access": "api",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text", "image", "mixed-text-image"],
+      "vector_output": "single-vector",
+      "context_tokens": 128000,
+      "dimensions": {
+        "default": 1536,
+        "minimum": 256,
+        "maximum": 1536,
+        "options": [256, 512, 1024, 1536],
+        "matryoshka": true,
+        "reduction": "output_dimension admite exactamente 256, 512, 1024 o 1536.",
+        "normalization": "El adaptador docente normaliza explícitamente con L2."
+      },
+      "languages": "100+ languages",
+      "license": "Servicio propietario; sujeto a los términos de la API de Cohere",
+      "summary": "Embedding multimodal y multilingüe con contexto largo y perfiles distintos para consulta y documento.",
+      "caveats": [
+        "search_query y search_document no son intercambiables en recuperación asimétrica.",
+        "Texto e imagen pueden combinarse en una entrada, pero conviene comprobar el comportamiento de agregación que necesita el caso de uso."
+      ],
+      "sources": [
+        {
+          "title": "Cohere Embed overview",
+          "url": "https://docs.cohere.com/docs/cohere-embed",
+          "kind": "official-docs"
+        },
+        {
+          "title": "Cohere v2 Embed API reference",
+          "url": "https://docs.cohere.com/v2/reference/embed",
+          "kind": "official-api-reference"
+        },
+        {
+          "title": "Embed v4 multimodal release",
+          "url": "https://docs.cohere.com/changelog/embed-multimodal-v4",
+          "kind": "official-changelog"
+        }
+      ]
+    },
+    {
+      "id": "google-gemini-embedding-2",
+      "display_name": "gemini-embedding-2",
+      "provider": "Google",
+      "access": "api",
+      "status": "stable",
+      "recommended_for_new_projects": true,
+      "modalities": ["text", "image", "video", "audio", "pdf"],
+      "vector_output": "single-vector",
+      "context_tokens": 8192,
+      "dimensions": {
+        "default": 3072,
+        "minimum": 128,
+        "maximum": 3072,
+        "options": [768, 1536, 3072],
+        "matryoshka": true,
+        "reduction": "output_dimensionality acepta 128–3072; Google recomienda evaluar 768, 1536 y 3072.",
+        "normalization": "La salida de 3072 dimensiones está normalizada; para tamaños menores la documentación recomienda normalizar."
+      },
+      "languages": "multilingual",
+      "license": "Servicio propietario; sujeto a los términos de Gemini API",
+      "summary": "Modelo estable multimodal que embebe texto, imágenes, vídeo, audio y PDF en un espacio compartido.",
+      "caveats": [
+        "No usa task_type: la recuperación se expresa mediante los prefijos oficiales de consulta y documento.",
+        "Varias partes dentro de un Content se agregan en un solo vector; varios Content producen varios vectores.",
+        "Su espacio no es compatible con gemini-embedding-001."
+      ],
+      "sources": [
+        {
+          "title": "Gemini embeddings documentation",
+          "url": "https://ai.google.dev/gemini-api/docs/embeddings",
+          "kind": "official-docs"
+        },
+        {
+          "title": "Gemini API changelog",
+          "url": "https://ai.google.dev/gemini-api/docs/changelog",
+          "kind": "official-changelog"
+        }
+      ]
+    },
+    {
+      "id": "google-gemini-embedding-001",
+      "display_name": "gemini-embedding-001",
+      "provider": "Google",
+      "access": "api",
+      "status": "scheduled-retirement-2026-07-14",
+      "recommended_for_new_projects": false,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 2048,
+      "dimensions": {
+        "default": 3072,
+        "minimum": 128,
+        "maximum": 3072,
+        "options": [768, 1536, 3072],
+        "matryoshka": true,
+        "reduction": "Permitía output_dimensionality; se conserva solo como referencia de migración.",
+        "normalization": "Los tamaños inferiores a 3072 requerían normalización explícita."
+      },
+      "languages": "multilingual",
+      "license": "Servicio propietario en retirada; sujeto a los términos de Gemini API",
+      "summary": "Modelo de texto legado incluido únicamente para explicar su retirada y la migración del índice.",
+      "caveats": [
+        "Google fijó su retirada para el 14 de julio de 2026.",
+        "No debe iniciarse un proyecto nuevo con este modelo.",
+        "Migrar a gemini-embedding-2 exige volver a generar todos los embeddings y reconstruir el índice."
+      ],
+      "sources": [
+        {
+          "title": "Gemini API deprecations",
+          "url": "https://ai.google.dev/gemini-api/docs/deprecations",
+          "kind": "official-deprecation-notice"
+        },
+        {
+          "title": "Gemini embeddings documentation",
+          "url": "https://ai.google.dev/gemini-api/docs/embeddings",
+          "kind": "official-docs"
+        }
+      ]
+    },
+    {
+      "id": "sentence-transformers-paraphrase-multilingual-minilm-l12-v2",
+      "display_name": "paraphrase-multilingual-MiniLM-L12-v2",
+      "provider": "sentence-transformers",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 128,
+      "dimensions": {
+        "default": 384,
+        "minimum": 384,
+        "maximum": 384,
+        "options": [384],
+        "matryoshka": false,
+        "reduction": "No ofrece reducción Matryoshka documentada.",
+        "normalization": "Debe decidirse y aplicarse de forma consistente en inferencia."
+      },
+      "languages": "50 languages",
+      "license": "Apache-2.0",
+      "summary": "Baseline ligero, maduro y fácil de ejecutar en CPU para similitud semántica multilingüe.",
+      "caveats": [
+        "Su contexto corto y fecha de entrenamiento lo convierten en baseline, no en ganador universal.",
+        "No usa perfiles asimétricos de consulta y documento."
+      ],
+      "sources": [
+        {
+          "title": "paraphrase-multilingual-MiniLM-L12-v2 model card",
+          "url": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+          "kind": "official-model-card"
+        }
+      ]
+    },
+    {
+      "id": "intfloat-multilingual-e5-small",
+      "display_name": "multilingual-e5-small",
+      "provider": "intfloat",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 512,
+      "dimensions": {
+        "default": 384,
+        "minimum": 384,
+        "maximum": 384,
+        "options": [384],
+        "matryoshka": false,
+        "reduction": "Dimensión fija.",
+        "normalization": "El model card muestra normalización L2 antes de similitud coseno."
+      },
+      "languages": "94 languages in training data",
+      "license": "MIT",
+      "summary": "Dual encoder multilingüe pequeño y reproducible, apropiado para enseñar recuperación asimétrica.",
+      "caveats": [
+        "Requiere los prefijos query: y passage: también en entradas no inglesas.",
+        "Los textos largos se truncan a 512 tokens."
+      ],
+      "sources": [
+        {
+          "title": "multilingual-e5-small model card",
+          "url": "https://huggingface.co/intfloat/multilingual-e5-small",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "Multilingual E5 Text Embeddings",
+          "url": "https://arxiv.org/abs/2402.05672",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "baai-bge-m3",
+      "display_name": "BGE-M3",
+      "provider": "BAAI",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "hybrid-multi-output",
+      "context_tokens": 8192,
+      "dimensions": {
+        "default": 1024,
+        "minimum": 1024,
+        "maximum": 1024,
+        "options": [1024],
+        "matryoshka": false,
+        "reduction": "La representación densa documentada usa 1024 dimensiones; además produce pesos dispersos y vectores por token.",
+        "normalization": "Depende del modo de salida y de la implementación de scoring."
+      },
+      "languages": "100+ languages",
+      "license": "MIT",
+      "summary": "Un único checkpoint para recuperación densa, dispersa aprendida y late interaction, con soporte multilingüe y contexto largo.",
+      "caveats": [
+        "Dense, sparse y ColBERT son salidas diferentes; no deben almacenarse como si fueran una única matriz homogénea.",
+        "Combinar las tres señales aumenta la complejidad operativa y exige calibrar la fusión."
+      ],
+      "sources": [
+        {
+          "title": "BGE-M3 model card",
+          "url": "https://huggingface.co/BAAI/bge-m3",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "BGE M3-Embedding",
+          "url": "https://arxiv.org/abs/2402.03216",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "qwen-qwen3-embedding-0-6b",
+      "display_name": "Qwen3-Embedding-0.6B",
+      "provider": "Qwen",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 32768,
+      "dimensions": {
+        "default": 1024,
+        "minimum": 32,
+        "maximum": 1024,
+        "options": [32, 64, 128, 256, 512, 768, 1024],
+        "matryoshka": true,
+        "reduction": "La familia se entrena con MRL y permite truncar hasta la dimensión solicitada.",
+        "normalization": "El model card normaliza la salida antes del producto escalar."
+      },
+      "languages": "100+ languages",
+      "license": "Apache-2.0",
+      "summary": "Modelo de texto instruction-aware, compacto y con contexto largo; útil para estudiar instrucciones de tarea y Matryoshka.",
+      "caveats": [
+        "Una buena instrucción de consulta puede cambiar el resultado y debe versionarse con el índice.",
+        "Los tamaños 4B y 8B de la familia ofrecen otras envolventes de calidad y coste."
+      ],
+      "sources": [
+        {
+          "title": "Qwen3-Embedding-0.6B model card",
+          "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "Qwen3 Embedding",
+          "url": "https://arxiv.org/abs/2506.05176",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "google-embeddinggemma-300m",
+      "display_name": "EmbeddingGemma",
+      "provider": "Google",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 2048,
+      "dimensions": {
+        "default": 768,
+        "minimum": 128,
+        "maximum": 768,
+        "options": [128, 256, 512, 768],
+        "matryoshka": true,
+        "reduction": "MRL permite truncar la salida a 512, 256 o 128 dimensiones.",
+        "normalization": "Normalización L2 recomendada para similitud coseno."
+      },
+      "languages": "100+ languages",
+      "license": "Gemma Terms of Use",
+      "summary": "Modelo compacto orientado a despliegue local y móvil, con reducción Matryoshka.",
+      "caveats": [
+        "Pesos accesibles no significa licencia OSI: deben revisarse los términos de Gemma.",
+        "El tamaño pequeño favorece privacidad y latencia, pero no sustituye una evaluación de dominio."
+      ],
+      "sources": [
+        {
+          "title": "EmbeddingGemma model card",
+          "url": "https://ai.google.dev/gemma/docs/embeddinggemma/model_card",
+          "kind": "official-model-card"
+        }
+      ]
+    },
+    {
+      "id": "nomic-embed-text-v2-moe",
+      "display_name": "nomic-embed-text-v2-moe",
+      "provider": "Nomic AI",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 512,
+      "dimensions": {
+        "default": 768,
+        "minimum": 256,
+        "maximum": 768,
+        "options": [256, 512, 768],
+        "matryoshka": true,
+        "reduction": "MRL permite usar prefijos de la representación; 256 dimensiones está documentado como perfil compacto.",
+        "normalization": "El model card usa normalización L2."
+      },
+      "languages": "approximately 100 languages",
+      "license": "Apache-2.0",
+      "summary": "Modelo MoE multilingüe de 475M parámetros totales y aproximadamente 305M activos por token.",
+      "caveats": [
+        "El código personalizado del repositorio requiere revisar trust_remote_code antes de producción.",
+        "Su límite de 512 tokens obliga a una estrategia de chunking para documentos largos."
+      ],
+      "sources": [
+        {
+          "title": "nomic-embed-text-v2-moe model card",
+          "url": "https://huggingface.co/nomic-ai/nomic-embed-text-v2-moe",
+          "kind": "official-model-card"
+        }
+      ]
+    },
+    {
+      "id": "qwen-qwen3-vl-embedding-2b",
+      "display_name": "Qwen3-VL-Embedding-2B",
+      "provider": "Qwen",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text", "image", "screenshot", "video"],
+      "vector_output": "single-vector",
+      "context_tokens": 32768,
+      "dimensions": {
+        "default": 2048,
+        "minimum": 128,
+        "maximum": 2048,
+        "options": [128, 256, 512, 1024, 2048],
+        "matryoshka": true,
+        "reduction": "Salida MRL hasta un máximo de 2048 dimensiones en la variante 2B.",
+        "normalization": "La implementación de referencia normaliza la representación final."
+      },
+      "languages": "33 languages reported",
+      "license": "Apache-2.0",
+      "summary": "Embedding visual-lingüístico para documentos, capturas y vídeo que produce un vector único por entrada.",
+      "caveats": [
+        "Un vector global simplifica el índice pero puede perder correspondencias finas de regiones frente a late interaction.",
+        "La variante 8B eleva a 4096 la dimensión máxima y tiene un perfil de inferencia distinto."
+      ],
+      "sources": [
+        {
+          "title": "Qwen3-VL-Embedding-2B model card",
+          "url": "https://huggingface.co/Qwen/Qwen3-VL-Embedding-2B",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "Qwen3-VL Embedding and Reranker",
+          "url": "https://arxiv.org/abs/2601.04720",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "jina-embeddings-v4",
+      "display_name": "jina-embeddings-v4",
+      "provider": "Jina AI",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text", "image", "document-page"],
+      "vector_output": "hybrid-multi-output",
+      "context_tokens": 32768,
+      "dimensions": {
+        "default": 2048,
+        "minimum": 128,
+        "maximum": 2048,
+        "options": [128, 256, 512, 1024, 2048],
+        "matryoshka": true,
+        "reduction": "El modo single-vector admite truncado MRL; el modo multi-vector usa representaciones de 128 dimensiones por elemento.",
+        "normalization": "Debe seguirse la función encode y el modo de retrieval elegidos."
+      },
+      "languages": "multilingual",
+      "license": "Qwen Research License",
+      "summary": "Modelo visual-lingüístico con tareas configurables y modos de vector único o multi-vector.",
+      "caveats": [
+        "La licencia de investigación no equivale a Apache, MIT ni uso comercial irrestricto.",
+        "Single-vector y multi-vector exigen pipelines e índices diferentes."
+      ],
+      "sources": [
+        {
+          "title": "jina-embeddings-v4 model card",
+          "url": "https://huggingface.co/jinaai/jina-embeddings-v4",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "Jina Embeddings v4",
+          "url": "https://arxiv.org/abs/2506.18902",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "jina-embeddings-v5-text-small",
+      "display_name": "jina-embeddings-v5-text-small",
+      "provider": "Jina AI",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": false,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 32768,
+      "dimensions": {
+        "default": 1024,
+        "minimum": 32,
+        "maximum": 1024,
+        "options": [32, 64, 128, 256, 512, 1024],
+        "matryoshka": true,
+        "reduction": "MRL permite recortar desde 1024 hasta 32 dimensiones.",
+        "normalization": "La inferencia de referencia expone embeddings normalizables para cosine/IP."
+      },
+      "languages": "119+ languages",
+      "license": "CC-BY-NC-4.0",
+      "summary": "Modelo de texto reciente, compacto y de contexto largo, útil para estudiar fronteras de licencia y evaluación.",
+      "caveats": [
+        "La cláusula NC impide asumir uso comercial.",
+        "Su novedad y las versiones del ecosistema aconsejan fijar revisión y dependencias antes de producción."
+      ],
+      "sources": [
+        {
+          "title": "jina-embeddings-v5-text-small model card",
+          "url": "https://huggingface.co/jinaai/jina-embeddings-v5-text-small",
+          "kind": "official-model-card"
+        }
+      ]
+    },
+    {
+      "id": "jina-embeddings-v5-omni-small",
+      "display_name": "jina-embeddings-v5-omni-small",
+      "provider": "Jina AI",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": false,
+      "modalities": ["text", "image", "video", "audio", "pdf"],
+      "vector_output": "single-vector",
+      "context_tokens": 32768,
+      "dimensions": {
+        "default": 1024,
+        "minimum": 32,
+        "maximum": 1024,
+        "options": [32, 64, 128, 256, 512, 1024],
+        "matryoshka": true,
+        "reduction": "MRL permite recortar desde 1024 hasta 32 dimensiones.",
+        "normalization": "La estrategia de normalización debe mantenerse idéntica en consulta e índice."
+      },
+      "languages": "multilingual",
+      "license": "CC-BY-NC-4.0",
+      "summary": "Modelo omni de pesos accesibles que reúne texto, imagen, vídeo, audio y PDF en un espacio de vector único.",
+      "caveats": [
+        "La licencia es no comercial.",
+        "La agregación a un único vector puede ocultar regiones o pasajes concretos; para localización fina conviene comparar con multivector."
+      ],
+      "sources": [
+        {
+          "title": "jina-embeddings-v5-omni-small model card",
+          "url": "https://huggingface.co/jinaai/jina-embeddings-v5-omni-small",
+          "kind": "official-model-card"
+        }
+      ]
+    },
+    {
+      "id": "perplexity-pplx-embed-v1-0-6b",
+      "display_name": "pplx-embed-v1-0.6B",
+      "provider": "Perplexity",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text"],
+      "vector_output": "single-vector",
+      "context_tokens": 32768,
+      "dimensions": {
+        "default": 1024,
+        "minimum": 256,
+        "maximum": 1024,
+        "options": [256, 512, 1024],
+        "matryoshka": true,
+        "reduction": "El checkpoint se entrena con Matryoshka; deben evaluarse los cortes usados por el proyecto.",
+        "normalization": "Las representaciones cuantizadas nativas no normalizadas deben compararse con coseno según el model card."
+      },
+      "languages": "multilingual",
+      "license": "MIT",
+      "summary": "Modelo de recuperación de texto con contexto largo y salidas densas compatibles con reducción y cuantización.",
+      "caveats": [
+        "Int8 y binary cambian memoria y scoring; no son equivalentes numéricamente a float.",
+        "Los claims del model card deben reproducirse en el dominio objetivo."
+      ],
+      "sources": [
+        {
+          "title": "pplx-embed-v1-0.6B model card",
+          "url": "https://huggingface.co/perplexity-ai/pplx-embed-v1-0.6b",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "pplx-embed",
+          "url": "https://arxiv.org/abs/2602.11151",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "vidore-colpali-v1-3",
+      "display_name": "ColPali v1.3",
+      "provider": "ViDoRe",
+      "access": "open_weight",
+      "status": "available",
+      "recommended_for_new_projects": true,
+      "modalities": ["text", "document-page-image"],
+      "vector_output": "multi-vector",
+      "context_tokens": null,
+      "dimensions": {
+        "default": 128,
+        "minimum": 128,
+        "maximum": 128,
+        "options": [128],
+        "matryoshka": false,
+        "reduction": "Proyecta tokens de consulta y parches visuales a 128 dimensiones; conserva múltiples vectores por entrada.",
+        "normalization": "El scoring late interaction debe seguir la implementación ColPali/MaxSim."
+      },
+      "languages": "depends on the PaliGemma backbone and evaluation domain",
+      "license": "Gemma Terms of Use for the backbone; verify model-card terms",
+      "summary": "Recuperación visual de páginas documentales sin depender de OCR previo, mediante late interaction entre consulta y parches.",
+      "caveats": [
+        "El índice almacena muchos vectores por página y no cabe en una columna de vector único sin perder el método.",
+        "La licencia del backbone y la del checkpoint deben revisarse antes de uso comercial.",
+        "ColQwen y sucesores modernos conservan la idea, pero cambian backbone, calidad y coste."
+      ],
+      "sources": [
+        {
+          "title": "ColPali v1.3 model card",
+          "url": "https://huggingface.co/vidore/colpali-v1.3",
+          "kind": "official-model-card"
+        },
+        {
+          "title": "ColPali: Efficient Document Retrieval with Vision Language Models",
+          "url": "https://arxiv.org/abs/2407.01449",
+          "kind": "paper"
+        },
+        {
+          "title": "ColPali reference implementation",
+          "url": "https://github.com/illuin-tech/colpali",
+          "kind": "official-repository"
+        }
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "id": "bag-of-words",
+      "display_name": "Bag-of-Words",
+      "category": "sparse-classic",
+      "summary": "Representa un documento por ocurrencias de vocabulario; preserva coincidencia léxica y pierde orden y gran parte de la semántica.",
+      "cautions": [
+        "La dimensión crece con el vocabulario y la mayoría de coordenadas son cero.",
+        "La tokenización y el preprocesado forman parte del modelo y deben versionarse."
+      ],
+      "sources": [
+        {
+          "title": "Introduction to Information Retrieval: The term vocabulary and postings lists",
+          "url": "https://nlp.stanford.edu/IR-book/html/htmledition/the-term-vocabulary-and-postings-lists-1.html",
+          "kind": "reference-book"
+        }
+      ]
+    },
+    {
+      "id": "tf-idf",
+      "display_name": "TF-IDF",
+      "category": "sparse-classic",
+      "summary": "Repondera el conteo con frecuencia local e inversa de documento para reducir el peso de términos ubicuos.",
+      "cautions": [
+        "No resuelve por sí solo sinonimia ni polisemia.",
+        "El IDF depende del corpus; incorporar documentos puede exigir recalcularlo."
+      ],
+      "sources": [
+        {
+          "title": "Term-weighting approaches in automatic text retrieval",
+          "url": "https://doi.org/10.1016/0306-4573(88)90021-0",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "word2vec",
+      "display_name": "Word2Vec",
+      "category": "dense-classic",
+      "summary": "Aprende vectores de palabras por contexto predictivo con arquitecturas CBOW y Skip-gram.",
+      "cautions": [
+        "Una palabra suele conservar un único vector aunque tenga varios sentidos.",
+        "Obtener un vector de oración promediando palabras es un baseline, no el objetivo original."
+      ],
+      "sources": [
+        {
+          "title": "Efficient Estimation of Word Representations in Vector Space",
+          "url": "https://arxiv.org/abs/1301.3781",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "glove",
+      "display_name": "GloVe",
+      "category": "dense-classic",
+      "summary": "Factoriza información estadística global de coocurrencia para aprender vectores de palabras.",
+      "cautions": [
+        "Mantiene las limitaciones de una representación estática por palabra.",
+        "El vocabulario cerrado produce casos fuera de vocabulario."
+      ],
+      "sources": [
+        {
+          "title": "GloVe: Global Vectors for Word Representation",
+          "url": "https://aclanthology.org/D14-1162/",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "fasttext",
+      "display_name": "FastText",
+      "category": "dense-classic",
+      "summary": "Extiende embeddings estáticos con n-gramas de caracteres, mejorando morfología y palabras no vistas.",
+      "cautions": [
+        "La composición subléxica no aporta contextualización de sentidos.",
+        "Sus ventajas varían con la morfología y la calidad del vocabulario."
+      ],
+      "sources": [
+        {
+          "title": "Enriching Word Vectors with Subword Information",
+          "url": "https://aclanthology.org/Q17-1010/",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "bert",
+      "display_name": "BERT",
+      "category": "contextual-token-encoder",
+      "summary": "Produce representaciones contextuales por token mediante un Transformer bidireccional preentrenado.",
+      "cautions": [
+        "El vector CLS de un BERT genérico no es automáticamente un buen embedding de oración.",
+        "Su coste por texto es superior al de embeddings estáticos."
+      ],
+      "sources": [
+        {
+          "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+          "url": "https://aclanthology.org/N19-1423/",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "sentence-bert",
+      "display_name": "Sentence-BERT",
+      "category": "dense-bi-encoder",
+      "summary": "Ajusta encoders siameses para producir embeddings de frase comparables eficientemente con coseno.",
+      "cautions": [
+        "El bi-encoder gana escalabilidad al no permitir atención cruzada entre cada par.",
+        "Pooling, objetivo de entrenamiento y negativos determinan la geometría."
+      ],
+      "sources": [
+        {
+          "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+          "url": "https://aclanthology.org/D19-1410/",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "matryoshka-representation-learning",
+      "display_name": "Matryoshka Representation Learning",
+      "category": "dimension-adaptive",
+      "summary": "Entrena prefijos anidados del embedding para que dimensiones menores sigan siendo útiles.",
+      "cautions": [
+        "Recortar funciona si el modelo fue entrenado para ello; cortar cualquier embedding arbitrario no conserva calidad.",
+        "La dimensión debe considerarse parte del identificador y del contrato del índice."
+      ],
+      "sources": [
+        {
+          "title": "Matryoshka Representation Learning",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/c32319f4868da7613d78af9993100e42-Abstract-Conference.html",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "splade-v2",
+      "display_name": "SPLADE v2",
+      "category": "learned-sparse",
+      "summary": "Aprende representaciones dispersas sobre vocabulario y expansión de términos, compatibles con infraestructura de inverted index.",
+      "cautions": [
+        "La eficiencia real depende de regularización, poda e implementación del índice.",
+        "Los pesos dispersos aprendidos no son frecuencias TF-IDF interpretables de forma idéntica."
+      ],
+      "sources": [
+        {
+          "title": "SPLADE v2: Sparse Lexical and Expansion Model for Information Retrieval",
+          "url": "https://arxiv.org/abs/2109.10086",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "colbert",
+      "display_name": "ColBERT",
+      "category": "late-interaction",
+      "summary": "Conserva un vector por token y aplica MaxSim tardío entre consulta y documento para equilibrar detalle y precomputación.",
+      "cautions": [
+        "Multiplica el número de vectores e introduce un motor de recuperación especializado.",
+        "No puede reducirse fielmente a un único centroide sin cambiar el scoring."
+      ],
+      "sources": [
+        {
+          "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+          "url": "https://arxiv.org/abs/2004.12832",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "colbert-v2",
+      "display_name": "ColBERTv2",
+      "category": "late-interaction",
+      "summary": "Mejora entrenamiento y compresión residual de ColBERT para reducir sustancialmente la huella del índice.",
+      "cautions": [
+        "Las cifras de compresión del paper dependen de su configuración y no sustituyen una medición propia.",
+        "Sigue siendo multivector y requiere MaxSim o una aproximación compatible."
+      ],
+      "sources": [
+        {
+          "title": "ColBERTv2: Effective and Efficient Retrieval via Lightweight Late Interaction",
+          "url": "https://aclanthology.org/2022.naacl-main.272/",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "colpali",
+      "display_name": "ColPali / ColQwen",
+      "category": "visual-late-interaction",
+      "summary": "Traslada late interaction a páginas como imágenes y compara tokens de consulta con parches visuales, evitando depender de un OCR previo.",
+      "cautions": [
+        "Aumenta almacenamiento y coste de scoring respecto a un vector global.",
+        "OCR, metadatos y señal visual pueden complementarse; no son alternativas mutuamente excluyentes."
+      ],
+      "sources": [
+        {
+          "title": "ColPali: Efficient Document Retrieval with Vision Language Models",
+          "url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/99e9e141aafc314f76b0ca3dd66898b3-Abstract-Conference.html",
+          "kind": "paper"
+        },
+        {
+          "title": "ColPali reference implementation and model family",
+          "url": "https://github.com/illuin-tech/colpali",
+          "kind": "official-repository"
+        }
+      ]
+    },
+    {
+      "id": "reciprocal-rank-fusion",
+      "display_name": "Reciprocal Rank Fusion",
+      "category": "hybrid-fusion",
+      "summary": "Combina rankings por posición sin exigir que BM25, dense y otras señales compartan escala.",
+      "cautions": [
+        "La constante k y la profundidad de cada lista deben validarse.",
+        "Fusionar no corrige un retriever débil ni una política de candidatos sesgada."
+      ],
+      "sources": [
+        {
+          "title": "Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods",
+          "url": "https://research.google/pubs/reciprocal-rank-fusion-outperforms-condorcet-and-individual-rank-learning-methods/",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "cross-encoder-reranking",
+      "display_name": "Cross-encoder reranking",
+      "category": "reranking",
+      "summary": "Codifica consulta y candidato conjuntamente para obtener una puntuación más expresiva sobre un conjunto pequeño recuperado.",
+      "cautions": [
+        "No escala normalmente a comparar la consulta con todo el corpus.",
+        "La calidad final queda limitada por el recall del primer estadio."
+      ],
+      "sources": [
+        {
+          "title": "Passage Re-ranking with BERT",
+          "url": "https://arxiv.org/abs/1901.04085",
+          "kind": "paper"
+        }
+      ]
+    }
+  ],
+  "benchmarks": [
+    {
+      "id": "beir",
+      "display_name": "BEIR",
+      "scope": "Zero-shot information retrieval across heterogeneous text datasets.",
+      "primary_metric": "nDCG@10 in the original benchmark, with dataset-level metrics.",
+      "volatile_leaderboard": false,
+      "cautions": [
+        "Averaging hides domain-specific failures.",
+        "A benchmark score does not include deployment cost, latency, privacy or Spanish-domain quality."
+      ],
+      "sources": [
+        {
+          "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+          "url": "https://arxiv.org/abs/2104.08663",
+          "kind": "paper"
+        }
+      ]
+    },
+    {
+      "id": "mteb",
+      "display_name": "MTEB",
+      "scope": "Original massive text embedding benchmark: 8 task families, 58 datasets and 112 languages.",
+      "primary_metric": "Task-dependent metrics aggregated by task and benchmark.",
+      "volatile_leaderboard": true,
+      "cautions": [
+        "El paper original concluye que ningún método domina todas las tareas.",
+        "Versiones, subsets y posible contaminación deben acompañar cualquier cifra."
+      ],
+      "sources": [
+        {
+          "title": "MTEB: Massive Text Embedding Benchmark",
+          "url": "https://arxiv.org/abs/2210.07316",
+          "kind": "paper"
+        },
+        {
+          "title": "MTEB repository",
+          "url": "https://github.com/embeddings-benchmark/mteb",
+          "kind": "official-repository"
+        },
+        {
+          "title": "MTEB leaderboard",
+          "url": "https://leaderboard.mteb.org/",
+          "kind": "live-leaderboard"
+        }
+      ]
+    },
+    {
+      "id": "mmteb",
+      "display_name": "MMTEB",
+      "scope": "Massive multilingual evaluation with more than 500 tasks, 250+ languages and 10 task categories.",
+      "primary_metric": "Task-dependent metrics with multilingual and cross-lingual aggregation.",
+      "volatile_leaderboard": true,
+      "cautions": [
+        "Cobertura multilingüe no garantiza calidad en el dominio jurídico, técnico o documental propio.",
+        "Debe registrarse la revisión exacta del benchmark y la configuración de prompting."
+      ],
+      "sources": [
+        {
+          "title": "MMTEB: Massive Multilingual Text Embedding Benchmark",
+          "url": "https://arxiv.org/abs/2502.13595",
+          "kind": "paper"
+        },
+        {
+          "title": "MTEB benchmark API documentation",
+          "url": "https://docs.mteb.org/api/benchmark/",
+          "kind": "official-docs"
+        }
+      ]
+    },
+    {
+      "id": "vidore",
+      "display_name": "ViDoRe",
+      "scope": "Visual document retrieval over page images, layouts, tables, figures and text.",
+      "primary_metric": "nDCG@5 in the original ColPali evaluation, with task-level reporting.",
+      "volatile_leaderboard": true,
+      "cautions": [
+        "Comparar OCR+dense con visión multivector exige igualar corpus, candidatos y protocolo.",
+        "Las páginas y dominios del benchmark pueden no reflejar documentos empresariales propios."
+      ],
+      "sources": [
+        {
+          "title": "ColPali and the ViDoRe benchmark",
+          "url": "https://arxiv.org/abs/2407.01449",
+          "kind": "paper"
+        },
+        {
+          "title": "ViDoRe Benchmark v2",
+          "url": "https://arxiv.org/abs/2505.17166",
+          "kind": "paper"
+        }
+      ]
+    }
+  ]
+}

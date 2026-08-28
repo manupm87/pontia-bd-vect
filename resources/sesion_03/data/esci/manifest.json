@@ -1,0 +1,29 @@
+{
+  "snapshot_id": "amazon-esci-es-ann-session-02",
+  "generated_at": "2026-07-11T23:57:52.820113+00:00",
+  "source_repository": "https://github.com/amazon-science/esci-data",
+  "source_license": "Apache-2.0",
+  "selection": {
+    "locale": "es",
+    "catalog_size": 50000,
+    "background_order": "DuckDB hash(product_id)",
+    "probe_random_state": 42
+  },
+  "counts": {
+    "products": 50000,
+    "judgments": 336,
+    "business_queries": 20,
+    "probe_queries": 256
+  },
+  "files": {
+    "products.csv.gz": "7ae199f2dd6129ba06d60549ea90f2c77904af3c441a19b42038d4febd47a8cd",
+    "judgments.csv": "a0bf0606a22b5a45a4d276573f5579d002ae1ef871ca4dd7d9a89e2777ed7d28",
+    "semantic_queries.csv": "5ccc7130c51194f52b582f44eb0ecca93a7f9b43306381cd9fb447d84e526b3b",
+    "query_workload.csv": "4a5d5522f4d6fc6c571b546bcd3a4def62acfa5af1e59a667925b8fd5484bec6"
+  },
+  "notes": [
+    "All product metadata comes from the published ESCI dataset.",
+    "Every judged product is retained before adding the background sample.",
+    "Title probes are real product titles used only for ANN fidelity tests."
+  ]
+}

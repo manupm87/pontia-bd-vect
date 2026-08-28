@@ -1,0 +1,48 @@
+{
+  "snapshot_id": "amazon-esci-es-session-01",
+  "generated_at": "2026-07-11T21:51:19.033797+00:00",
+  "source_repository": "https://github.com/amazon-science/esci-data",
+  "source_paper": "https://arxiv.org/abs/2206.06588",
+  "source_license": "Apache-2.0",
+  "selection": {
+    "locale": "es",
+    "split": "test",
+    "small_version": 1,
+    "query_ids": [
+      13357,
+      18868,
+      28703,
+      31224,
+      33633,
+      38249,
+      43240,
+      61533,
+      93437,
+      96202,
+      100455,
+      101352
+    ]
+  },
+  "counts": {
+    "queries": 12,
+    "products": 336,
+    "judgments": 336,
+    "semantic_queries": 8,
+    "labels": {
+      "E": 148,
+      "S": 105,
+      "I": 63,
+      "C": 20
+    }
+  },
+  "files": {
+    "products.csv": "51927604b0ced10c02f5d49ed33dc0941df8e982ab9f523ff2fa4e53c129ad2e",
+    "judgments.csv": "a0bf0606a22b5a45a4d276573f5579d002ae1ef871ca4dd7d9a89e2777ed7d28",
+    "semantic_queries.csv": "e2f21731a9f232a1169ae4c6519d0c2e8254fe9738260b3d8a8b193672453fa1"
+  },
+  "notes": [
+    "Product titles and metadata are preserved from the published dataset.",
+    "ESCI labels are real query-product relevance judgments.",
+    "Prices, stock and reviews are not present and are never fabricated."
+  ]
+}

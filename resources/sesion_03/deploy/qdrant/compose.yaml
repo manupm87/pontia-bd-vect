@@ -1,0 +1,21 @@
+name: bbdd-vectoriales-s03-qdrant
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.18.2
+    container_name: bbdd-vectoriales-s03-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/localhost/6333"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  qdrant-data:
+    name: bbdd-vectoriales-s03-qdrant-data

@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "faiss-ann-search-session"
+version = "1.0.0"
+description = "Búsqueda vectorial exacta y aproximada con FAISS sobre un marketplace real"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "faiss-cpu>=1.12,<2",
+    "ipykernel>=6.29,<7",
+    "jupyterlab>=4.2,<5",
+    "nbclient>=0.10,<1",
+    "nbformat>=5.10,<6",
+    "numpy>=1.26,<3",
+    "pandas>=2.2,<4",
+    "plotly>=6.0,<7",
+    "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+build-data = [
+    "duckdb>=1.2,<2",
+    "sentence-transformers>=3.3,<6",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<10",
+    "ruff>=0.9,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vector_index_session"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["E501", "RUF001"]
+
+[tool.ruff.format]
+quote-style = "double"

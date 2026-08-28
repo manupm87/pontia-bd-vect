@@ -1,0 +1,21 @@
+# Entornos y caches de Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Secretos locales: solo se versiona la plantilla .env.example
+.env
+
+# Artefactos de trabajo regenerables (los entregables viven en resultados/)
+.artifacts/
+
+# Embeddings generados localmente con `make embeddings`
+data/embeddings/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Metadatos NTFS que WSL materializa como ficheros
+*:Zone.Identifier

@@ -1,0 +1,16 @@
+name: bbdd-vectoriales-s03-pinecone-local
+services:
+  pinecone-local:
+    image: ghcr.io/pinecone-io/pinecone-local:latest
+    platform: linux/amd64
+    container_name: bbdd-vectoriales-s03-pinecone-local
+    ports:
+      - "5080-5090:5080-5090"
+    environment:
+      PORT: "5080"
+      PINECONE_HOST: localhost
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5080"]
+      interval: 5s
+      timeout: 3s
+      retries: 20

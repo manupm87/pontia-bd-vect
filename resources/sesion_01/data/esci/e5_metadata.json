@@ -1,0 +1,14 @@
+{
+  "model_id": "intfloat/multilingual-e5-small",
+  "generated_at": "2026-07-11T22:52:00.912273+00:00",
+  "dimension": 384,
+  "dtype": "float32",
+  "normalized": true,
+  "document_prefix": "passage: ",
+  "query_prefix": "query: ",
+  "products_sha256": "51927604b0ced10c02f5d49ed33dc0941df8e982ab9f523ff2fa4e53c129ad2e",
+  "judgments_sha256": "a0bf0606a22b5a45a4d276573f5579d002ae1ef871ca4dd7d9a89e2777ed7d28",
+  "product_count": 336,
+  "query_count": 12,
+  "semantic_query_count": 8
+}

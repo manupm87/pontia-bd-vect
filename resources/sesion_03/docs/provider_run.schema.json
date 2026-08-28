@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pontia.example/schemas/bbdd-vectoriales-s03/provider-run.json",
+  "title": "Sesión 3 provider run",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "provider",
+    "provider_version",
+    "target",
+    "resource",
+    "record_count",
+    "score_kind",
+    "higher_is_better",
+    "query_id",
+    "query_text",
+    "top_k",
+    "hits",
+    "exact_record_ids",
+    "recall_at_k",
+    "mutation",
+    "visibility",
+    "generated_at"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "provider": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"},
+    "provider_version": {"type": "string", "minLength": 1},
+    "target": {"type": "string", "minLength": 1},
+    "resource": {"type": "string", "minLength": 1},
+    "record_count": {"type": "integer", "minimum": 0},
+    "score_kind": {"enum": ["similarity", "distance", "relevance", "unknown"]},
+    "higher_is_better": {"type": "boolean"},
+    "query_id": {"type": "string"},
+    "query_text": {"type": "string"},
+    "top_k": {"type": "integer", "minimum": 1},
+    "hits": {"type": "array", "items": {"$ref": "#/$defs/search_hit"}},
+    "exact_record_ids": {"type": "array", "items": {"type": "string", "format": "uuid"}},
+    "recall_at_k": {"type": "number", "minimum": 0, "maximum": 1},
+    "filtered_query_id": {"type": "string"},
+    "filtered_brand": {"type": "string"},
+    "filtered_hits": {"type": "array", "items": {"$ref": "#/$defs/search_hit"}},
+    "filtered_recall_at_k": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "durations_ms": {"type": "object", "additionalProperties": {"type": "number", "minimum": 0}},
+    "mutation": {"type": "object"},
+    "visibility": {"type": "object"},
+    "notes": {"type": "array", "items": {"type": "string"}},
+    "generated_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "search_hit": {
+      "type": "object",
+      "required": [
+        "record_id",
+        "product_id",
+        "vector_id",
+        "title",
+        "brand",
+        "native_score",
+        "score_kind",
+        "higher_is_better",
+        "rank"
+      ],
+      "properties": {
+        "record_id": {"type": "string", "format": "uuid"},
+        "product_id": {"type": "string"},
+        "vector_id": {"type": "integer"},
+        "title": {"type": "string"},
+        "brand": {"type": "string"},
+        "native_score": {"type": "number"},
+        "score_kind": {"enum": ["similarity", "distance", "relevance", "unknown"]},
+        "higher_is_better": {"type": "boolean"},
+        "rank": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
