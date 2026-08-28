@@ -99,6 +99,33 @@ EMBEDDING_CONFIGURATIONS: dict[str, EmbeddingConfiguration] = {
             dimension=768,
         ),
         EmbeddingConfiguration(
+            name="e5_large_title",
+            model_id="intfloat/multilingual-e5-large",
+            composition="title_brand_color",
+            document_prefix="passage: ",
+            query_prefix="query: ",
+            dimension=1024,
+        ),
+        EmbeddingConfiguration(
+            name="bge_m3_title",
+            model_id="BAAI/bge-m3",
+            composition="title_brand_color",
+            document_prefix="",
+            query_prefix="",
+            dimension=1024,
+        ),
+        EmbeddingConfiguration(
+            name="qwen3_embedding_title",
+            model_id="Qwen/Qwen3-Embedding-0.6B",
+            composition="title_brand_color",
+            document_prefix="",
+            query_prefix=(
+                "Instruct: Given a web search query, retrieve relevant "
+                "passages that answer the query\nQuery: "
+            ),
+            dimension=1024,
+        ),
+        EmbeddingConfiguration(
             name="minilm_full",
             model_id="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
             composition="full_text",
