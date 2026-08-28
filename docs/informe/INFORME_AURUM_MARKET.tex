@@ -118,9 +118,12 @@ documentada y saneada: los valores vacíos son información ausente (nunca la
 cadena \code{"nan"}) y los campos vacíos se omiten. Se compararon dos
 composiciones y tres modelos locales \cite{wang2024,reimers2019}, más el
 baseline léxico, siempre con búsqueda exacta para aislar la representación del
-índice (tabla~\ref{tab:experimentos}); una cuarta configuración con Gemini
+índice (tabla~\ref{tab:experimentos}); una configuración adicional con Gemini
 Embedding 2 (API de la sesión 01) queda preparada y se construye solo si
-existe \code{GEMINI\_API\_KEY}, fuera del recorrido evaluado.
+existe \code{GEMINI\_API\_KEY}. El enunciado no obliga a modelos locales
+(``no existe ventaja por utilizar cloud frente a local''); el final local es
+una decisión de diseño: evaluación sin coste para el corrector y
+regeneración completa sin clave ni binarios grandes en el repositorio.
 
 \begin{table}[h]
   \centering\small

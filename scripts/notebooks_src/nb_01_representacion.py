@@ -74,10 +74,15 @@ def build_cells() -> list[NotebookNode]:
             La última fila es el proveedor API visto en la sesión 01: el código
             está preparado (`make embeddings` la construye automáticamente si
             existe `GEMINI_API_KEY` en `.env`) pero **no forma parte del recorrido
-            evaluado** — el enunciado exige que el corrector no herede costes ni
-            credenciales, y un modelo servido por API no permite congelar los
-            embeddings con checksums reproducibles (el proveedor puede cambiar o
-            retirar el modelo, como ya pasó con `gemini-embedding-001`).
+            evaluado**. Ojo al matiz: el enunciado *no* obliga a modelos locales
+            (no hay proveedor obligatorio y "no existe ventaja por utilizar cloud
+            frente a local"); lo que exige es que no haya credenciales en el
+            repositorio y que el corrector pueda evaluar sin heredar costes. Un
+            final con Gemini sería válido comprometiendo al repo sus embeddings ya
+            generados; se optó por un final local como decisión de diseño, porque
+            permite regenerarlo todo desde cero sin clave, sin binarios grandes en
+            el repo y sin depender de que el proveedor mantenga el modelo (ya
+            retiró `gemini-embedding-001`).
 
             Saneado común: los valores vacíos son información ausente y **se omiten**
             (nunca se codifica la cadena `"nan"`); si `text` está vacío se recompone
@@ -265,12 +270,13 @@ def build_cells() -> list[NotebookNode]:
             Los descartes también tienen motivo:
 
             - **APIs comerciales (OpenAI, Cohere, Gemini)** — vistas en la sesión
-              01 — quedan fuera del recorrido evaluado por las reglas operativas
-              del enunciado (sin credenciales en el repo, el corrector no hereda
-              costes) y porque rompen la reproducibilidad bit a bit del manifiesto
-              de embeddings. Gemini Embedding 2 queda **preparado** como
-              experimento opcional (`gemini_v2_title`, se activa con
-              `GEMINI_API_KEY`).
+              01 — son admisibles según el enunciado, pero cumplir sus condiciones
+              (evaluación sin coste para el corrector, sin credenciales) exigiría
+              comprometer al repo los embeddings generados, y un modelo servido
+              por API compromete la regeneración bit a bit (el proveedor puede
+              cambiarlo o retirarlo). Se dejan fuera del recorrido evaluado por
+              diseño; Gemini Embedding 2 queda **preparado** como experimento
+              opcional (`gemini_v2_title`, se activa con `GEMINI_API_KEY`).
             - **Modelos más grandes aún (e5-large, bge-m3, GTE…)**: candidatos
               legítimos para una segunda iteración; a esta escala el cuello de
               botella demostrado era la composición y los juicios, y e5-base ya
