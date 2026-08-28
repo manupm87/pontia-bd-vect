@@ -214,7 +214,15 @@ def encode_texts(
         convert_to_numpy=True,
         show_progress_bar=False,
     )
-    return np.asarray(matrix, dtype=np.float32)
+    matrix = np.asarray(matrix, dtype=np.float32)
+    if normalize:
+        # Models served in fp16 can drift a few thousandths off unit norm
+        # after the float32 cast; re-normalizing guarantees the contract.
+        norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+        if np.any(norms <= np.finfo(np.float32).tiny):
+            raise ValueError("El modelo devolvió al menos un vector nulo.")
+        matrix = matrix / norms
+    return matrix
 
 
 def load_gemini_client() -> Any:
