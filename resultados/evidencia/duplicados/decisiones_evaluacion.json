@@ -1,9 +1,9 @@
 {
   "rule": {
-    "score_threshold": 0.937,
+    "score_threshold": 0.943,
     "margin_threshold": 0.0
   },
-  "embedding_configuration": "e5_base_title",
+  "embedding_configuration": "e5_large_title",
   "decisions": [
     {
       "incoming_id": "EVAL-DUP-001",
@@ -11,9 +11,9 @@
         "incoming_id": "EVAL-DUP-001",
         "predicted_duplicate": true,
         "matched_product_id": "B081JP8CC6",
-        "score": 0.9919559
+        "score": 0.9929874
       },
-      "margin": 0.1274204,
+      "margin": 0.09617639999999994,
       "candidates": [
         {
           "rank": 1,
@@ -21,17 +21,17 @@
           "product_id": "B081JP8CC6",
           "title": "Joyfeel Buy Bolsa para portátil de 15,6 pulgadas, impermeable, impermeable, para portátil, de negocios, multifuncional, color rosa",
           "brand": "Joyfeel buy",
-          "native_score": 0.9919559,
+          "native_score": 0.9929874,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "7e03b319-018f-553a-b56b-fc14ef3b8e6d",
-          "product_id": "B01NA6JS6Q",
-          "title": "Yimidear Al Aire Libre Respirable Plegable Bolsa para Mascotas para Perro Gato Cómodo Viaje Talla Mediana Portador de Mascotas (Rosa)",
-          "brand": "Yimidear",
-          "native_score": 0.8645355,
+          "record_id": "c5a21121-16cc-5bfe-9485-adb334f7be3c",
+          "product_id": "B073F7GQ5G",
+          "title": "HSEOK Funda Blanda Maletín Impermeable para Ordenador Portátil, Estilo Elegante Bolsa Protectora, Ideal por 15,6 Pulgadas DELL/Ausu/Acer/HP/Toshiba/Lenovo, Color Negro/Gris/Gris Oscuro/Rosa",
+          "brand": "HSEOK",
+          "native_score": 0.896811,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -43,9 +43,9 @@
         "incoming_id": "EVAL-DUP-002",
         "predicted_duplicate": true,
         "matched_product_id": "B07GWRF23V",
-        "score": 0.97223943
+        "score": 0.9798587
       },
-      "margin": 0.06914832999999998,
+      "margin": 0.08426909999999999,
       "candidates": [
         {
           "rank": 1,
@@ -53,17 +53,17 @@
           "product_id": "B07GWRF23V",
           "title": "Sudaderas Capucha para Mujer, BBestseller Suéter de Doble Capa de Lana Polar Top Cardigan Tejido Sudaderas para Mujer Blusa Camiseta Tops Otoño e Invierno",
           "brand": "BBestseller-Tops de mujer",
-          "native_score": 0.97223943,
+          "native_score": 0.9798587,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "ed7053cc-a813-5ee8-b4ec-7ec5b0b89aea",
-          "product_id": "B07J599CCQ",
-          "title": "Mujer Sudadera,Impresión del Gatito del Gato Sudaderas con Capucha Cortas para Mujer Camisetas Mujer Blusa Tops Sudadera Mujer",
-          "brand": "Damark Sudaderas con Capucha Mujer",
-          "native_score": 0.9030911,
+          "record_id": "aa998499-1ab2-507a-b3b1-312a9393742d",
+          "product_id": "B07ZNJ2KRC",
+          "title": "Sudaderas para Mujer Sin Capucha Invierno Pullover,PAOLIAN Vestido Mujer Cortos Fiesta Sexy Estampado Floral Otoño Tallas Grandes Jerséis Camisetas Largas Manga Largas Elegantes (XXXXL, Negro)",
+          "brand": "PAOLIAN_Tops Mujer",
+          "native_score": 0.8955896,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -75,9 +75,9 @@
         "incoming_id": "EVAL-DUP-003",
         "predicted_duplicate": true,
         "matched_product_id": "B07S7B3SN2",
-        "score": 0.9994134
+        "score": 0.999462
       },
-      "margin": 0.12926020000000005,
+      "margin": 0.12205754999999996,
       "candidates": [
         {
           "rank": 1,
@@ -85,17 +85,17 @@
           "product_id": "B07S7B3SN2",
           "title": "HANEU Motocicleta Amortiguador Anti-robo de bloqueo para Yamaha Xmax 125, 250, 300, 400 Nmax 125 155 Aerox PCX 125 de 155 Forza 300 (Oro)",
           "brand": "HANEU",
-          "native_score": 0.9994134,
+          "native_score": 0.999462,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "ffcf7fd7-1e08-50d6-a8d4-017e9bdc3c83",
-          "product_id": "B01N24UJFW",
-          "title": "amortiguador par NEGRO HONDA CB500 PC32 1997-2003",
-          "brand": "RFY",
-          "native_score": 0.8701532,
+          "record_id": "dba3b1bc-7609-5cf0-92ac-b1ec361ad07e",
+          "product_id": "B082P45RNS",
+          "title": "Reserva Posterior de la Motocicleta Amortiguador de Piezas Ojal de Ojos herraje de Apoyo Bola Redonda Tenedor/división de Honda por Yamaha for Kawasaki for Suzuki for Yoss for Fastace for la RFY for",
+          "brand": "MUJUN-Motorcycle Parts",
+          "native_score": 0.87740445,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -105,11 +105,11 @@
       "incoming_id": "EVAL-DUP-004",
       "decision": {
         "incoming_id": "EVAL-DUP-004",
-        "predicted_duplicate": true,
-        "matched_product_id": "8417441271",
-        "score": 0.94141006
+        "predicted_duplicate": false,
+        "matched_product_id": "",
+        "score": 0.94280326
       },
-      "margin": 0.03343570000000007,
+      "margin": 0.043511560000000005,
       "candidates": [
         {
           "rank": 1,
@@ -117,7 +117,7 @@
           "product_id": "8417441271",
           "title": "Batman: El contraataque del Caballero Oscuro (Tercera edición) (Grandes autores Batman: Frank Miller)",
           "brand": "Ecc Ediciones",
-          "native_score": 0.94141006,
+          "native_score": 0.94280326,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -127,7 +127,7 @@
           "product_id": "8417063064",
           "title": "Batman y Superman - Colección Novelas Gráficas 19: Batman: ¿Qué le sucedió al Cruzado de la Capa?",
           "brand": "ECC Ediciones",
-          "native_score": 0.90797436,
+          "native_score": 0.8992917,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -139,9 +139,9 @@
         "incoming_id": "EVAL-DUP-005",
         "predicted_duplicate": true,
         "matched_product_id": "B00JOH9FRO",
-        "score": 0.97208846
+        "score": 0.9818901
       },
-      "margin": 0.09191756000000006,
+      "margin": 0.08703627000000003,
       "candidates": [
         {
           "rank": 1,
@@ -149,17 +149,17 @@
           "product_id": "B00JOH9FRO",
           "title": "Revlon Professional UniqOne Champú y Acondicionador 1000 ml",
           "brand": "REVLON PROFESSIONAL",
-          "native_score": 0.97208846,
+          "native_score": 0.9818901,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "7c3ff901-fa51-5a32-8162-37ddb5d58cc9",
-          "product_id": "B07P9W9R2H",
-          "title": "Fanola Nutri Care Champú 1000ml + Mascarilla 1500ml",
-          "brand": "KAVAK COSMETICS",
-          "native_score": 0.8801709,
+          "record_id": "510a708b-2bf9-510d-b8b9-1c956862775b",
+          "product_id": "B001GFASIC",
+          "title": "Salerm Cosmetics Protein Champú - 1000 ml",
+          "brand": "Salerm",
+          "native_score": 0.89485383,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -171,9 +171,9 @@
         "incoming_id": "EVAL-DUP-006",
         "predicted_duplicate": true,
         "matched_product_id": "B01JADTEKE",
-        "score": 1.0000001
+        "score": 0.99999994
       },
-      "margin": 0.04678290000000007,
+      "margin": 0.05597764000000005,
       "candidates": [
         {
           "rank": 1,
@@ -181,7 +181,7 @@
           "product_id": "B01JADTEKE",
           "title": "oodji Ultra Hombre Pantalones de Algodón con 5 Bolsillos, Azul, 40",
           "brand": "oodji Ultra",
-          "native_score": 1.0000001,
+          "native_score": 0.99999994,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -191,7 +191,7 @@
           "product_id": "B01M6YTQAM",
           "title": "oodji Ultra Hombre Pantalones Chinos con Cinturón, Azul, 38",
           "brand": "oodji Ultra",
-          "native_score": 0.9532172,
+          "native_score": 0.9440223,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -203,9 +203,9 @@
         "incoming_id": "EVAL-DUP-007",
         "predicted_duplicate": true,
         "matched_product_id": "B01M0G3WP0",
-        "score": 0.98837954
+        "score": 0.98892146
       },
-      "margin": 0.07893363999999992,
+      "margin": 0.08113806000000001,
       "candidates": [
         {
           "rank": 1,
@@ -213,7 +213,7 @@
           "product_id": "B01M0G3WP0",
           "title": "s.Oliver 38899953635 Cinturón, negro, 100 para Mujer",
           "brand": "s.Oliver",
-          "native_score": 0.98837954,
+          "native_score": 0.98892146,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -223,7 +223,7 @@
           "product_id": "B07KJT8Y9Y",
           "title": "Esprit Octavia Cinturón, Negro (Black 001), 75 para Mujer",
           "brand": "Esprit",
-          "native_score": 0.9094459,
+          "native_score": 0.9077834,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -235,27 +235,27 @@
         "incoming_id": "EVAL-NEW-001",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.8620958
+        "score": 0.874655
       },
-      "margin": 0.001373139999999995,
+      "margin": 0.00339155999999996,
       "candidates": [
         {
           "rank": 1,
-          "record_id": "62034cf7-d98e-5ef0-b777-4ad86c2e57cc",
-          "product_id": "8467060352",
-          "title": "Mis recetas favoritas para hacer en casa (F. COLECCION)",
-          "brand": "Espasa",
-          "native_score": 0.8620958,
+          "record_id": "c8c34175-6ccc-525c-8130-c7bfff287c1e",
+          "product_id": "B082R3BBJS",
+          "title": "ZHFEL Color Sólido Franela Manta Hogar Ocio Viajes Acogedora Cálido Suave Fácil Cuidado Lavable Adecuado para Sofá Cobija-Rojo sandia-100X150cm",
+          "brand": "ZHFEL",
+          "native_score": 0.874655,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "2f4fb6c6-a878-5d3d-bb3d-b52eb6efdced",
-          "product_id": "B07XYZVZGS",
-          "title": "Bola de Navidad Personalizada con los Nombres",
-          "brand": "Las bodas de Ana",
-          "native_score": 0.86072266,
+          "record_id": "977468d7-05a2-593d-b880-be88da42c8e7",
+          "product_id": "B0757NP87X",
+          "title": "Mesa auxiliar de diseño, cesta de metal con tapa de madera, decoración para sofá, incluye bandeja para cesta",
+          "brand": "Spetebo",
+          "native_score": 0.87126344,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -267,9 +267,9 @@
         "incoming_id": "EVAL-NEW-002",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.8679565
+        "score": 0.888514
       },
-      "margin": 0.007215399999999983,
+      "margin": 0.015319660000000068,
       "candidates": [
         {
           "rank": 1,
@@ -277,17 +277,17 @@
           "product_id": "B01ARBSND2",
           "title": "BUBM Estuche para Electrónicos Organizador de Accesesorio Bolsa de Viaje para Cables Cargador,Gadget de Memoria USB, Negro",
           "brand": "BUBM",
-          "native_score": 0.8679565,
+          "native_score": 0.888514,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "57af432f-f3b6-5569-b224-11361f4f6e07",
-          "product_id": "B07SHS85BW",
-          "title": "Pecute Transportin Gato Mochilas para Gatos y Perro Bolsa para Mascotas Expandible y Plegable, Carga Máxima 15 kg, para Viajar en Tren/automóvil/Restaurante/avión, Gris (Gris, Ventana Transparente)",
-          "brand": "Pecute",
-          "native_score": 0.8607411,
+          "record_id": "879f1429-e089-51a7-b1d1-959f983d6cfa",
+          "product_id": "B093Q3FH11",
+          "title": "Ufilter Estuche de transporte Caja de almacenamiento Bolsa de viaje para Drone Accesorios Caja de viaje portátil para DJI Mavic Air 2S/Air 2 Fly More Combo Drone",
+          "brand": "Ufilter",
+          "native_score": 0.87319434,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -299,27 +299,27 @@
         "incoming_id": "EVAL-NEW-003",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.8813516
+        "score": 0.88531744
       },
-      "margin": 0.003033399999999964,
+      "margin": 0.0005441900000000555,
       "candidates": [
         {
           "rank": 1,
-          "record_id": "a284522b-242b-5187-a9e9-e81c96cc1993",
-          "product_id": "B07R8YX1ZK",
-          "title": "AUTO HIGH Fundas de Asientos Coche Universal, Negro, Cubiertas Asiento de Toalla de Poliéste, Secado Rápido y Sudor Absorbente Súper, Protector de Asiento Delanteros para Fitness, 1 Pack",
-          "brand": "AUTO HIGH",
-          "native_score": 0.8813516,
+          "record_id": "7bc50504-d15e-5204-b97d-bc522aeebed5",
+          "product_id": "B07L32V9YC",
+          "title": "8safe Protector Universal para Asiento de Coche (PACK x 2) | Antideslizante y Resistente | ISOFIX Compatible | Material Oxford 210D | Tamaño ideal para Turismos/SUV",
+          "brand": "Toulifly",
+          "native_score": 0.88531744,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "d5e1db40-cdd8-55f4-9ef6-d710e03807f3",
-          "product_id": "B088ZL1C6N",
-          "title": "Purificadores de aire portátiles personales, mini purificador de aire, para deportes, ciclismo, correr y otros deportes al aire libre",
-          "brand": "Rsenr",
-          "native_score": 0.8783182,
+          "record_id": "e87de7de-2f5a-58d9-a880-5062a70d175d",
+          "product_id": "B07Y226J8F",
+          "title": "FSXTLLL 4 Piezas Coche Negro Microfibra Cuero Puerta Panel reposabrazos Cubierta guardapolvo Protector Interior Accesorios, para VW Passat B5 1998 2006",
+          "brand": "FSXTLLL",
+          "native_score": 0.88477325,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -331,27 +331,27 @@
         "incoming_id": "EVAL-NEW-004",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.877734
+        "score": 0.86569506
       },
-      "margin": 0.015058299999999969,
+      "margin": 0.004925459999999937,
       "candidates": [
         {
           "rank": 1,
-          "record_id": "87630f00-6354-5aa7-88a9-752fa9496aa4",
-          "product_id": "B00CUW7KNQ",
-          "title": "Piercing de acero para ombligo con incrustación de estrás",
-          "brand": "Pinzhi",
-          "native_score": 0.877734,
+          "record_id": "e8e6273f-b66d-516b-9702-51a1d3421d5f",
+          "product_id": "B07HRR9RBG",
+          "title": "Rotuladores Metálicos Dorados y Plateados, Marcadores Permanentes Metálicos Adecuados para Tarjetas Escritura Firma Letras Plumas Metálicas Pintura (Dorado y Plateado, 1,5 mm 6 Plumas)",
+          "brand": "Frienda",
+          "native_score": 0.86569506,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "2fabba4b-c99b-5c7e-b91e-4e28d3062d96",
-          "product_id": "B073TVYSNH",
-          "title": "Rollo Papel Plata - Aluminio Industrial 30cm ancho.",
-          "brand": "Roll & Pack",
-          "native_score": 0.8626757,
+          "record_id": "4b2ee345-12e1-5e1e-9bd6-4ea0dc5c72ed",
+          "product_id": "B0021CDZMK",
+          "title": "Stadter Cortador de Galletas, hojalata Blanca, Plata, 7,5 cm",
+          "brand": "Stadter",
+          "native_score": 0.8607696,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -363,27 +363,27 @@
         "incoming_id": "EVAL-NEW-005",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.87797344
+        "score": 0.8792236
       },
-      "margin": 0.004270839999999998,
+      "margin": 0.0021082300000000442,
       "candidates": [
         {
           "rank": 1,
-          "record_id": "748b4044-35d1-54df-8f82-6ef422930652",
-          "product_id": "B084MGTD7Z",
-          "title": "Frías - Bebida Bio de Soja con calcio caja de 6 litros",
-          "brand": "Frias",
-          "native_score": 0.87797344,
+          "record_id": "6cc68458-ca56-56f5-a815-8fb29cedf44c",
+          "product_id": "B08JQVSBB6",
+          "title": "Deuter Streamer Thermo Bag 3.0 L Accesorios para Bolsa de hidratación, Unisex Adulto, Granito, Talla única",
+          "brand": "Deuter",
+          "native_score": 0.8792236,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "38fcd04f-d10e-5a04-a05a-b9e1ff322494",
-          "product_id": "B00KXXBGZC",
-          "title": "Boles D'Olor Bruma Ambients Flor Blanca",
-          "brand": "BOLES DE OLOR",
-          "native_score": 0.8737026,
+          "record_id": "2ab71ae8-3ea9-5900-a11b-73484782c394",
+          "product_id": "B07RRNB252",
+          "title": "esonmus Bolsa Térmica Comida 10L, Termica Porta Alimentos con Correa Nevera Portatil Bolsa de Almuerzo para Adulto Babe Niños Trabajo Escuela Viaje Hombre Mujere (Verde)",
+          "brand": "esonmus",
+          "native_score": 0.87711537,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -395,27 +395,27 @@
         "incoming_id": "EVAL-NEW-006",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.8712977
+        "score": 0.8782747
       },
-      "margin": 0.0019248599999999172,
+      "margin": 0.002751249999999983,
       "candidates": [
         {
           "rank": 1,
-          "record_id": "c0be1841-ed9b-54b5-9185-b541c20cee72",
-          "product_id": "B07BS5QN37",
-          "title": "A",
-          "brand": "Elesong",
-          "native_score": 0.8712977,
+          "record_id": "d73ab72c-5e54-550a-bcbe-28608189c1eb",
+          "product_id": "B071NWXPGR",
+          "title": "Cisixin Taza de cerámica de Signo Músico con Tapa",
+          "brand": "Cisixin",
+          "native_score": 0.8782747,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "b429fa3e-dbf9-5f94-a65c-38c90c8cf68a",
-          "product_id": "B00NY0WDH6",
-          "title": "Receptor de Bolsillo In-Ear Inalámbrico de Gear4music",
-          "brand": "Gear4Music",
-          "native_score": 0.86937284,
+          "record_id": "a4d65415-eaf8-5a18-b125-8d5c0fb12f98",
+          "product_id": "8417575197",
+          "title": "Los Surcos del azar (Sillón Orejero)",
+          "brand": "ASTIBERRI",
+          "native_score": 0.87552345,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -427,27 +427,27 @@
         "incoming_id": "EVAL-NEW-007",
         "predicted_duplicate": false,
         "matched_product_id": "",
-        "score": 0.8708882
+        "score": 0.87067807
       },
-      "margin": 0.0030191999999999997,
+      "margin": 0.0001491299999999418,
       "candidates": [
         {
           "rank": 1,
-          "record_id": "551f18df-7a75-5514-9010-2cf5ca607336",
-          "product_id": "8466329080",
-          "title": "Como agua para chocolate (Best Seller)",
-          "brand": "Debolsillo",
-          "native_score": 0.8708882,
+          "record_id": "4f9f576d-8bd6-54b5-96f7-3e91d8e4283f",
+          "product_id": "B098XZ3YTY",
+          "title": "Especiero cocina organizador especias especiero pared organizador de especias botes especias organizador de cocina estante especias gadgets cocina originales estantería pared especieros para armarios",
+          "brand": "Kapavela",
+          "native_score": 0.87067807,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "38fcd04f-d10e-5a04-a05a-b9e1ff322494",
-          "product_id": "B00KXXBGZC",
-          "title": "Boles D'Olor Bruma Ambients Flor Blanca",
-          "brand": "BOLES DE OLOR",
-          "native_score": 0.867869,
+          "record_id": "a2eec8af-83a9-554b-b276-ce57d6fd1c97",
+          "product_id": "B00DN276FY",
+          "title": "Dispensador de jabón recargable Aitana de plástico AC70000, blanco",
+          "brand": "Jofel",
+          "native_score": 0.87052894,
           "score_kind": "similarity",
           "higher_is_better": true
         }

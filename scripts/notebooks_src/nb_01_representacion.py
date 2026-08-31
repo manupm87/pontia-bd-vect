@@ -32,13 +32,19 @@ def build_cells() -> list[NotebookNode]:
             - **multilingual-e5-small** (384d) se entrenó con pares
               consulta-documento (objetivo de *recuperación*): aprende a acercar
               una pregunta a su respuesta, aunque no compartan vocabulario.
-            - **multilingual-e5-base** (768d) comparte entrenamiento y contrato
-              con e5-small, con el doble de dimensiones y ~2.5x parámetros: mide
-              cuánto paga la *capacidad* a igualdad de todo lo demás.
+            - **multilingual-e5-base** (768d) y **multilingual-e5-large** (1024d)
+              comparten entrenamiento y contrato con e5-small, con cada vez más
+              dimensiones y parámetros: forman una *escalera de capacidad* que
+              mide cuánto paga el tamaño a igualdad de todo lo demás.
             - **paraphrase-multilingual-MiniLM** (384d) se entrenó con pares de
               paráfrasis: aprende a acercar frases que *dicen lo mismo*, que no es
               lo mismo que acercar una consulta a un producto. Frente a e5-small
               (misma dimensión) aísla el efecto del *objetivo de entrenamiento*.
+            - **bge-m3** y **Qwen3-Embedding-0.6B** (1024d ambos) son retadores
+              de otras dos familias punteras de recuperación multilingüe: bge-m3
+              no usa prefijos y Qwen3 antepone a la consulta una *instrucción* en
+              lenguaje natural. Comprueban que la conclusión no depende de haber
+              mirado solo dentro de la familia E5.
 
             La cercanía se mide con la **similitud coseno**: el coseno del ángulo
             entre dos vectores,
@@ -67,6 +73,9 @@ def build_cells() -> list[NotebookNode]:
             | `e5_small_full` | multilingual-e5-small | 384 | campo `text` completo | `passage:` / `query:` |
             | `e5_small_title` | multilingual-e5-small | 384 | título + marca + color | `passage:` / `query:` |
             | `e5_base_title` | multilingual-e5-base | 768 | título + marca + color | `passage:` / `query:` |
+            | `e5_large_title` | multilingual-e5-large | 1024 | título + marca + color | `passage:` / `query:` |
+            | `bge_m3_title` | bge-m3 | 1024 | título + marca + color | ninguno |
+            | `qwen3_embedding_title` | Qwen3-Embedding-0.6B | 1024 | título + marca + color | instrucción en la consulta |
             | `minilm_full` | paraphrase-multilingual-MiniLM | 384 | campo `text` completo | ninguno |
             | `bm25_full_text` | BM25 (léxico) | — | campo `text` completo | — |
             | `gemini_v2_title` *(opcional)* | gemini-embedding-2 (API) | 768 | título + marca + color | roles `query`/`title\|text` |
@@ -166,10 +175,12 @@ def build_cells() -> list[NotebookNode]:
             2. **El objetivo de entrenamiento manda más que la dimensión**: MiniLM
                (384d, como e5-small) se hunde sin prefijos `query:`/`passage:` ni
                objetivo de recuperación.
-            3. **La capacidad paga, una vez arreglada la composición**: e5-base
-               sobre el mismo texto ganador añade +0.008 nDCG, +0.025 recall y
-               +0.094 MRR sobre e5-small. Es la mejora más barata de todas: mismo
-               contrato, mismo pipeline, solo más modelo.
+            3. **Con 8 consultas, la escalera de capacidad no es monótona**:
+               e5-base mejora a e5-small (+0.094 MRR), pero e5-large *empeora* a
+               e5-base en las tres métricas, y los retadores bge-m3 y Qwen3
+               parecen dominar con claridad. Cada consulta mueve la macro-media
+               0.125: este tamaño de muestra no puede distinguir señal de ruido
+               entre modelos parejos — la sección siguiente lo resuelve.
             4. **BM25 no desaparece**: empata en nDCG con la familia E5 y pierde
                con claridad en recall y MRR. La ventaja densa está en el
                emparejamiento por intención, no en el orden fino de lo ya
@@ -201,6 +212,126 @@ def build_cells() -> list[NotebookNode]:
             **MRR**, `e5_base_title` pone un resultado exacto en primera posición
             en 6 de 8 consultas frente a 4 de BM25, y en 13357 y 18868 la
             diferencia es 1.0 frente a 0.167 y 0.5.
+            """
+        ),
+        markdown(
+            r"""
+            ## La validación ampliada: 8 consultas no deciden un modelo
+
+            La tabla anterior invita a promover bge-m3 o Qwen3 y a descartar
+            e5-large. Antes de tocar la configuración final se contrastó esa
+            lectura con un conjunto de consultas **dos órdenes de magnitud
+            mayor**, construido desde el propio origen de los datos: el snapshot
+            de la actividad deriva del *Shopping Queries Dataset* (ESCI) público,
+            así que sus `query_id` y `product_id` casan con los del dataset
+            original. `scripts/validate_challengers.py` (ejecutable con
+            `make validate-challengers`; descarga única de un parquet de 51 MB
+            cuya URL imprime el propio script):
+
+            - toma todas las consultas ESCI en español **excluyendo** las 8 de
+              desarrollo y las 4 consultas base de las que derivan las 12 de
+              evaluación ciega;
+            - restringe los juicios a productos presentes en el catálogo de
+              15.000 y exige un mínimo de señal (≥1 E y ≥2 E/S en catálogo):
+              **413 consultas** con ≥5 productos juzgados (nivel de decisión,
+              *primaria*) y **1.986** con ≥3 (*robustez*);
+            - rankea con el mismo oráculo exacto y las mismas métricas, y compara
+              cada modelo contra `e5_base_title` de forma **pareada**: delta
+              medio por consulta, intervalo de confianza bootstrap al 95 %,
+              p-valor de permutación por signos y recuento de
+              victorias/empates/derrotas — con **corrección de Holm** por
+              familia de contrastes (un titular de significación elegido entre
+              18 contrastes debe sobrevivirla) y con los **pareados directos**
+              entre los primeros clasificados persistidos en el propio
+              artefacto, no calculados a mano.
+
+            Los juicios restringidos al catálogo son dispersos (lo recuperado
+            sin juzgar cuenta 0), lo que deprime los números absolutos por igual
+            para todos los modelos: aquí solo las comparaciones pareadas tienen
+            lectura.
+            """
+        ),
+        code(
+            r"""
+            validation = json.loads(
+                (project_root / ".artifacts" / "experimentos" / "validacion_ampliada.json").read_text()
+            )
+            tier_rows = []
+            for tier_name, tier in validation["tiers"].items():
+                for experiment, aggregates in tier["aggregates"].items():
+                    tier_rows.append(
+                        {"nivel": tier_name, "consultas": tier["queries"], "experimento": experiment, **aggregates}
+                    )
+            validation_table = pd.DataFrame(tier_rows).round(3)
+            validation_table[validation_table["nivel"] == "primaria"].sort_values(
+                "ndcg_at_10", ascending=False
+            )
+            """
+        ),
+        code(
+            r"""
+            def verdict_frame(block_name: str) -> pd.DataFrame:
+                rows = []
+                for tier_name, tier in validation["tiers"].items():
+                    for experiment, metrics in tier[block_name].items():
+                        if experiment == "minilm_full":
+                            continue
+                        for metric_name, verdict in metrics.items():
+                            rows.append(
+                                {
+                                    "nivel": tier_name,
+                                    "experimento": experiment,
+                                    "métrica": metric_name,
+                                    "delta_medio": round(verdict["mean_delta"], 4),
+                                    "ic_95": [round(bound, 3) for bound in verdict["ci_95"]],
+                                    "p_valor": verdict["p_value"],
+                                    "p_holm": verdict["p_value_holm"],
+                                    "V/E/D": f"{verdict['wins']}/{verdict['ties']}/{verdict['losses']}",
+                                }
+                            )
+                return pd.DataFrame(rows)
+
+            verdicts = verdict_frame("paired_versus_incumbent")
+            verdicts[verdicts["nivel"] == "primaria"].sort_values(["experimento", "métrica"])
+            """
+        ),
+        markdown(
+            r"""
+            Y los pareados **directos** entre los primeros clasificados (¿gana
+            e5-large a los retadores, o solo a la titular?):
+            """
+        ),
+        code(
+            r"""
+            direct = verdict_frame("paired_direct")
+            direct.sort_values(["nivel", "experimento", "métrica"])
+            """
+        ),
+        markdown(
+            r"""
+            El conjunto grande **invierte la lectura del pequeño**, dos veces:
+
+            1. **e5-large, el "peor" en desarrollo, es el único modelo cuya
+               mejora sobre e5-base sobrevive la corrección de Holm en nDCG y
+               recall en el nivel de decisión** (p corregido 0.002 en ambas; su
+               MRR queda en evidencia solo nominal, p=0.040 sin corregir). Con
+               n=1986 el veredicto es total: las tres métricas sobreviven Holm
+               (0.002) y gana los **pareados directos** contra bge-m3 y Qwen3
+               también en las tres (p corregido ≤ 0.008). Con 413 consultas esos
+               directos apuntan igual pero sin fuerza concluyente (vs bge-m3,
+               nDCG/recall p nominal 0.009/0.011; vs Qwen3, sin significación).
+            2. **El dominio aparente de bge-m3 y Qwen3 era en buena parte
+               ruido**: con 413 consultas la ventaja de bge-m3 sobre e5-base no
+               alcanza significación ni nominal (p=0.13/0.13/0.51), y de Qwen3
+               solo sobrevive a Holm el recall.
+
+            La moraleja metodológica vale tanto como el resultado: un ranking de
+            modelos parejos sobre 8 consultas es una lotería con etiquetas de
+            rigor. Y ojo — la muestra grande **no** restaura una escalera de
+            capacidad limpia (e5-small-title también supera a e5-base, con
+            significación en robustez): lo que establece no es monotonicidad,
+            es que e5-large está por encima de toda la rejilla y que la titular
+            estaba, de hecho, cerca del fondo.
             """
         ),
         markdown(
@@ -255,11 +386,17 @@ def build_cells() -> list[NotebookNode]:
             regala recall), pero su podio lo encabezan una **aspiradora Dyson «sin
             cable»** y un router «inalámbrico» — coincidencias de palabras sueltas
             («sin», «inalámbrica», «potente») sin la intención — y el primer taladro
-            aparece en 4ª posición. La representación densa pone cinco taladros a
-            batería en las cinco primeras posiciones: entiende que la frase describe
-            *perforar sin enchufe*. Es la misma diferencia que las métricas agregadas
-            recogen como MRR (primera satisfacción): el usuario del buscador ve el
-            primer resultado, no el cuarto.
+            aparece en 4ª posición. La representación densa entiende que la frase
+            describe *perforar*: el primer puesto es un martillo perforador y el
+            tercero un taladro percutor a batería — exactamente la intención, donde
+            BM25 ponía una aspiradora. Y el mismo ejemplo enseña el límite con la
+            misma claridad: entre ellos se cuelan un enchufe y un interruptor
+            inteligentes, anclados literalmente en «enchufe» e «inalámbrico» — la
+            negación («sin depender de un enchufe») es el punto ciego que la
+            atribución de errores del notebook 05 disecciona en la consulta 38249.
+            Ni magia ni derrota: la ventaja densa está en la cabeza del ranking (lo
+            que el usuario ve primero), y sus fallos son diagnosticables y tienen
+            nombre.
 
             ## ¿Por qué estos candidatos y no otros?
 
@@ -277,24 +414,31 @@ def build_cells() -> list[NotebookNode]:
               cambiarlo o retirarlo). Se dejan fuera del recorrido evaluado por
               diseño; Gemini Embedding 2 queda **preparado** como experimento
               opcional (`gemini_v2_title`, se activa con `GEMINI_API_KEY`).
-            - **Modelos más grandes aún (e5-large, bge-m3, GTE…)**: candidatos
-              legítimos para una segunda iteración; a esta escala el cuello de
-              botella demostrado era la composición y los juicios, y e5-base ya
-              captura la mayor parte de la ganancia de capacidad con coste local
-              trivial.
+            - **e5-large, bge-m3 y Qwen3** se midieron precisamente como esa
+              segunda iteración: primero sobre las 8 consultas de desarrollo y
+              después en la validación ampliada, que fue la que decidió. Familias
+              aún mayores (7B+, servidos por API) repetirían la pregunta de
+              capacidad con un coste de inferencia local que la CLI interactiva
+              ya no absorbe.
             - **Modelos solo-español**: hay pocos afinados para *recuperación*
               mantenidos, y los E5 multilingües los superan en benchmarks de
               retrieval además de tolerar el ruido en inglés del catálogo.
 
             ## Decisión
 
-            **`e5_base_title`** queda fijada en `config/run_config.yaml` como
-            configuración de la ejecución final: multilingual-e5-base (768d),
+            **`e5_large_title`** queda fijada en `config/run_config.yaml` como
+            configuración de la ejecución final: multilingual-e5-large (1024d),
             título+marca+color, prefijos `query:`/`passage:`, L2-normalización y
-            métrica coseno. El coste del salto desde e5-small es asumible
-            (embeddings 6 s con GPU, p50 de búsqueda ~2.7 ms frente a ~2.3 ms) y
-            compra +0.094 de MRR. El manifiesto de embeddings
-            (`data/embeddings/e5_base_title/embedding_metadata.json`) encadena
+            métrica coseno. La decisión sale de la validación ampliada, no de la
+            tabla de desarrollo — y conviene decirlo sin rodeos: **en las 8
+            consultas de desarrollo e5-large luce peor que e5-base** (0.527
+            frente a 0.563 de nDCG). Se acepta ese número porque el conjunto
+            grande demuestra, con significación, que es la muestra la que
+            engaña, no el modelo. El sobrecoste frente a e5-base es asumible en
+            este despliegue (1024d frente a 768d en el índice, p50 de búsqueda
+            ~2.7 ms en ambos; el encoder, que domina la latencia de la CLI, se
+            mide en el notebook 02). El manifiesto de embeddings
+            (`data/embeddings/e5_large_title/embedding_metadata.json`) encadena
             checksums SHA-256 de entradas y salidas para que el experimento sea
             auditable.
 

@@ -48,7 +48,7 @@ def build_cells() -> list[NotebookNode]:
             persona describe lo que necesita sin usar las palabras del catálogo
             («herramienta inalámbrica potente para perforar» no contiene «taladro»).
             La alternativa es representar el *significado* de cada texto como un
-            **embedding**: un vector de números reales (768 dimensiones en la
+            **embedding**: un vector de números reales (1024 dimensiones en la
             configuración final) en un espacio donde la cercanía geométrica se
             corresponde con la cercanía semántica. Buscar deja de ser «¿qué títulos contienen estas palabras?» y
             pasa a ser «¿qué vectores están más cerca del vector de la consulta?».

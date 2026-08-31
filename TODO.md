@@ -1,47 +1,39 @@
 # Trabajo pendiente
 
-Estado al cierre del 29 de agosto de 2026 (commit `5174f83`).
+Estado al cierre del 31 de agosto de 2026.
 
-## Decisión pendiente: ¿promover un retador a configuración final?
+## Hecho: promoción decidida por validación ampliada
 
-Los retadores locales ya están **medidos** sobre las 8 consultas de desarrollo
-(oráculo exacto, composición título+marca+color; ver
-`.artifacts/experimentos/registro_experimentos.json`, regenerable con
-`make experiments`):
+La decisión pendiente (¿promover un retador?) se resolvió construyendo una
+**validación ampliada** sobre el ESCI público (`make validate-challengers`,
+`scripts/validate_challengers.py`): 413 consultas con ≥5 productos juzgados
+en catálogo (nivel de decisión) y 1.986 con ≥3 (robustez), comparación
+pareada con bootstrap y permutación por signos contra `e5_base_title`.
 
-| Configuración | nDCG@10 | Recall@10 | MRR@10 | Dim. |
-|---|---|---|---|---|
-| `qwen3_embedding_title` | **0.648** | **0.296** | 0.750 | 1024 |
-| `bge_m3_title` | 0.637 | 0.266 | **0.875** | 1024 |
-| `e5_base_title` *(final actual)* | 0.563 | 0.248 | 0.792 | 768 |
-| `e5_large_title` | 0.527 | 0.195 | 0.719 | 1024 |
+Resultado — el conjunto grande invirtió el veredicto de las 8 de desarrollo:
 
-Hallazgos: bge-m3 y Qwen3 superan con claridad a toda la familia E5; e5-large
-rinde *peor* que e5-base (la capacidad no escala monotónicamente en este
-dominio). Trade-off abierto: Qwen3 gana en nDCG/recall, bge-m3 en MRR; ambos
-son 1024d con encoder más pesado (latencia de la CLI y memoria del índice).
+- **`e5_large_title` promovida a configuración final**: única cuya mejora
+  sobre e5-base sobrevive la corrección de Holm en nDCG y recall con n=413
+  (p corregido 0.002; el MRR queda en p=0.040 nominal); con n=1986 las tres
+  métricas sobreviven Holm y gana los pareados directos (persistidos en el
+  artefacto) a bge-m3 y Qwen3 en las tres.
+- El dominio aparente de bge-m3/Qwen3 en desarrollo era mayormente ruido
+  (bge-m3 vs e5-base con n=413: p=0.13/0.13/0.51).
+- Cascada completa ejecutada: reingesta 1024d + idempotencia, umbral de
+  duplicados recalibrado por max-margin (0.943, hueco 0.8978–0.9884),
+  evaluate/events/sweep/search-results/evidence, notebooks 00–05 e informe.
 
-## Si se decide promover (cascada completa, ya hecha una vez en `13cf8b8`)
+## Notas abiertas
 
-1. `config/run_config.yaml` → `embedding.configuration`.
-2. `AURUM_ALLOW_RESET=true make ingest` (cambia la dimensión) y una segunda
-   pasada de `make ingest` como prueba de idempotencia.
-3. `make duplicates` → mirar el hueco en `.artifacts/duplicados/calibracion.json`
-   y fijar el umbral **max-margin** (punto medio) en `run_config.yaml`; repetir
-   `make duplicates`.
-4. `make evaluate && AURUM_ALLOW_RESET=true make events` y
-   `AURUM_ALLOW_RESET=true make sweep-ef` (la colección débil también cambia de
-   dimensión) y `make search-results && make evidence`.
-5. Actualizar las cifras narradas en `scripts/notebooks_src/` (00 intro
-   dimensión, 01 tablas/decisión, 02 esquema y lectura de latencia, 04 rangos y
-   umbral de duplicados, 05 métricas/barrido/atribución) y en
-   `docs/informe/INFORME_AURUM_MARKET.tex`; después
-   `make execute-notebook` (con `--in-place` vía script) y `make informe`.
-6. `make verify && make test-integration`, revisión adversarial, commit.
-
-## Otras ideas anotadas
-
-- Con `GEMINI_API_KEY` en `.env`: `make embeddings && make experiments` añade
-  la fila de Gemini Embedding 2 a la comparativa.
-- Si se promueve un modelo 1024d, re-medir la latencia de la CLI (el encoder
-  domina el tiempo de una consulta interactiva).
+- **Probable falso negativo en el ciego**: `EVAL-DUP-004` puntúa 0.9428 —
+  dentro del hueco de desarrollo y a 0.0002 del umbral — y queda negativo
+  (6 positivos de 14, antes 7). Por la convención de identificadores es casi
+  seguro un duplicado real (recall ciego estimado 6/7). Narrado con esa
+  franqueza en notebook 04 e informe como argumento de la banda de
+  abstención; no se tocó el umbral para cazarlo porque sería calibrar con el
+  ciego.
+- Con `GEMINI_API_KEY` en `.env`: `make embeddings && make experiments`
+  añade la fila de Gemini Embedding 2 a la comparativa (y podría pasarse
+  también por `make validate-challengers` con soporte extra).
+- El parquet de la validación (51 MB) vive en `data/validacion/` (no
+  versionado); la URL la imprime el script si falta.

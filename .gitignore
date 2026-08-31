@@ -14,6 +14,10 @@ __pycache__/
 # Embeddings generados localmente con `make embeddings`
 data/embeddings/
 
+# Parquet público de ESCI (51 MB) para `make validate-challengers`;
+# la URL de descarga la imprime scripts/validate_challengers.py
+data/validacion/
+
 # Diagrama en PDF generado por el render del informe
 docs/informe/arquitectura.pdf
 

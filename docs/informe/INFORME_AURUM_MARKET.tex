@@ -60,12 +60,14 @@
     detecta altas potencialmente duplicadas con una regla calibrada solo con
     datos de desarrollo. El motor elegido es \textbf{Qdrant} (local, Docker)
     con su SDK nativo; la representación ganadora es
-    \textbf{multilingual-e5-base} codificando \textbf{título + marca + color}
+    \textbf{multilingual-e5-large} codificando \textbf{título + marca + color}
     en lugar del campo \code{text} completo --- decisiones que salieron de una
-    rejilla de experimentos (composición, objetivo de entrenamiento y capacidad,
-    con BM25 como baseline y Gemini Embedding 2 preparado como opción API), no
-    del catálogo de modelos. Cada cifra de este
-    informe se regenera desde \code{config/run\_config.yaml} y queda
+    rejilla de experimentos (composición, objetivo de entrenamiento y
+    capacidad, con BM25 como baseline, dos retadores externos y Gemini
+    Embedding 2 preparado como opción API) y de una \textbf{validación
+    ampliada} sobre 413 consultas públicas de ESCI con estadística pareada,
+    que invirtió el veredicto de las 8 consultas de desarrollo. Cada cifra de
+    este informe se regenera desde \code{config/run\_config.yaml} y queda
     justificada, con tablas y gráficos, en la serie de notebooks de I+D
     \code{actividad\_00}--\code{05}.
     \end{minipage}
@@ -116,9 +118,10 @@ artefactos.
 \textbf{Texto codificado.} Cada producto se representa con una composición
 documentada y saneada: los valores vacíos son información ausente (nunca la
 cadena \code{"nan"}) y los campos vacíos se omiten. Se compararon dos
-composiciones y tres modelos locales \cite{wang2024,reimers2019}, más el
-baseline léxico, siempre con búsqueda exacta para aislar la representación del
-índice (tabla~\ref{tab:experimentos}); una configuración adicional con Gemini
+composiciones y seis modelos locales \cite{wang2024,reimers2019,chen2024},
+más el baseline léxico, siempre con búsqueda exacta para aislar la
+representación del índice (tabla~\ref{tab:experimentos}); una configuración
+adicional con Gemini
 Embedding 2 (API de la sesión 01) queda preparada y se construye solo si
 existe \code{GEMINI\_API\_KEY}. El enunciado no obliga a modelos locales
 (``no existe ventaja por utilizar cloud frente a local''); el final local es
@@ -128,7 +131,9 @@ regeneración completa sin clave ni binarios grandes en el repositorio.
 \begin{table}[h]
   \centering\small
   \caption{Experimentos de representación sobre las 8 consultas de
-  desarrollo (búsqueda exacta). En negrita, la configuración elegida.}
+  desarrollo (búsqueda exacta). En negrita, la configuración final --- que
+  \textbf{no} es la ganadora de esta tabla: la eligió la validación ampliada
+  (tabla~\ref{tab:validacion}).}
   \label{tab:experimentos}
   \begin{tabular}{@{}lccc@{}}
     \toprule
@@ -137,13 +142,16 @@ regeneración completa sin clave ni binarios grandes en el repositorio.
     bm25\_full\_text & 0.558 & 0.187 & 0.646 \\
     e5\_small\_full & 0.533 & 0.205 & 0.588 \\
     e5\_small\_title & 0.555 & 0.223 & 0.698 \\
-    \textbf{e5\_base\_title} & \textbf{0.563} & \textbf{0.248} & \textbf{0.792} \\
+    e5\_base\_title & 0.563 & 0.248 & 0.792 \\
+    \textbf{e5\_large\_title} & \textbf{0.527} & \textbf{0.195} & \textbf{0.719} \\
+    bge\_m3\_title & 0.637 & 0.266 & 0.875 \\
+    qwen3\_embedding\_title & 0.648 & 0.296 & 0.750 \\
     minilm\_full & 0.273 & 0.095 & 0.310 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Tres conclusiones sostienen la elección de \code{e5\_base\_title}:
+Dos conclusiones salen ya de la tabla de desarrollo:
 
 \begin{enumerate}
   \item \textbf{El campo \code{text} completo perjudica a E5.} Las fichas
@@ -157,11 +165,61 @@ Tres conclusiones sostienen la elección de \code{e5\_base\_title}:
   confirma que el prefijo \code{query:}/\code{passage:} y el entrenamiento de
   recuperación de E5 son la parte que importa, no la dimensión (ambos son
   384d).
-  \item \textbf{La capacidad paga, una vez arreglada la composición.} Sobre el
-  mismo texto ganador, e5-base (768d) añade $+0.008$ nDCG, $+0.025$ recall y
-  $+0.094$ MRR frente a e5-small, con coste local trivial (6~s de embeddings
-  con GPU, p50 de búsqueda ${\sim}2.7$ frente a ${\sim}2.3$~ms).
 \end{enumerate}
+
+\textbf{La tercera conclusión exigió más datos.} Sobre 8 consultas cada una
+mueve la macro-media $0.125$: la tabla sugiere que e5-large (el mayor de la
+familia) \emph{empeora} a e5-base y que los retadores bge-m3 y
+Qwen3-Embedding dominan. Antes de fijar la configuración se construyó una
+\textbf{validación ampliada} (\code{make validate-challengers}): el snapshot
+de la actividad deriva del dataset público ESCI \cite{reddy2022}, así que
+pueden tomarse todas las consultas españolas publicadas ---excluidas las 8
+de desarrollo y las 4 consultas base de las 12 de evaluación ciega---,
+restringir sus juicios al catálogo de 15.000 y evaluar con el mismo oráculo
+exacto: 413 consultas con $\geq 5$ productos juzgados en catálogo (nivel de
+decisión) y 1.986 con $\geq 3$ (robustez). La comparación contra e5-base es
+\textbf{pareada}: delta medio por consulta, IC bootstrap al 95\,\% y p-valor
+de permutación por signos (tabla~\ref{tab:validacion}).
+
+\begin{table}[h]
+  \centering\small
+  \caption{Validación ampliada (413 consultas, oráculo exacto). $\Delta$ =
+  delta medio pareado frente a e5\_base\_title (permutación por signos,
+  10.000 remuestreos, semilla 42); * = $p<0.05$ nominal, ** = sobrevive
+  además la corrección de Holm sobre los 18 contrastes del nivel.}
+  \label{tab:validacion}
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    Configuración & nDCG@10 & Recall@10 & MRR@10 \\
+    \midrule
+    \textbf{e5\_large\_title} & \textbf{0.469}$^{**}$ & \textbf{0.473}$^{**}$ & \textbf{0.558}$^{*}$ \\
+    e5\_small\_title & 0.451$^{*}$ & 0.449 & 0.549 \\
+    qwen3\_embedding & 0.450 & 0.462$^{**}$ & 0.533 \\
+    bge\_m3\_title & 0.447 & 0.449 & 0.540 \\
+    e5\_base\_title & 0.432 & 0.432 & 0.530 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+El conjunto grande invierte el veredicto del pequeño, dos veces.
+\textbf{e5-large, el ``peor'' en desarrollo, es el único modelo cuya mejora
+sobre e5-base sobrevive la corrección de Holm en nDCG y recall en el nivel
+de decisión} ($p$ corregido $0.002$; su MRR queda en evidencia solo
+nominal, $p{=}0.040$). Con $n{=}1986$ el veredicto es total: las tres
+métricas sobreviven Holm ($0.002$) y e5-large gana los \textbf{pareados
+directos} ---persistidos en el propio artefacto, no calculados a mano---
+contra bge-m3 y Qwen3 también en las tres ($p$ corregido $\leq 0.008$); con
+413 consultas esos directos apuntan igual pero sin fuerza concluyente. Y el
+dominio aparente de los retadores era en buena parte ruido de muestra
+(bge-m3 frente a e5-base con $n{=}413$: $p{=}0.13/0.13/0.51$). Los juicios
+restringidos al catálogo son dispersos y deprimen los valores absolutos por
+igual para todos los modelos; por eso la decisión se apoya en las
+comparaciones pareadas, no en los niveles. La lección metodológica queda a
+la vista en la tabla~\ref{tab:experimentos}: la configuración final
+\emph{pierde} sobre las 8 consultas de desarrollo, y se acepta ese número
+porque la evidencia con $50\times$ más consultas demuestra que es la muestra
+la que engaña --- sin que eso restaure una escalera de capacidad limpia:
+e5-small-title también supera a e5-base en el conjunto grande.
 
 \textbf{Métrica, normalización y score.} Los embeddings se L2-normalizan al
 codificar y la colección usa distancia \textbf{coseno}; con vectores
@@ -179,7 +237,7 @@ salió.
 \label{sec:indice}
 
 \textbf{Esquema.} Una colección Qdrant \cite{qdrant}
-(\code{aurum-market-eval-catalogo}) con un vector sin nombre de 768d,
+(\code{aurum-market-eval-catalogo}) con un vector sin nombre de 1024d,
 distancia coseno, e ID de punto igual al \code{record\_id} UUIDv5 del
 catálogo ---el mismo UUID que el manifiesto de datos declara, verificado en
 carga---. El payload conserva \code{product\_id}, \code{title},
@@ -217,7 +275,7 @@ el sistema: la verificación del estado de indexación debe comprobar el
 y \emph{upsert} por \code{record\_id}: repetir la ingesta completa deja
 exactamente 15.000 registros (verificado en el informe de ingesta:
 \code{count\_before}${=}$\code{count\_after}${=}15000$,
-\code{idempotent=true}). La ingesta completa tarda ${\sim}4$~s en local y la
+\code{idempotent=true}). La ingesta completa tarda ${\sim}8$~s en local y la
 colección puede reconstruirse desde cero con \code{AURUM\_ALLOW\_RESET=true}.
 
 \section{Recuperación y filtros}
@@ -277,18 +335,20 @@ corrector no hereda costes.
 \textbf{Regla.} La base vectorial genera los 5 candidatos más próximos del
 alta entrante (codificada como documento, con la misma composición que el
 catálogo). Se declara duplicado si el mejor candidato alcanza
-$\mathit{score} \geq 0.937$; el margen sobre el segundo candidato se registra
+$\mathit{score} \geq 0.943$; el margen sobre el segundo candidato se registra
 como evidencia (umbral de margen $0.0$: la rejilla lo descarta, porque hay
 duplicados reales casi empatados con una segunda copia legítima).
 
 \textbf{Calibración solo con desarrollo.} Sobre los 14 casos etiquetados, la
 rejilla explora todos los umbrales que separan scores observados. Los 7
-duplicados puntúan en $[0.974, 1.000]$ y los 7 no duplicados en
-$[0.870, 0.899]$: cualquier umbral de score en ese hueco logra $F_1{=}1.0$.
-Se eligió un umbral \textbf{centrado en el margen de separación} (0.937,
-punto medio 0.9365) en lugar del umbral máximo que devuelve la rejilla
-(0.9734), criterio \emph{max-margin} que no se pega a ningún caso
-concreto y generaliza mejor. Con él: precision 1.0, recall 1.0, $F_1$ 1.0 en
+duplicados puntúan en $[0.988, 1.000]$ y los 7 no duplicados en
+$[0.874, 0.898]$ ---con e5-large el hueco es más ancho que con e5-base
+(0.090 frente a 0.075): el modelo promovido también separa mejor los
+duplicados---. Cualquier umbral de score en ese hueco logra $F_1{=}1.0$. Se
+eligió un umbral \textbf{centrado en el margen de separación} (0.943, punto
+medio 0.9431) en lugar del umbral máximo que devuelve la rejilla (0.9883),
+criterio \emph{max-margin} que no se pega a ningún caso concreto y
+generaliza mejor. Con él: precision 1.0, recall 1.0, $F_1$ 1.0 en
 desarrollo, exigiendo además que el candidato señalado sea exactamente el
 producto de referencia etiquetado.
 
@@ -299,14 +359,26 @@ stock y degrada el propio buscador; su coste es mayor y más silencioso. Por
 eso el desempate de la calibración prima la precisión (la cola de revisión
 debe ser creíble) pero el umbral elegido queda centrado, sin sacrificar
 recall. En desarrollo no hubo ni un tipo de error ni el otro; el caso más
-difícil (DEV-NEW-007, score 0.899, un no-duplicado muy parecido) queda a
-0.038 del umbral y es el que habría que vigilar en producción.
+difícil (DEV-NEW-007, score 0.898, un no-duplicado muy parecido) queda a
+0.045 del umbral y es el que habría que vigilar en producción.
 
 \textbf{Evaluación ciega.} Sobre \code{altas\_evaluacion.csv} la regla
-predice 7 duplicados y 7 altas nuevas; los positivos puntúan en
-$[0.941, 1.000]$ con margen medio $0.08$ y los negativos en
-$[0.862, 0.881]$: la misma separación limpia que en desarrollo, señal de que
-el umbral no está sobreajustado.
+predice 6 duplicados y 8 altas nuevas. Trece de los catorce casos replican
+la separación de desarrollo (positivos en $[0.980, 1.000]$, negativos en
+$[0.866, 0.889]$); el decimocuarto (\code{EVAL-DUP-004}) puntúa
+\textbf{0.9428, dentro del hueco de desarrollo y a 0.0002 del umbral}, y la
+regla lo clasifica negativo. Las etiquetas del ciego están reservadas, pero
+la convención de identificadores (\code{EVAL-DUP-*} frente a
+\code{EVAL-NEW-*}) indica que se trata casi con certeza de un duplicado
+real: un probable \textbf{falso negativo}, el error caro. La lectura
+honesta del ciego es precision estimada 6/6 y recall estimado 6/7
+(${\sim}0.86$), no una separación perfecta. El umbral no se toca aun así:
+el conjunto de calibración no contiene ningún ejemplo en esa zona y moverlo
+\emph{a posteriori} sería calibrar con el conjunto ciego --- exactamente lo
+que la metodología declaró que no haría. Ese score intermedio es la
+definición operativa de ``revisión humana'': la mejora natural de la regla
+no es otro umbral, sino una banda de abstención alrededor de la frontera
+(véase la sección~\ref{sec:evolucion}).
 
 \section{Evaluación}
 \label{sec:evaluacion}
@@ -334,10 +406,10 @@ resume la ejecución final.
     \toprule
     Métrica & Valor \\
     \midrule
-    nDCG@10 & 0.563 \\
-    Recall@10 (E$\cup$S) & 0.248 \\
-    MRR@10 (E) & 0.792 \\
-    Latencia p50 / p95 & 2.71 / 3.43 ms \\
+    nDCG@10 & 0.527 \\
+    Recall@10 (E$\cup$S) & 0.195 \\
+    MRR@10 (E) & 0.719 \\
+    Latencia p50 / p95 & 2.72 / 3.05 ms \\
     Fidelidad ANN@10 (media / mín.) & 1.000 / 1.000 \\
     \bottomrule
   \end{tabular}
@@ -360,22 +432,25 @@ que recupera el ANN--- se valida con un barrido de \code{ef\_search}
     \toprule
     Grafo & \code{ef} & Fid. media@10 & Fid. mín.@10 \\
     \midrule
-    $m{=}24$ (entregado) & 10 & 0.885 & 0.30 \\
-    $m{=}24$ (entregado) & 64 & 0.985 & 0.80 \\
+    $m{=}24$ (entregado) & 10 & 0.905 & 0.30 \\
+    $m{=}24$ (entregado) & 64 & 0.995 & 0.90 \\
     $m{=}24$ (entregado) & 128 & \textbf{1.000} & \textbf{1.000} \\
-    $m{=}4$ (débil) & 10 & 0.435 & 0.10 \\
-    $m{=}4$ (débil) & 128 & 0.805 & 0.30 \\
+    $m{=}4$ (débil) & 10 & 0.490 & 0.00 \\
+    $m{=}4$ (débil) & 128 & 0.890 & 0.40 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Dos lecciones: el grafo entregado no pierde nada en todo el barrido (a esta
-escala, con un grafo bien construido, \code{ef\_search} es margen de
-seguridad, no dial crítico), y un grafo mal construido \textbf{no se arregla
-buscando más}: con $m{=}4$ la fidelidad se estanca en ${\sim}0.87$ incluso a
-\code{ef}${=}128$, porque las aristas que no existen no se pueden recorrer.
-La calidad se decide en construcción ($m$, \code{ef\_construct}); al crecer
-el catálogo este barrido es la herramienta de re-calibración.
+Dos lecciones: en el grafo entregado, con 1024 dimensiones y el barrido
+medido justo tras la ingesta, \code{ef\_search} es un dial real
+---\code{ef}${=}10$ pierde de media un 10\,\% del top-10 (mínima 0.30 en
+una consulta) y solo \code{ef}${=}128$ recupera fidelidad 1.0---, y un grafo
+mal construido \textbf{no se arregla buscando más}: con $m{=}4$ hay una
+consulta que pierde el top-10 \emph{entero} a \code{ef}${=}10$ y la
+fidelidad media se estanca en ${\sim}0.89$ incluso a \code{ef}${=}128$,
+porque las aristas que no existen no se pueden recorrer. La calidad se
+decide en construcción ($m$, \code{ef\_construct}); al crecer el catálogo
+este barrido es la herramienta de re-calibración.
 
 \section{Atribución de errores}
 \label{sec:atribucion}
@@ -386,39 +461,43 @@ evidencia. La fidelidad ANN 1.000 en la configuración final descarta el
 (verificado consulta a consulta en el notebook 05).
 
 \textbf{Caso 1 --- Representación: \guillemotleft estantes sin taladro
-habitacion\guillemotright{} (38249, nDCG 0.379).} El modelo base mejora la
-cabeza del ranking (el primer resultado ya es un estante E; con e5-small el
-MRR era 0.25), pero la cola sigue contaminada por libros (\emph{La buena
-cocina sin sal}, \emph{Máscaras sin nombre}, \emph{Ángeles sin alas}): E5
-ancla la negación ``sin + sustantivo'' y con títulos cortos sin marca el
-parecido superficial domina. El oráculo exacto devuelve lo mismo: el vecino
-exacto ya es semánticamente malo, luego el error nace en la representación,
-no en el índice. Mitigación razonable: componer el texto con una frase de
-categoría o un reranking léxico ligero del top-50.
+habitacion\guillemotright{} (38249, nDCG 0.246).} Tres libros encabezan el
+ranking (\emph{La buena cocina sin sal}, \emph{Ángeles sin alas},
+\emph{Fragile Rooms}) y el primer estante E no llega hasta la 4ª posición
+(MRR 0.25). El fallo recorre toda la escalera de capacidad ---e5-small
+también puntuaba MRR 0.25, e5-base limpiaba la cabeza pero no la cola, y
+e5-large vuelve a tropezar---: E5 ancla la negación ``sin + sustantivo'' y
+con títulos cortos sin marca el parecido superficial domina; más parámetros
+no lo desaprenden. El oráculo exacto devuelve lo mismo: el vecino exacto ya
+es semánticamente malo, luego el error nace en la representación, no en el
+índice. Mitigación razonable: componer el texto con una frase de categoría o
+un reranking léxico ligero del top-50.
 
 \textbf{Caso 2 --- Datos y juicios: \guillemotleft disfraz halloween talla
-grande hombre\guillemotright{} (33633, MRR 0.0).} El sistema devuelve
-disfraces de Halloween reales (recall 0.50, el más alto de esta consulta en
-toda la rejilla), pero la consulta tiene 16 juicios (solo 4 relevantes
-E$\cup$S) y el único Exact etiquetado es\ldots{} una blusa de mujer (ruido
-del dataset ESCI \cite{reddy2022}): el MRR es 0 precisamente porque el
-sistema \emph{no} recupera esa blusa, y los disfraces plausibles sin juicio
-computan ganancia 0. Es un error de la capa de datos/etiquetas que ninguna
-configuración puede remontar.
+grande hombre\guillemotright{} (33633, MRR 0.0).} El sistema llena el top-10
+de disfraces de Halloween reales y aun así puntúa nDCG 0.042 con recall y
+MRR 0: la consulta tiene 16 juicios (solo 4 relevantes E$\cup$S) y el único
+Exact etiquetado es\ldots{} una blusa de mujer (ruido del dataset ESCI
+\cite{reddy2022}): el MRR es 0 precisamente porque el sistema \emph{no}
+recupera esa blusa, y los disfraces plausibles sin juicio computan ganancia
+0. Es un error de la capa de datos/etiquetas que ninguna configuración puede
+remontar: en toda la rejilla, ninguna logra aquí MRR $> 0$.
 
 \textbf{Caso 3 --- Representación en atributos finos: \guillemotleft botines
-marrones mujer tacon medio\guillemotright{} (18868, nDCG 0.370).} En el
-top-5 conviven un botín \emph{plateado de tacón bajo} etiquetado Irrelevant
-y botines de tacón alto sin juicio: la categoría se acierta, pero color y
+marrones mujer tacon medio\guillemotright{} (18868, nDCG 0.474).} La cabeza
+es buena (dos E marrones, MRR 1.0), pero en el top-5 conviven unas botas
+\emph{negras de caña alta y tacón alto} etiquetadas Irrelevant y unos
+zapatos de tacón alto sin juicio: la categoría se acierta, pero color y
 altura de tacón se difuminan en la similitud coseno --- y el patrón persiste
-al pasar de e5-small a e5-base, señal de que no es cuestión de capacidad. La
-mitigación estructural no es cambiar de modelo sino mover atributos duros
-(color) a metadatos filtrables, como ya se hace con la marca.
+en los tres tamaños de la familia E5, señal de que no es cuestión de
+capacidad. La mitigación estructural no es cambiar de modelo sino mover
+atributos duros (color) a metadatos filtrables, como ya se hace con la
+marca.
 
 \textbf{Las otras dos capas, con su propia evidencia.} La capa de
 \textbf{índice} se demuestra provocándole una pérdida real: en el grafo
-débil del barrido ($m{=}4$, \code{ef\_search}${=}10$) el ANN pierde hasta 9
-de los 10 vecinos que el oráculo recupera en una consulta, exactamente la
+débil del barrido ($m{=}4$, \code{ef\_search}${=}10$) el ANN llega a perder
+el top-10 completo que el oráculo recupera en una consulta, exactamente la
 forma de evidencia que define el enunciado; en la configuración entregada la
 pérdida es cero. En \textbf{persistencia/consistencia} no se observó
 discrepancia alguna: las escrituras usan \code{wait=True}, las tres
@@ -427,13 +506,17 @@ al primer intento y el estado final de los 24 eventos se valida registro a
 registro.
 
 \section{Decisión recomendada y evolución}
+\label{sec:evolucion}
 
 \textbf{Para Aurum Market hoy:} Qdrant local con HNSW ($m{=}24$,
 \code{ef\_construct}${=}120$, \code{ef\_search}${=}128$),
-\code{multilingual-e5-base} sobre título+marca+color, filtro de marca por
-payload indexado, regla de duplicados con umbral 0.937 sobre score coseno y
-revisión humana de los positivos. Todo el recorrido corre en un portátil, es
-idempotente y se reconstruye desde cero con dos comandos.
+\code{multilingual-e5-large} sobre título+marca+color, filtro de marca por
+payload indexado, regla de duplicados con umbral 0.943 sobre score coseno y
+revisión humana de los positivos. El coste de e5-large no lo paga el índice
+(mismos ${\sim}2.7$~ms de p50 en Qdrant) sino el encoder de cada consulta
+interactiva, medido en el notebook 02 y asumible para una CLI. Todo el
+recorrido corre en un portátil, es idempotente y se reconstruye desde cero
+con dos comandos.
 
 \textbf{Qué cambiaría al crecer el catálogo (15k $\rightarrow$ 1M):}
 
@@ -443,13 +526,15 @@ idempotente y se reconstruye desde cero con dos comandos.
   consulta y presupuestar memoria del grafo (o evaluar cuantización escalar
   de Qdrant).
   \item \emph{Representación}: el caso 1 de la
-  sección~\ref{sec:atribucion} escala mal; un modelo mayor (e5-large), la
-  opción API ya preparada (Gemini Embedding 2) o un reranker sobre el top-100
-  se re-evaluarían con el mismo arnés de experimentos, que ya conserva IDs y
-  configuraciones.
+  sección~\ref{sec:atribucion} escala mal y sobrevive a toda la familia E5;
+  el siguiente paso no es otro encoder sino un reranker sobre el top-100 o
+  señal de categoría en el texto, re-evaluados con el arnés de la validación
+  ampliada (que ya conserva IDs, configuraciones y estadística pareada). La
+  opción API (Gemini Embedding 2) queda preparada.
   \item \emph{Duplicados}: con más altas diarias, el umbral único debería
   convertirse en dos (auto-rechazo / revisión humana / auto-aprobación)
-  calibrados sobre la curva precision-recall completa.
+  calibrados sobre la curva precision-recall completa --- el caso ciego a
+  0.0002 de la frontera es el argumento empírico de esa banda de abstención.
   \item \emph{Operativa}: la colección de eventos separada se sustituiría
   por \emph{snapshots} de Qdrant y un flujo de reingesta azul/verde; los
   interruptores de limpieza ya existen y se mantendrían.
@@ -466,8 +551,11 @@ desde ella).
 
 \section{Reproducción y artefactos}
 
-\textbf{Reproducción íntegra} (entorno limpio, ${\sim}10$ min sin GPU):
-\code{make setup \&\& make up \&\& make embeddings \&\& make pipeline}.
+\textbf{Reproducción íntegra} (entorno limpio; los embeddings de la rejilla
+completa dominan el tiempo --- minutos con GPU): \code{make setup \&\& make
+up \&\& make embeddings \&\& make pipeline}. La validación ampliada se
+regenera con \code{make validate-challengers} tras una única descarga del
+parquet público de ESCI (51~MB; la URL la imprime el propio script).
 
 \textbf{Notebooks de I+D (entregados ejecutados).} La serie
 \code{notebooks/actividad\_00}--\code{05} justifica cada bloque de
@@ -492,9 +580,10 @@ lectura secuencial. Se regeneran con \code{make notebook} y se ejecutan
   \item[\code{docs/images/arquitectura.svg}] Diagrama de arquitectura
   (figura~\ref{fig:arquitectura}).
   \item[\code{resultados/evidencia/}] Copia versionada de la evidencia:
-  registro de experimentos con IDs recuperados, evaluación completa con
-  entorno, barrido \code{ef\_search}, calibración y decisiones de duplicados,
-  informes de filtros, eventos e ingesta.
+  registro de experimentos con IDs recuperados, validación ampliada con
+  estadística pareada, evaluación completa con entorno, barrido
+  \code{ef\_search}, calibración y decisiones de duplicados, informes de
+  filtros, eventos e ingesta.
   \item[\code{.artifacts/}] Los mismos informes en su ubicación de trabajo
   (regenerables con \code{make pipeline}).
 \end{description}
@@ -516,6 +605,9 @@ Dataset: A Large-Scale ESCI Benchmark for Improving Product Search.
 Embeddings: A Technical Report. \emph{arXiv:2402.05672}.
 \bibitem{reimers2019} N.~Reimers y I.~Gurevych (2019). Sentence-BERT:
 Sentence Embeddings using Siamese BERT-Networks. \emph{arXiv:1908.10084}.
+\bibitem{chen2024} J.~Chen \emph{et al.} (2024). BGE M3-Embedding:
+Multi-Lingual, Multi-Functionality, Multi-Granularity Text Embeddings.
+\emph{arXiv:2402.03216}.
 \bibitem{malkov2018} Y.~A. Malkov y D.~A. Yashunin (2018). Efficient and
 robust approximate nearest neighbor search using Hierarchical Navigable
 Small World graphs. \emph{IEEE TPAMI}, 42(4). \emph{arXiv:1603.09320}.

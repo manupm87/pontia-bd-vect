@@ -12,51 +12,51 @@
     "sweep": [
       {
         "ef_search": 10,
-        "mean_overlap_at_10": 0.885,
+        "mean_overlap_at_10": 0.9049999999999999,
         "min_overlap_at_10": 0.3,
-        "worst_query_id": "EVAL-101352-context",
-        "p50_ms": 2.442,
-        "p95_ms": 2.887
+        "worst_query_id": "DEV-43240",
+        "p50_ms": 2.69,
+        "p95_ms": 3.215
       },
       {
         "ef_search": 16,
-        "mean_overlap_at_10": 0.925,
-        "min_overlap_at_10": 0.4,
+        "mean_overlap_at_10": 0.95,
+        "min_overlap_at_10": 0.5,
         "worst_query_id": "DEV-38249",
-        "p50_ms": 2.499,
-        "p95_ms": 3.166
+        "p50_ms": 2.554,
+        "p95_ms": 2.794
       },
       {
         "ef_search": 24,
-        "mean_overlap_at_10": 0.945,
-        "min_overlap_at_10": 0.4,
-        "worst_query_id": "DEV-38249",
-        "p50_ms": 2.506,
-        "p95_ms": 3.07
+        "mean_overlap_at_10": 0.975,
+        "min_overlap_at_10": 0.8,
+        "worst_query_id": "DEV-43240",
+        "p50_ms": 2.58,
+        "p95_ms": 2.85
       },
       {
         "ef_search": 32,
-        "mean_overlap_at_10": 0.9550000000000001,
-        "min_overlap_at_10": 0.4,
-        "worst_query_id": "DEV-38249",
-        "p50_ms": 2.516,
-        "p95_ms": 3.064
+        "mean_overlap_at_10": 0.9800000000000001,
+        "min_overlap_at_10": 0.8,
+        "worst_query_id": "DEV-43240",
+        "p50_ms": 2.609,
+        "p95_ms": 2.949
       },
       {
         "ef_search": 64,
-        "mean_overlap_at_10": 0.985,
-        "min_overlap_at_10": 0.8,
-        "worst_query_id": "DEV-38249",
-        "p50_ms": 2.612,
-        "p95_ms": 3.684
+        "mean_overlap_at_10": 0.9949999999999999,
+        "min_overlap_at_10": 0.9,
+        "worst_query_id": "EVAL-93437-direct",
+        "p50_ms": 2.611,
+        "p95_ms": 2.854
       },
       {
         "ef_search": 128,
         "mean_overlap_at_10": 1.0,
         "min_overlap_at_10": 1.0,
         "worst_query_id": "DEV-13357",
-        "p50_ms": 2.693,
-        "p95_ms": 3.196
+        "p50_ms": 2.726,
+        "p95_ms": 3.001
       }
     ]
   },
@@ -69,51 +69,51 @@
     "sweep": [
       {
         "ef_search": 10,
-        "mean_overlap_at_10": 0.43499999999999994,
-        "min_overlap_at_10": 0.1,
-        "worst_query_id": "DEV-28703",
-        "p50_ms": 2.434,
-        "p95_ms": 2.835
+        "mean_overlap_at_10": 0.49000000000000005,
+        "min_overlap_at_10": 0.0,
+        "worst_query_id": "EVAL-96202-context",
+        "p50_ms": 2.507,
+        "p95_ms": 2.829
       },
       {
         "ef_search": 16,
-        "mean_overlap_at_10": 0.4800000000000001,
-        "min_overlap_at_10": 0.1,
-        "worst_query_id": "DEV-28703",
-        "p50_ms": 2.491,
-        "p95_ms": 3.111
+        "mean_overlap_at_10": 0.6700000000000002,
+        "min_overlap_at_10": 0.2,
+        "worst_query_id": "EVAL-101352-context",
+        "p50_ms": 2.536,
+        "p95_ms": 2.763
       },
       {
         "ef_search": 24,
-        "mean_overlap_at_10": 0.5,
-        "min_overlap_at_10": 0.1,
-        "worst_query_id": "DEV-28703",
-        "p50_ms": 2.569,
-        "p95_ms": 3.364
+        "mean_overlap_at_10": 0.7600000000000001,
+        "min_overlap_at_10": 0.3,
+        "worst_query_id": "DEV-31224",
+        "p50_ms": 2.528,
+        "p95_ms": 2.745
       },
       {
         "ef_search": 32,
-        "mean_overlap_at_10": 0.525,
-        "min_overlap_at_10": 0.1,
-        "worst_query_id": "DEV-28703",
-        "p50_ms": 2.854,
-        "p95_ms": 5.073
+        "mean_overlap_at_10": 0.8400000000000001,
+        "min_overlap_at_10": 0.3,
+        "worst_query_id": "DEV-38249",
+        "p50_ms": 2.503,
+        "p95_ms": 2.82
       },
       {
         "ef_search": 64,
-        "mean_overlap_at_10": 0.72,
-        "min_overlap_at_10": 0.1,
-        "worst_query_id": "EVAL-93437-context",
-        "p50_ms": 2.482,
-        "p95_ms": 2.933
+        "mean_overlap_at_10": 0.8699999999999999,
+        "min_overlap_at_10": 0.4,
+        "worst_query_id": "DEV-38249",
+        "p50_ms": 2.538,
+        "p95_ms": 2.785
       },
       {
         "ef_search": 128,
-        "mean_overlap_at_10": 0.805,
-        "min_overlap_at_10": 0.3,
-        "worst_query_id": "DEV-28703",
-        "p50_ms": 2.609,
-        "p95_ms": 3.283
+        "mean_overlap_at_10": 0.8899999999999999,
+        "min_overlap_at_10": 0.4,
+        "worst_query_id": "DEV-38249",
+        "p50_ms": 2.528,
+        "p95_ms": 2.707
       }
     ]
   }

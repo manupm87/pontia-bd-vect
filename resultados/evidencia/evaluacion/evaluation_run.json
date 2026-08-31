@@ -1,6 +1,6 @@
 {
   "snapshot_id": "aurum-market-vector-search-evaluation-v1",
-  "embedding_configuration": "e5_base_title",
+  "embedding_configuration": "e5_large_title",
   "collection": "aurum-market-eval-catalogo",
   "record_count": 15000,
   "score_kind": "similarity",
@@ -9,23 +9,23 @@
   "per_query": [
     {
       "query_id": "13357",
-      "ndcg_at_10": 0.716881793402458,
-      "recall_at_10": 0.25806451612903225,
+      "ndcg_at_10": 0.6545785896316952,
+      "recall_at_10": 0.22580645161290322,
       "mrr_at_10": 1.0,
       "judged_count": 40,
       "relevant_count": 31
     },
     {
       "query_id": "18868",
-      "ndcg_at_10": 0.37046218819305804,
-      "recall_at_10": 0.2222222222222222,
+      "ndcg_at_10": 0.4741902622564121,
+      "recall_at_10": 0.3333333333333333,
       "mrr_at_10": 1.0,
       "judged_count": 16,
       "relevant_count": 9
     },
     {
       "query_id": "28703",
-      "ndcg_at_10": 0.49276192198755825,
+      "ndcg_at_10": 0.5446757407423164,
       "recall_at_10": 0.1282051282051282,
       "mrr_at_10": 1.0,
       "judged_count": 40,
@@ -33,31 +33,31 @@
     },
     {
       "query_id": "31224",
-      "ndcg_at_10": 0.3872317973481977,
+      "ndcg_at_10": 0.4480706578897771,
       "recall_at_10": 0.2,
-      "mrr_at_10": 0.3333333333333333,
+      "mrr_at_10": 0.5,
       "judged_count": 16,
       "relevant_count": 15
     },
     {
       "query_id": "33633",
-      "ndcg_at_10": 0.3057360664736449,
-      "recall_at_10": 0.5,
+      "ndcg_at_10": 0.04209923526420769,
+      "recall_at_10": 0.0,
       "mrr_at_10": 0.0,
       "judged_count": 16,
       "relevant_count": 4
     },
     {
       "query_id": "38249",
-      "ndcg_at_10": 0.37850091886658266,
+      "ndcg_at_10": 0.24618570546556082,
       "recall_at_10": 0.08571428571428572,
-      "mrr_at_10": 1.0,
+      "mrr_at_10": 0.25,
       "judged_count": 40,
       "relevant_count": 35
     },
     {
       "query_id": "43240",
-      "ndcg_at_10": 0.8506978400903503,
+      "ndcg_at_10": 0.8038441998543442,
       "recall_at_10": 0.2571428571428571,
       "mrr_at_10": 1.0,
       "judged_count": 40,
@@ -72,9 +72,9 @@
       "relevant_count": 30
     }
   ],
-  "ndcg_at_10": 0.5627840657952312,
-  "recall_at_10": 0.24808529284335734,
-  "mrr_at_10": 0.7916666666666666,
+  "ndcg_at_10": 0.5267055488880392,
+  "recall_at_10": 0.1954419236677301,
+  "mrr_at_10": 0.71875,
   "recall_relevant_labels": [
     "E",
     "S"
@@ -112,8 +112,8 @@
     "oracle": "misma colección con búsqueda exhaustiva (SearchParams.exact)"
   },
   "latency": {
-    "p50_ms": 2.713428999413736,
-    "p95_ms": 3.426794902406982,
+    "p50_ms": 2.7210134999222646,
+    "p95_ms": 3.045002300223132,
     "warmup": 5,
     "repeats": 30,
     "query_count": 12
@@ -122,7 +122,7 @@
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
-    "score_threshold": 0.937,
+    "score_threshold": 0.943,
     "margin_threshold": 0.0
   },
   "environment": {
@@ -140,104 +140,104 @@
     "Las latencias describen esta ejecución local y no comparan proveedores.",
     "development_rankings conserva los IDs recuperados por consulta."
   ],
-  "generated_at": "2026-08-28T21:53:08.723997+00:00",
+  "generated_at": "2026-08-31T19:14:37.362776+00:00",
   "schema_version": "1.0",
   "development_rankings": {
     "DEV-13357": [
       "B015FMZ4MQ",
-      "B091BWS8VF",
-      "B091BB18QV",
       "B07S852KTG",
+      "B091BWS8VF",
       "B01MV80F5C",
-      "B07S946NHS",
-      "B00YMT0IKW",
       "B09BW133YW",
-      "B07S37RMMP",
-      "B07BFFKCHC"
+      "B091BB18QV",
+      "B00YMSZDZS",
+      "B096W9CNHN",
+      "B07S946NHS",
+      "B07S37RMMP"
     ],
     "DEV-18868": [
       "B07H97VGBP",
-      "B07JZ62WYD",
       "B0714N7942",
-      "B079FTG3Z7",
+      "B07JZ62WYD",
+      "B079Q8V9HG",
+      "B076LXCCXR",
+      "B08T9X4XT6",
+      "B00K8QK560",
       "B07VQJFQBD",
-      "B07GJNCV8R",
-      "B071P9Y9GD",
-      "B079FXFQ7C",
-      "B07NW4S3HM",
-      "B072FRGG6S"
+      "B072FRGG6S",
+      "B07G1DXKV2"
     ],
     "DEV-28703": [
       "B083BM815K",
       "B07B94G52C",
-      "B07N6CZ98K",
-      "B00O6T7N2O",
-      "B00EZSFO6S",
-      "B081QM6MCL",
-      "B08PFJXSW5",
+      "B077NHFMM4",
+      "B08FC69VMH",
+      "B07XT5ZSJD",
       "B08M3LJX5H",
-      "B08GYFBKD4",
-      "B08MCDPVCJ"
+      "B07NXJCM8H",
+      "B07N6CZ98K",
+      "B08V54D9JP",
+      "B092JB6FPY"
     ],
     "DEV-31224": [
       "B006Q8VAL8",
-      "B01NARXQ2E",
       "B07HP6XKC6",
-      "B07YFFGWR5",
       "B01MU31H1P",
-      "B08MQF68VD",
-      "B082SVJLZQ",
-      "B08F4ZR7K4",
+      "B01NARXQ2E",
+      "B01L0LVDJO",
       "B07FPFLGNL",
-      "B01L0LVDJO"
+      "B07FPGC4H2",
+      "B08MQF68VD",
+      "B09BVWQ4HR",
+      "B082SVJLZQ"
     ],
     "DEV-33633": [
       "B07NY97H69",
-      "B07TG2VB9F",
-      "B07XD9D2HB",
-      "B000GWJ9PY",
-      "B07Z8N7Z3K",
-      "B07TFKMTJ8",
-      "B07XZ8HHVQ",
-      "B08HCN5W8Z",
+      "B0753RX9VR",
       "B004RZL7UG",
-      "B07WTD1VGB"
+      "B01L73QKXY",
+      "B09H42YXHC",
+      "B08XZSBH3T",
+      "B000GWJ9PY",
+      "B07Z87ZBFZ",
+      "B07Y82NMJH",
+      "B07Z8N7Z3K"
     ],
     "DEV-38249": [
-      "B09BHVMCC3",
       "1683258703",
-      "B098GX2DDJ",
-      "B08BWTFMV4",
-      "B07WCXZ2MZ",
       "B06XKKSPGG",
       "B07V78QNQM",
-      "B07TJKBT7T",
-      "B071X52JKQ",
-      "B071S374G9"
+      "B094FWB6J5",
+      "B09BHVMCC3",
+      "B098GX2DDJ",
+      "B015FMZ4MQ",
+      "B00AKDVBTQ",
+      "B07BH2442X",
+      "B07TJKBT7T"
     ],
     "DEV-43240": [
-      "B08MQ42Z6P",
-      "B08KPYKNWZ",
+      "B08DKWQD8R",
       "B08LZYZ1FJ",
-      "B07DWTB3MT",
-      "B08L6GSP7S",
-      "B08MSR1SJS",
-      "B08LYB2GP9",
-      "B08LVQPZQD",
-      "B08GY7NPYN",
-      "B08N6MJYNM"
+      "8499501710",
+      "B08MF41QVT",
+      "B08G42DW2L",
+      "B08GWN3GMX",
+      "B08N6MJYNM",
+      "B09BCW927H",
+      "B08FT5QDWJ",
+      "B08PPFGGK3"
     ],
     "DEV-61533": [
-      "B079ZYKLFD",
-      "B01I5JVBZK",
-      "B085WY78SG",
       "B01MSTVEZN",
-      "B0837V9T36",
+      "B01I5JVBZK",
+      "B079ZYKLFD",
       "B07QB8484X",
-      "B00WGOY7O8",
       "B07QB8484Y",
-      "B01M31TMH8",
-      "B084BPS1LS"
+      "B00WGOY7O8",
+      "B0837V9T36",
+      "B085WY78SG",
+      "B084BPS1LS",
+      "B01M31TMH8"
     ]
   }
 }

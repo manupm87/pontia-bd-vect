@@ -29,9 +29,12 @@ exacta de la ejecución final en [`config/run_config.yaml`](config/run_config.ya
 - Linux, macOS o Windows con WSL2.
 - [uv](https://docs.astral.sh/uv/) (el script de setup lo instala si falta).
 - Docker con Docker Compose (para Qdrant).
-- ~3 GB de disco para el entorno (PyTorch + sentence-transformers) y ~1.5 GB
-  para los modelos de embeddings descargados de Hugging Face.
-- No se necesita GPU; con GPU la generación de embeddings baja de ~6 min a <1 min.
+- ~3 GB de disco para el entorno (PyTorch + sentence-transformers) y ~8 GB
+  para los modelos de embeddings descargados de Hugging Face (la rejilla
+  incluye e5-large, bge-m3 y Qwen3-Embedding-0.6B).
+- No se necesita GPU, pero acelera mucho la rejilla completa de embeddings
+  (7 configuraciones; minutos con GPU frente a bastante más de media hora
+  sin ella).
 
 ## 2. Instalación
 
@@ -50,8 +53,8 @@ Preparar entorno, levantar el motor, ingerir, evaluar y limpiar:
 ```bash
 make setup        # 1. entorno Python
 make up           # 2. Qdrant en Docker (espera al healthcheck)
-make embeddings   # 3. genera los embeddings de las 4 configuraciones locales
-make pipeline     # 4. ingesta + experimentos + duplicados + métricas + resultados + eventos
+make embeddings   # 3. genera los embeddings de las 7 configuraciones locales
+make pipeline     # 4. ingesta + experimentos + duplicados + métricas + barrido + resultados + eventos + evidencia
 make down         # 5. detiene Qdrant (conserva el volumen)
 ```
 
@@ -61,9 +64,12 @@ lotes con verificación de recuento e indexación), `experiments` (comparativa d
 representaciones frente a un oráculo exacto), `duplicates` (calibración de la
 regla en desarrollo y decisiones sobre el conjunto ciego), `evaluate`
 (nDCG/Recall/MRR@10, fidelidad ANN y latencias p50/p95 →
-`resultados/metricas_desarrollo.json`), `search-results` (top-10 ciego y
-consultas filtradas → `resultados/resultados_busqueda.csv`) y `events`
-(24 eventos aplicados dos veces con verificación de idempotencia y visibilidad).
+`resultados/metricas_desarrollo.json`), `sweep-ef` (barrido de fidelidad y
+latencia frente a `ef_search` en el grafo entregado y en uno débil),
+`search-results` (top-10 ciego y consultas filtradas →
+`resultados/resultados_busqueda.csv`), `events` (24 eventos aplicados dos veces
+con verificación de idempotencia y visibilidad) y `evidence` (copia la
+evidencia regenerable a `resultados/evidencia/`).
 
 Las métricas se regeneran desde un único comando: `make metrics`.
 
@@ -88,7 +94,7 @@ Como en las sesiones del curso, los notebooks son artefactos generados:
 
 ```bash
 make lab               # abre JupyterLab (kernel "Python (Aurum Market · Actividad)")
-make execute-notebook  # regenera la serie y la ejecuta entera sin interfaz (~35 s)
+make execute-notebook  # regenera la serie y la ejecuta entera sin interfaz (~2 min)
 ```
 
 Requieren haber ejecutado antes el recorrido principal (Qdrant arriba, embeddings
@@ -144,7 +150,8 @@ validación del snapshot), `embeddings.py` (representación), `vector_store.py`
 | `make up` / `make down` | Arranca/detiene Qdrant. `make down-volumes` borra también el volumen. |
 | `make embeddings` | Genera los embeddings de cada configuración con manifiesto SHA-256. |
 | `make ingest` | Ingesta idempotente del catálogo completo y verificación de recuento. |
-| `make experiments` | Comparativa BM25 + 4 configuraciones densas sobre desarrollo (y Gemini si hay clave). |
+| `make experiments` | Comparativa BM25 + 7 configuraciones densas sobre desarrollo (y Gemini si hay clave). |
+| `make validate-challengers` | Validación ampliada: 413/1986 consultas públicas de ESCI con estadística pareada (descarga única de un parquet de 51 MB). |
 | `make duplicates` | Calibra la regla en desarrollo y genera `resultados_duplicados.csv`. |
 | `make evaluate` / `make metrics` | Regenera `resultados/metricas_desarrollo.json`. |
 | `make search-results` | Genera `resultados_busqueda.csv` y verifica los filtros de marca. |
@@ -167,7 +174,7 @@ multiplica la fase de embeddings por ~8.
 | Fase | Tiempo |
 |---|---|
 | `make setup` | 2–4 min (descarga de PyTorch) |
-| `make embeddings` (4 configuraciones locales) | ~1 min con GPU · 6–10 min con CPU |
+| `make embeddings` (7 configuraciones locales) | ~5 min con GPU · >40 min con CPU |
 | `make ingest` (15.000 registros) | ~30 s |
 | `make experiments` | ~1 min (BM25 domina el coste) |
 | `make duplicates` + `make evaluate` + `make search-results` | ~2 min |

@@ -5,9 +5,13 @@ snapshot_id: aurum-market-vector-search-evaluation-v1
 random_seed: 42
 
 embedding:
-  # Configuración ganadora de los experimentos de desarrollo (ver
-  # .artifacts/experimentos/registro_experimentos.json y el informe).
-  configuration: e5_base_title
+  # Configuración ganadora de la validación ampliada sobre ESCI público
+  # (make validate-challengers; ver
+  # .artifacts/experimentos/validacion_ampliada.json y el informe). En las 8
+  # consultas de desarrollo e5-large parecía el peor modelo title-only; con
+  # 413/1986 consultas es el único que supera a e5-base con significación en
+  # las tres métricas y gana a bge-m3 y Qwen3 en el pareado directo.
+  configuration: e5_large_title
 
 collection:
   distance: cosine
@@ -36,5 +40,7 @@ latency:
 duplicates:
   # Umbrales calibrados sobre altas_desarrollo.csv (ver
   # .artifacts/duplicados/calibracion.json). No se ajustan con la evaluación.
-  score_threshold: 0.937
+  # Criterio max-margin: punto medio del hueco 0.8978-0.9884 observado con
+  # e5-large en desarrollo (F1 1.000 en todo el hueco).
+  score_threshold: 0.943
   margin_threshold: 0.0

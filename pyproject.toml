@@ -32,6 +32,9 @@ embeddings = [
 pdf = [
     "cairosvg>=2.7,<3",
 ]
+validation = [
+    "pyarrow>=17,<22",
+]
 
 [dependency-groups]
 dev = [

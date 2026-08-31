@@ -1,6 +1,6 @@
 {
   "collection": "aurum-market-eval-catalogo",
-  "embedding_configuration": "e5_base_title",
+  "embedding_configuration": "e5_large_title",
   "candidate_count": 5,
   "cases": [
     {
@@ -14,7 +14,7 @@
           "product_id": "B000G3T55M",
           "title": "NIKE Legasee Legging Swoosh Pantalones Deportivos, Mujer, Negro (Black/White 011), S",
           "brand": "NIKE",
-          "native_score": 0.9980765,
+          "native_score": 0.9970764,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -24,7 +24,7 @@
           "product_id": "B00MG5Q8TE",
           "title": "NIKE Legasee Legging Swoosh Pantalones Deportivos, Mujer, Negro (Black/White 011), XL",
           "brand": "NIKE",
-          "native_score": 0.9956921,
+          "native_score": 0.9928684,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -41,7 +41,7 @@
           "product_id": "B07NV4L2W5",
           "title": "Interruptor Universal Inteligente con Wi-Fi, con Control Remoto Meross App. Compatible con Alexa, Google Assistant y SmartThings. Modelo MSS710, Paquete de 4.",
           "brand": "meross",
-          "native_score": 0.99617213,
+          "native_score": 0.9951461,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -51,7 +51,7 @@
           "product_id": "B07PG68NDX",
           "title": "Interruptor Universal Inteligente con Wi-Fi con Control Remoto Meross App. Compatible con Alexa, Google Assistant y SmartThings. Modelo MSS710, Paquete de 2.",
           "brand": "meross",
-          "native_score": 0.98963034,
+          "native_score": 0.99132115,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -68,7 +68,7 @@
           "product_id": "B00BEFAR80",
           "title": "Gel de contacto 250g. axion | Mejora la conductividad de los electrodos TENS y EMS bien usados o de caucho | Gel conductor para electrodos de caucho o parches",
           "brand": "axion",
-          "native_score": 0.9885371,
+          "native_score": 0.99197316,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -78,7 +78,7 @@
           "product_id": "B07DM2NVWL",
           "title": "Set de 20 electrodos axion compatibles con COMPEX | Almohadillas para su aparato TENS y EMS | Set de parches mixtos para su electroestimulador, electroestimulación",
           "brand": "axion",
-          "native_score": 0.8951632,
+          "native_score": 0.8968903,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -95,17 +95,17 @@
           "product_id": "B076HKFZ8N",
           "title": "Teka - Campana Extractora, Touch Control y Motor ECOPOWER, Modelo DLH 986, Negro, 67 x 90 x 48 cm",
           "brand": "Teka",
-          "native_score": 0.99862,
+          "native_score": 0.99905694,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "8a889040-67cf-5f30-b05a-f3ba7e3e07b2",
-          "product_id": "B010A0T2WQ",
-          "title": "Teka DVT 685 De pared Negro 786m³/h A - Campana (786 m³/h, Canalizado/Recirculación, A, A, C, 52 dB), 41,8 x 60 x 78 cm",
+          "record_id": "7820d8ba-8142-5a20-a05f-15bdee6ed78b",
+          "product_id": "B08BJPC3SJ",
+          "title": "Teka DVT 68660 TBS Campana Decorativa Vertical de 60cm de aspiración perimetral y función FresAir | Cristal Blanco | 38 x 60 x 41.2 | Clase Energética A+, Acero Inoxidable, Normal",
           "brand": "Teka",
-          "native_score": 0.89978135,
+          "native_score": 0.90332234,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -122,17 +122,17 @@
           "product_id": "B07JYHSK27",
           "title": "G-Shock [Casio] de CASIO Frogman 35 Aniversario océano de Magma Solar de Radio GWF-1035F-1JR Hombres",
           "brand": "G-Shock",
-          "native_score": 0.9882632,
+          "native_score": 0.98884296,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "b219bb82-c179-536c-a0b9-6d8ab2086086",
-          "product_id": "B001PGXIIO",
-          "title": "Planet Waves 3DBK6-10 - Púas, grueso",
-          "brand": "Planet Waves",
-          "native_score": 0.85603917,
+          "record_id": "d9e7b942-c3c5-5111-925f-a4766f07baf9",
+          "product_id": "B083TH7NLG",
+          "title": "Tag Heuer Formula 1 reloj cronógrafo de cuarzo para hombre CAZ101Y.BA0842",
+          "brand": "TAG Heuer",
+          "native_score": 0.865878,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -149,7 +149,7 @@
           "product_id": "B07N379P73",
           "title": "MOMBEBE COSLAND Traje Cocinero Niño Halloween Conjunto de Camiseta Manga Larga 2 Años Blanco",
           "brand": "MOMBEBE COSLAND",
-          "native_score": 0.97393996,
+          "native_score": 0.9883856,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -159,7 +159,7 @@
           "product_id": "B076WYMBK3",
           "title": "K-youth® Navidad Christmas Bebe Niña Disfraz Traje de Navidad Vestido de Manga Larga Chal Sombrero (7-8 Años, Rojo)",
           "brand": "K-youth",
-          "native_score": 0.87914723,
+          "native_score": 0.87864393,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -176,7 +176,7 @@
           "product_id": "B077FZDNJ2",
           "title": "Bedsure Manta Cama 90 Invierno - Manta Sofa Grande Polar Reversible de Franela y Sherpa, Manta Sofa Gruesa 150x200 cm de Microfibra Suave y Borreguito, Gris",
           "brand": "Bedsure",
-          "native_score": 1.0000001,
+          "native_score": 0.99999994,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -186,7 +186,7 @@
           "product_id": "B077D1V7SJ",
           "title": "Bedsure Manta Sofa Grande Invierno - Manta Cama 90 de Franela Extra Suave, Mantas 150x200 cm Cubre Sofas, Gris",
           "brand": "Bedsure",
-          "native_score": 0.9670071,
+          "native_score": 0.96660095,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -199,21 +199,21 @@
       "top_candidates": [
         {
           "rank": 1,
-          "record_id": "76f71842-b350-5dc6-84d4-d46db8dd4244",
-          "product_id": "B01KS5L1YU",
-          "title": "10 Piezas / Conjunto Juegos de Mesa Aprendizaje 16mm Dados en Cuadritos de 6 Colores",
-          "brand": "Desconocido",
-          "native_score": 0.8803203,
+          "record_id": "20f2c26c-7d0b-5307-9fdf-ed0a7cf65458",
+          "product_id": "B07KWTLKLS",
+          "title": "Xpassion Tablero de Dibujo Mágico, Tableta de Dibujo Pizarra 3D Mágico con Luces LED Educativo Infantil de Graffiti, Regalos Juguetes para Niños,Boceto, Arte(Azul)",
+          "brand": "Xpassion",
+          "native_score": 0.87405795,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "f8a2b77d-4d74-5e06-88dd-33978fd8678e",
-          "product_id": "B0716KVMX8",
-          "title": "Educa - Lince Juego de Mesa, 70 Imágenes, Multicolor (17472)",
-          "brand": "Educa",
-          "native_score": 0.86029726,
+          "record_id": "e194dca1-86ef-5772-ba1b-24f8e893890d",
+          "product_id": "B009H0EFDM",
+          "title": "Games - Jenga (Hasbro A2120E24)",
+          "brand": "Hasbro Gaming",
+          "native_score": 0.86949474,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -226,21 +226,21 @@
       "top_candidates": [
         {
           "rank": 1,
-          "record_id": "ecb35fa6-5e69-524b-86a2-5d53e051ba00",
-          "product_id": "B08KSVGWYK",
-          "title": "MOSOTECH Organizador Cables, Cubre Cables de 2 x 3m, Flexible Funda Organizador Cables, Organizador de Cables Mesa, Recoge Cables para Office y PC Escritorio-Blanca (Ø2.6cm y Ø2.2cm)",
-          "brand": "MOSOTECH",
-          "native_score": 0.8813876,
+          "record_id": "0095c6f6-248f-52a1-87f3-cf0b537507bc",
+          "product_id": "B0831CX4LK",
+          "title": "COSTWAY Mesa de Ordenador Escritorio Esquina en Forma de L Estación de Trabajo para Hogar Oficina (Marrón)",
+          "brand": "COSTWAY",
+          "native_score": 0.87928283,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "4ab923e7-2187-5c87-8cca-95b6a6e88641",
-          "product_id": "B07NVDZMBL",
-          "title": "sogesfurniture Escritorio de Computadora en Forma de L, 150cm + 150cm Mesa de Ordenador Mesa de Estudio Estación de Trabajo, Mesa Esquinera para Casa, Oficina, Negro LD-Z01-BH",
-          "brand": "sogesfurniture",
-          "native_score": 0.8654423,
+          "record_id": "ecb35fa6-5e69-524b-86a2-5d53e051ba00",
+          "product_id": "B08KSVGWYK",
+          "title": "MOSOTECH Organizador Cables, Cubre Cables de 2 x 3m, Flexible Funda Organizador Cables, Organizador de Cables Mesa, Recoge Cables para Office y PC Escritorio-Blanca (Ø2.6cm y Ø2.2cm)",
+          "brand": "MOSOTECH",
+          "native_score": 0.8783165,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -253,21 +253,21 @@
       "top_candidates": [
         {
           "rank": 1,
-          "record_id": "a35d5b43-4b98-5a53-a4ac-17501b62b3c5",
-          "product_id": "0241428254",
-          "title": "Camp",
-          "brand": "Penguin",
-          "native_score": 0.8776479,
+          "record_id": "2a3fe7ea-a4ec-5926-8bb8-3d8daad5ff77",
+          "product_id": "B08Z3QWJVX",
+          "title": "OTraki Toldo Camping Impermeable 3M×3M Rain Tarp UV Protección Lona para Acampar con Accesorios Portátil Toldo para Hamaca Furgoneta Playa Vivac Exterior",
+          "brand": "OTraki",
+          "native_score": 0.8803308,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "350e83a5-26aa-5310-9989-36e6298e134f",
-          "product_id": "B07CT3CF47",
-          "title": "A",
-          "brand": "Arcticfox",
-          "native_score": 0.8754321,
+          "record_id": "bc31f419-9bf6-52df-a3a6-4dbb82b1be7c",
+          "product_id": "B07L5HY6WY",
+          "title": "Vine diseño del bebé Fuera de invierno impermeable a prueba de viento Manta portador del cabo del capote",
+          "brand": "Vine",
+          "native_score": 0.8754148,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -284,17 +284,17 @@
           "product_id": "B083TXK6ZS",
           "title": "Lampara Escritorio, Iluminacion De Escritorio 5 Modos, 10 Niveles De Brillo, Lámpara Para Escritorio ​Temporizador De 60min & 30 Minutos Para Leer, Estudiar, Cuidado De Ojos, Color Blanco",
           "brand": "ACADGQ",
-          "native_score": 0.8794217,
+          "native_score": 0.8841901,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "3d267b4c-7261-5e20-9a72-bfad77b28281",
-          "product_id": "B00HVLUR54",
-          "title": "Audio-Technica M40x Auriculares de estudio profesionales para grabación de estudio, creadores, DJ, podasts y escucha diaria.",
-          "brand": "Audio-Technica",
-          "native_score": 0.86817956,
+          "record_id": "df8e7774-fdf4-5fc4-ac68-b7ce12d4a30c",
+          "product_id": "B07GH3L19N",
+          "title": "soulhand Digital Temporizador, temporizador de cocina, números grandes ruidosos Alarma Magnetic Backing Stand con gran pantalla LCD Hornear Cocinar Sport parte Oficina (Negro)",
+          "brand": "soulhand",
+          "native_score": 0.87332207,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -311,17 +311,17 @@
           "product_id": "B07HB81GLJ",
           "title": "Plato para Maceta Mediterranea (30-40 cm)",
           "brand": "PAMEX",
-          "native_score": 0.8919524,
+          "native_score": 0.89030516,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "f0d48d40-1e3c-5587-82bd-c3ac468a6911",
-          "product_id": "B083P5HWTK",
-          "title": "SAKAWA Asurcador Regulable Motoazada Motocultor",
-          "brand": "SAKAWA",
-          "native_score": 0.8813685,
+          "record_id": "165ae2d7-743c-526f-9a7c-aca71df1d85b",
+          "product_id": "B0791KDXWR",
+          "title": "Maceta de Barro Color Terracota Modelo Sofia .Medidas 11X 13CM.",
+          "brand": "Alfareros Damian Canovas",
+          "native_score": 0.87597835,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -334,21 +334,21 @@
       "top_candidates": [
         {
           "rank": 1,
-          "record_id": "0bc18280-0489-53e4-b8be-409f8de6f22f",
-          "product_id": "B014IDUAAY",
-          "title": "Carro Caja de Herramientas Taller Movil 5 Cajones 4 Ruedas Cerradura Color Negro",
-          "brand": "HOMCOM",
-          "native_score": 0.86974084,
+          "record_id": "aac34821-cf2d-5f04-b839-74dceadd6f16",
+          "product_id": "B071L6S1Y6",
+          "title": "MagiDeal 22pcs Kit de Reparación de Cremallera conTapones Inferiores para Pantalones Bolsos, Sudaderas Chaquetas",
+          "brand": "MagiDeal",
+          "native_score": 0.8805703,
           "score_kind": "similarity",
           "higher_is_better": true
         },
         {
           "rank": 2,
-          "record_id": "b35e2266-a2bd-5f8a-b065-9ee01bea3ed9",
-          "product_id": "8413141222",
-          "title": "Hacia rutas salvajes (No ficción)",
-          "brand": "B de Bolsillo (Ediciones B)",
-          "native_score": 0.8661841,
+          "record_id": "a6ed6934-9786-5d3c-a6b1-4a96a50c1486",
+          "product_id": "B07VVXRBSZ",
+          "title": "Kit de Reparación de Cremalleras 85 Piezas Reemplazo de Cremallera con Instale Pinzas para Bolsas de Bricolaje Chaquetas Maletas Mochilas Plata y Negro",
+          "brand": "MaoXinTek",
+          "native_score": 0.8797959,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -365,7 +365,7 @@
           "product_id": "B07F3YMKCL",
           "title": "Luz de Lectura OMERIL Luz de Libro Recargable, 6 LED con 3 Modos de Brillo (Luz Cálido y Blanco), 360 ° Flexible Lampara de Lectura Pinza para Lectores Noche, E-Reader, Estudio, Cama, Tablet",
           "brand": "OMERIL",
-          "native_score": 0.89901847,
+          "native_score": 0.89783835,
           "score_kind": "similarity",
           "higher_is_better": true
         },
@@ -375,7 +375,7 @@
           "product_id": "B07VZLJTDJ",
           "title": "LITOM Luz de Lectura, Luz de Libro Recargable con 60H de Autonomía, 7 LED con 9 Modos de Luz, 360° Flexible Lampara de Lectura Pinza para Lectores Noche, E-Reader, Libro, PC y Tablet",
           "brand": "LITOM",
-          "native_score": 0.8890065,
+          "native_score": 0.8862102,
           "score_kind": "similarity",
           "higher_is_better": true
         }
@@ -385,7 +385,7 @@
   "calibration": {
     "best": {
       "rule": {
-        "score_threshold": 0.9734,
+        "score_threshold": 0.9883,
         "margin_threshold": 0.0
       },
       "precision": 1.0,
@@ -397,35 +397,34 @@
       "true_negative": 7,
       "errors": []
     },
-    "explored": 108,
+    "explored": 104,
     "score_grid": [
-      0.8692,
-      0.8702,
-      0.8771,
-      0.8781,
-      0.8789,
+      0.8736,
+      0.8746,
+      0.8788,
       0.8798,
-      0.8799,
+      0.8801,
       0.8808,
-      0.8809,
-      0.8819,
-      0.8915,
-      0.8925,
-      0.8985,
-      0.8995,
-      0.9734,
-      0.9744,
-      0.9878,
-      0.988,
-      0.9888,
-      0.989,
-      0.9957,
-      0.9967,
+      0.8811,
+      0.8837,
+      0.8847,
+      0.8898,
+      0.8908,
+      0.8973,
+      0.8983,
+      0.9879,
+      0.9883,
+      0.9889,
+      0.9893,
+      0.9915,
+      0.9925,
+      0.9946,
+      0.9956,
+      0.9966,
       0.9976,
-      0.9981,
       0.9986,
-      0.9991,
       0.9995,
+      0.9996,
       1.0005
     ],
     "margin_candidates": [
@@ -437,7 +436,7 @@
   },
   "configured_rule": {
     "rule": {
-      "score_threshold": 0.937,
+      "score_threshold": 0.943,
       "margin_threshold": 0.0
     },
     "precision": 1.0,

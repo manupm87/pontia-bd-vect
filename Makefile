@@ -22,6 +22,9 @@ ingest:
 experiments:
 	uv run python scripts/run_experiments.py
 
+validate-challengers:
+	uv run --extra validation python scripts/validate_challengers.py
+
 evaluate:
 	uv run python scripts/evaluate_system.py
 

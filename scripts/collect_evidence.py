@@ -18,27 +18,41 @@ EVIDENCE_FILES = (
     "ingesta/informe_ingesta.json",
 )
 
+# Regenerables solo con la descarga única del parquet público de ESCI
+# (`make validate-challengers`); su ausencia no invalida `make pipeline`.
+OPTIONAL_EVIDENCE_FILES = (
+    "experimentos/validacion_ampliada.json",
+    "experimentos/tabla_validacion_ampliada.csv",
+)
+
 
 def main() -> None:
     """Snapshot the regenerable evidence so the delivery is self-contained."""
     destination_root = RESULTS_DIRECTORY / "evidencia"
     missing = []
-    for relative in EVIDENCE_FILES:
+    copied = 0
+    for relative in EVIDENCE_FILES + OPTIONAL_EVIDENCE_FILES:
         source = ARTIFACTS_DIRECTORY / relative
         if not source.exists():
+            if relative in OPTIONAL_EVIDENCE_FILES:
+                print(
+                    f"Aviso: falta {relative} (opcional; se regenera con "
+                    "`make validate-challengers`). Se conserva el entregado."
+                )
+                continue
             missing.append(relative)
             continue
         destination = destination_root / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
+        copied += 1
     if missing:
         raise FileNotFoundError(
             "Faltan artefactos de evidencia; ejecuta `make pipeline` completo "
             f"antes de recolectar: {missing}."
         )
     print(
-        f"{len(EVIDENCE_FILES)} artefactos copiados a "
-        f"{destination_root.relative_to(PROJECT_ROOT)}"
+        f"{copied} artefactos copiados a {destination_root.relative_to(PROJECT_ROOT)}"
     )
 
 

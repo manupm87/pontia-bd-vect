@@ -21,202 +21,202 @@
       "event_id": "EVT-001",
       "operation": "UPSERT",
       "record_id": "e1a0e559-6a49-5be5-b617-ec8a4899e975",
-      "elapsed_ms": 5.61
+      "elapsed_ms": 5.17
     },
     {
       "sequence": 2,
       "event_id": "EVT-002",
       "operation": "UPSERT",
       "record_id": "0df8a596-0bc2-5deb-bc84-69b63972f975",
-      "elapsed_ms": 6.65
+      "elapsed_ms": 6.07
     },
     {
       "sequence": 3,
       "event_id": "EVT-003",
       "operation": "UPSERT",
       "record_id": "f5726a4e-1d31-5c25-b109-2f3fb8aa6567",
-      "elapsed_ms": 5.56
+      "elapsed_ms": 5.05
     },
     {
       "sequence": 4,
       "event_id": "EVT-004",
       "operation": "UPSERT",
       "record_id": "35c0c946-4061-50f6-a672-96e62991f53b",
-      "elapsed_ms": 13.18
+      "elapsed_ms": 12.2
     },
     {
       "sequence": 5,
       "event_id": "EVT-005",
       "operation": "UPSERT",
       "record_id": "7b2d843d-0607-54a8-863f-934716fda42e",
-      "elapsed_ms": 5.17
+      "elapsed_ms": 4.69
     },
     {
       "sequence": 6,
       "event_id": "EVT-006",
       "operation": "UPSERT",
       "record_id": "e28de4d9-bb45-5a32-b163-4484c54f5bcf",
-      "elapsed_ms": 5.88
+      "elapsed_ms": 5.89
     },
     {
       "sequence": 7,
       "event_id": "EVT-007",
       "operation": "UPSERT",
       "record_id": "1666e8ac-f215-5cbb-90be-e04feeff44a8",
-      "elapsed_ms": 5.54
+      "elapsed_ms": 4.79
     },
     {
       "sequence": 8,
       "event_id": "EVT-008",
       "operation": "UPSERT",
       "record_id": "e5a3a7fb-8fb3-5e91-9c54-814075d63ee6",
-      "elapsed_ms": 5.74
+      "elapsed_ms": 5.77
     },
     {
       "sequence": 9,
       "event_id": "EVT-009",
       "operation": "DELETE",
       "record_id": "096e4fea-09d7-54de-b2a4-3e11a4007cfc",
-      "elapsed_ms": 3.41
+      "elapsed_ms": 3.63
     },
     {
       "sequence": 10,
       "event_id": "EVT-010",
       "operation": "DELETE",
       "record_id": "addd4d10-3065-535a-b7dc-8191a730c472",
-      "elapsed_ms": 2.84
+      "elapsed_ms": 2.82
     },
     {
       "sequence": 11,
       "event_id": "EVT-011",
       "operation": "DELETE",
       "record_id": "ece00341-e268-5b10-9210-1758348e1e58",
-      "elapsed_ms": 2.99
+      "elapsed_ms": 3.74
     },
     {
       "sequence": 12,
       "event_id": "EVT-012",
       "operation": "DELETE",
       "record_id": "1202c20e-88eb-58d9-9247-fa1d3fd0aef2",
-      "elapsed_ms": 3.77
+      "elapsed_ms": 2.63
     },
     {
       "sequence": 13,
       "event_id": "EVT-013",
       "operation": "DELETE",
       "record_id": "5a0bbf29-4e42-5d81-b512-6048b2f5acc1",
-      "elapsed_ms": 2.71
+      "elapsed_ms": 2.77
     },
     {
       "sequence": 14,
       "event_id": "EVT-014",
       "operation": "DELETE",
       "record_id": "e8869496-d4ee-59b7-821b-d4141a126312",
-      "elapsed_ms": 2.86
+      "elapsed_ms": 2.75
     },
     {
       "sequence": 15,
       "event_id": "EVT-015",
       "operation": "DELETE",
       "record_id": "36f46947-09fe-5bc4-a5b1-aeb32e48d592",
-      "elapsed_ms": 2.95
+      "elapsed_ms": 3.7
     },
     {
       "sequence": 16,
       "event_id": "EVT-016",
       "operation": "DELETE",
       "record_id": "b74c55ca-eb85-5964-83ba-d79812b95e30",
-      "elapsed_ms": 4.04
+      "elapsed_ms": 2.76
     },
     {
       "sequence": 17,
       "event_id": "EVT-017",
       "operation": "UPSERT",
       "record_id": "b3eb4062-44fd-5e1a-bbdf-1d5357452d74",
-      "elapsed_ms": 4.9
+      "elapsed_ms": 4.74
     },
     {
       "sequence": 18,
       "event_id": "EVT-018",
       "operation": "UPSERT",
       "record_id": "2d8b0e1e-6581-5a9e-9394-6aa93336c7ea",
-      "elapsed_ms": 5.91
+      "elapsed_ms": 5.85
     },
     {
       "sequence": 19,
       "event_id": "EVT-019",
       "operation": "UPSERT",
       "record_id": "0ebc5080-c2e5-5840-95e3-3641fcda4d8a",
-      "elapsed_ms": 4.99
+      "elapsed_ms": 6.7
     },
     {
       "sequence": 20,
       "event_id": "EVT-020",
       "operation": "UPSERT",
       "record_id": "1663e513-0f31-52d5-a852-4666465c7528",
-      "elapsed_ms": 5.96
+      "elapsed_ms": 5.79
     },
     {
       "sequence": 21,
       "event_id": "EVT-021",
       "operation": "UPSERT",
       "record_id": "a1cf14f7-053d-5549-8c50-b8e904ab3f3d",
-      "elapsed_ms": 5.05
+      "elapsed_ms": 4.71
     },
     {
       "sequence": 22,
       "event_id": "EVT-022",
       "operation": "UPSERT",
       "record_id": "2fbca47f-ecc8-53ea-9c46-70858c4099db",
-      "elapsed_ms": 5.87
+      "elapsed_ms": 6.12
     },
     {
       "sequence": 23,
       "event_id": "EVT-023",
       "operation": "UPSERT",
       "record_id": "9c1882af-6c6d-50a4-a1d1-f068f086b38b",
-      "elapsed_ms": 4.87
+      "elapsed_ms": 4.75
     },
     {
       "sequence": 24,
       "event_id": "EVT-024",
       "operation": "UPSERT",
       "record_id": "fa42da6f-d75f-52b3-884e-f19e39f81ab7",
-      "elapsed_ms": 6.09
+      "elapsed_ms": 6.33
     }
   ],
   "second_pass_elapsed_ms": [
+    4.62,
+    5.93,
+    4.96,
+    5.86,
     5.35,
-    5.9,
-    4.91,
-    5.69,
-    5.06,
-    6.05,
-    4.97,
-    6.14,
-    3.01,
-    3.76,
-    2.9,
-    3.88,
-    2.94,
-    3.2,
-    3.06,
+    5.89,
+    4.89,
+    5.52,
+    3.4,
+    2.74,
     3.83,
-    4.73,
-    7.91,
-    5.01,
-    5.64,
-    4.91,
-    5.82,
-    5.16,
-    6.29
+    2.92,
+    25.37,
+    3.02,
+    3.83,
+    2.86,
+    4.85,
+    5.83,
+    5.33,
+    5.61,
+    4.77,
+    6.11,
+    4.65,
+    5.96
   ],
   "visibility": [
     {
       "kind": "actualizacion",
       "event_id": "EVT-001",
       "read_by_id": "version nueva visible",
-      "search_elapsed_s": 0.003,
+      "search_elapsed_s": 0.004,
       "search_attempts": 1
     },
     {

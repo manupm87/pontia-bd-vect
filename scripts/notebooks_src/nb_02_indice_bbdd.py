@@ -69,7 +69,7 @@ def build_cells() -> list[NotebookNode]:
             | Decisión | Valor | Por qué |
             |---|---|---|
             | ID de punto | `record_id` (UUIDv5 del `product_id`) | idempotencia estructural: reingerir = upsert |
-            | Vector | 768d float32, L2-normalizado | contrato del modelo E5 (base) |
+            | Vector | 1024d float32, L2-normalizado | contrato del modelo E5 (large) |
             | Métrica | coseno | score = similitud, mayor es mejor |
             | Payload | product_id, title, brand, color, locale, catalog_version, active | filtros y presentación |
             | Índice de payload | `brand` (keyword) | filtro dentro del plan de búsqueda |
@@ -205,20 +205,65 @@ def build_cells() -> list[NotebookNode]:
             r"""
             La lectura honesta de esta medición es que **este catálogo está justo en
             la frontera donde indexar empieza a compensar** — y la frontera se mueve
-            con $N \times d$. Con la configuración anterior (384d), el escaneo
+            con $N \times d$. Con 384 dimensiones (e5-small), el escaneo
             secuencial de 15.000×384 floats era tan barato y tan amigo de la caché
             que empataba o incluso ganaba al grafo, cuyo coste fijo (saltos por
-            capas, cola de candidatos con `ef=128`) no se amortizaba. Al pasar a
-            768 dimensiones el coste del escaneo se duplica, el del grafo apenas
-            cambia, y el HNSW ya araña unas décimas de milisegundo al exhaustivo.
-            Lo que de verdad compra el índice es la **curva de crecimiento**: el
-            escaneo es $O(N \cdot d)$ y se multiplica por ~67 al pasar a un millón
-            de productos, mientras que la búsqueda HNSW crece de forma
-            aproximadamente logarítmica. La decisión de indexar no se toma por la
-            foto de hoy sino por la pendiente; tenerla medida — y no supuesta — es
-            precisamente lo que este notebook deja registrado. El notebook 05
-            completa la figura con la otra cara: cuánta fidelidad pierde el índice
-            a cambio (ninguna, con `ef_search=128`).
+            capas, cola de candidatos con `ef=128`) no se amortizaba. Con las
+            1024 dimensiones de la configuración final el coste del escaneo casi
+            se triplica, el del grafo apenas cambia, y el HNSW ya araña décimas
+            de milisegundo al exhaustivo. Lo que de verdad compra el índice es la
+            **curva de crecimiento**: el escaneo es $O(N \cdot d)$ y se
+            multiplica por ~67 al pasar a un millón de productos, mientras que la
+            búsqueda HNSW crece de forma aproximadamente logarítmica. La decisión
+            de indexar no se toma por la foto de hoy sino por la pendiente;
+            tenerla medida — y no supuesta — es precisamente lo que este notebook
+            deja registrado. El notebook 05 completa la figura con la otra cara:
+            cuánta fidelidad pierde el índice a cambio (ninguna, con
+            `ef_search=128`).
+
+            ## La latencia que ve el usuario: el encoder manda
+
+            Los milisegundos anteriores son solo la mitad de la historia. Una
+            consulta interactiva de la CLI paga dos veces: **codificar** el texto
+            con el modelo y **buscar** en la colección. Al promover un modelo de
+            1024d y ~560M de parámetros conviene medir cuánto pesa cada mitad,
+            con el mismo protocolo:
+            """
+        ),
+        code(
+            r"""
+            from aurum_discovery import encode_texts, load_encoder, load_evaluation_queries
+
+            encoder = load_encoder(embedding_set.configuration.model_id)
+            query_texts = load_evaluation_queries()["query_text"].tolist()
+            encode_report = measure_latency(
+                [
+                    (lambda text=text: encode_texts(
+                        encoder, [text],
+                        prefix=embedding_set.configuration.query_prefix,
+                        normalize=embedding_set.configuration.normalize,
+                    ))
+                    for text in query_texts
+                ],
+                warmup=run_config.latency_warmup,
+                repeats=run_config.latency_repeats,
+            )
+            print(f"Codificar 1 consulta: p50 {encode_report.p50_ms:.1f} ms, "
+                  f"p95 {encode_report.p95_ms:.1f} ms")
+            print(f"Buscar (HNSW ef=128): p50 {latency_modes.iloc[1]['p50_ms']} ms")
+            """
+        ),
+        markdown(
+            r"""
+            Incluso con GPU, codificar la consulta cuesta más del doble que
+            buscarla en Qdrant — y en CPU la diferencia se multiplica. Ese es el
+            precio real de la promoción a e5-large: no lo paga el índice (que
+            crece linealmente en memoria con $d$ y apenas en tiempo), lo paga
+            cada consulta al codificarse. Para una CLI de descubrimiento
+            interactiva sigue siendo imperceptible; en un servicio de alto QPS
+            el encoder sería la primera cifra a vigilar, y la validación
+            ampliada del notebook 01 sería el argumento para decidir si la
+            calidad extra lo amortiza.
 
             ## Ingesta por lotes e idempotente
 
@@ -256,7 +301,7 @@ def build_cells() -> list[NotebookNode]:
             - La colección vive en el volumen Docker `aurum-market-eval-qdrant-data`:
               sobrevive a reinicios del contenedor (`make down && make up`).
             - La reconstrucción completa es un comando (`AURUM_ALLOW_RESET=true make
-              ingest`, ~5 s) porque los embeddings están persistidos con manifiesto; el
+              ingest`, ~8 s) porque los embeddings están persistidos con manifiesto; el
               interruptor de reset está **desactivado por defecto** para que ninguna
               ejecución rutinaria pueda recrear la colección por accidente.
             - El esquema se re-verifica en cada arranque (`_assert_schema`): dimensión o
