@@ -236,6 +236,25 @@ salió.
 \section{Índice y base de datos}
 \label{sec:indice}
 
+\textbf{Elección del motor.} El enunciado no impone proveedor y excluye el
+ranking cronometrado entre motores, así que la elección es por criterios.
+De los cinco propuestos, Qdrant es el único que combina parámetros HNSW
+explícitos por colección \emph{y por consulta}, un \textbf{oráculo exacto
+sobre la misma colección} (\code{exact=true}) ---la base de toda la medición
+de fidelidad ANN de este trabajo---, observabilidad del estado del índice
+(\code{indexed\_vectors\_count}, sin la cual la lección de producción de más
+abajo habría sido invisible), filtrado dentro del plan de búsqueda por
+índice de payload, IDs de punto UUID que casan con el contrato UUIDv5 del
+manifiesto, y despliegue local en un contenedor sin credenciales ni costes
+para quien corrige. Pinecone oculta la decisión de índice; Milvus permitiría
+comparar familias (IVF, PQ) pero con una huella operativa injustificable
+para 15.000 productos. Elegido el motor, \textbf{la familia ANN viene dada
+---Qdrant solo implementa HNSW---} y la restricción no duele: IVF exigiría
+re-entrenar centroides ante las altas incrementales del control de catálogo
+(§\ref{sec:operaciones}), y PQ distorsionaría el score coseno del que
+depende el umbral de duplicados (§\ref{sec:duplicados}); el notebook 02
+desarrolla el argumento con la tabla de criterios completa.
+
 \textbf{Esquema.} Una colección Qdrant \cite{qdrant}
 (\code{aurum-market-eval-catalogo}) con un vector sin nombre de 1024d,
 distancia coseno, e ID de punto igual al \code{record\_id} UUIDv5 del

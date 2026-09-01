@@ -31,7 +31,7 @@ def build_cells() -> list[NotebookNode]:
             una pérdida que en el notebook 05 se medirá con nombre propio
             (*fidelidad*).
 
-            La familia elegida es **HNSW** (*Hierarchical Navigable Small World*):
+            La familia utilizada es **HNSW** (*Hierarchical Navigable Small World*):
             un grafo donde cada vector se conecta con sus `m` vecinos más próximos,
             organizado en capas jerárquicas — las superiores, poco pobladas, permiten
             saltos largos; las inferiores afinan localmente. Buscar es navegar el
@@ -46,6 +46,58 @@ def build_cells() -> list[NotebookNode]:
 
             `m` y `ef_construct` se pagan una vez (construcción); `ef_search` se paga
             en cada consulta y es el mando de ajuste fino en producción.
+
+            ## Por qué Qdrant — y por qué la familia es HNSW
+
+            El enunciado no impone motor, pero sí impone requisitos que discriminan
+            entre los cinco que propone: filtro de metadatos **ejecutado por la base
+            de datos**, fidelidad ANN medida contra un oráculo exacto, configuración
+            ANN explícita, persistencia con reconstrucción desde cero y evaluación
+            local sin costes para quien corrige. La comparativa *medida* entre
+            motores queda explícitamente fuera («no construir un ranking entre nubes
+            y local»), así que la elección se argumenta por criterios, no por
+            cronómetro:
+
+            | Criterio del enunciado | Qdrant | Chroma | Weaviate | Milvus | Pinecone |
+            |---|---|---|---|---|---|
+            | Parámetros HNSW explícitos | por colección **y por consulta** | vía metadatos | sí | sí | ocultos |
+            | Oráculo exacto sobre la misma colección | `exact=true` por consulta | no | índice `flat` aparte | índice `FLAT` aparte | no |
+            | Filtro en el plan de búsqueda | índice de payload | sí | sí | sí | sí |
+            | Observabilidad del índice | `indexed_vectors_count` | limitada | sí | sí | opaca |
+            | IDs UUID nativos | sí | cadenas | sí | enteros/cadenas | cadenas |
+            | Despliegue para el corrector | 1 contenedor | embebido | 1 contenedor + módulos | compose de 3 servicios | solo cloud |
+
+            Dos criterios acabaron decidiendo. El **oráculo exacto por consulta sobre
+            la misma colección** hace medible la fidelidad ANN sin montar un segundo
+            sistema — es la columna vertebral de este notebook y del 05 —, y la
+            **observabilidad del índice** permitió cazar la lección del índice
+            fantasma que se cuenta más abajo (con Chroma, que es aún más simple de
+            desplegar, ese estado interno es invisible). Pinecone quedó descartado
+            además por ocultar la decisión de índice — el enunciado obliga entonces a
+            explicar qué control se pierde, y aquí se quería ejercer ese control, no
+            renunciar a él —; Milvus es el único que habría permitido comparar
+            familias (IVF, PQ…) dentro del mismo motor, pero paga ese poder con una
+            huella operativa difícil de justificar para 15.000 productos en un
+            portátil.
+
+            Elegido Qdrant, **la familia ANN deja de ser una elección: Qdrant solo
+            implementa HNSW**. Que esa restricción no duela se argumenta con lo
+            aprendido en la sesión 02, donde se trabajaron Flat, IVF, PQ y HNSW
+            sobre FAISS:
+
+            - **IVF** exige una fase de `train` (k-means sobre una muestra) y pierde
+              recall en las fronteras entre clústeres. Peor aún para este caso: las
+              **altas incrementales** del control de catálogo (notebook 04) irían
+              degradando unos centroides congelados hasta forzar re-entrenamientos
+              periódicos. HNSW inserta vector a vector sin fase de entrenamiento —
+              exactamente el patrón de escritura de este sistema.
+            - **PQ** comprime a costa de distorsionar los scores, y aquí el score
+              coseno crudo es señal de negocio: el umbral de duplicados (0.943,
+              notebook 04) vive en un hueco de ~0.09 que el ruido de cuantización
+              se comería. Con 15.000×1024d en float32 (~60 MB) la compresión
+              tampoco compra nada todavía.
+            - **Flat** no se pierde: es el modo exacto de la propia colección, y
+              este notebook lo usa como oráculo unas celdas más abajo.
 
             ## Qué añade la base de datos sobre el índice
 
@@ -74,7 +126,7 @@ def build_cells() -> list[NotebookNode]:
             | Payload | product_id, title, brand, color, locale, catalog_version, active | filtros y presentación |
             | Índice de payload | `brand` (keyword) | filtro dentro del plan de búsqueda |
             | Nulos | cadena vacía, siempre | "vacío ≠ 'nan'", criterio único |
-            | HNSW | m=24, ef_construct=120, ef_search=128 | familia trabajada en la sesión 02 |
+            | HNSW | m=24, ef_construct=120, ef_search=128 | única familia del motor; justificada arriba |
 
             La primera fila esconde la decisión más rentable del sistema. Un
             **UUIDv5** es un identificador *determinista*: se calcula aplicando un
