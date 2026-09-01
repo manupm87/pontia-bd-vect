@@ -270,8 +270,8 @@ def build_cells() -> list[NotebookNode]:
             de indexar no se toma por la foto de hoy sino por la pendiente;
             tenerla medida — y no supuesta — es precisamente lo que este notebook
             deja registrado. El notebook 05 completa la figura con la otra cara:
-            cuánta fidelidad pierde el índice a cambio (ninguna, con
-            `ef_search=128`).
+            cuánta fidelidad pierde el índice a cambio (un solo vecino en una
+            de veinte consultas, con `ef_search=128`).
 
             ## La latencia que ve el usuario: el encoder manda
 

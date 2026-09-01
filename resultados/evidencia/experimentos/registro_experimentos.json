@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T22:15:36.407385+00:00",
+  "generated_at": "2026-09-01T15:35:32.585518+00:00",
   "k": 10,
   "recall_relevant_labels": [
     "E",
@@ -19,7 +19,7 @@
         "k1": 1.5,
         "b": 0.75
       },
-      "seconds": 2.07,
+      "seconds": 1.91,
       "metrics": {
         "ndcg_at_10": 0.5575925803958484,
         "recall_at_10": 0.18726416952223401,
@@ -201,7 +201,7 @@
         "normalized": true,
         "dimension": 1024
       },
-      "seconds": 0.06,
+      "seconds": 0.08,
       "metrics": {
         "ndcg_at_10": 0.6368899844517063,
         "recall_at_10": 0.26567534168340623,
@@ -383,7 +383,7 @@
         "normalized": true,
         "dimension": 768
       },
-      "seconds": 0.05,
+      "seconds": 0.06,
       "metrics": {
         "ndcg_at_10": 0.5627840657952312,
         "recall_at_10": 0.24808529284335734,
@@ -565,7 +565,7 @@
         "normalized": true,
         "dimension": 1024
       },
-      "seconds": 0.07,
+      "seconds": 0.02,
       "metrics": {
         "ndcg_at_10": 0.5267055488880392,
         "recall_at_10": 0.1954419236677301,
@@ -747,7 +747,7 @@
         "normalized": true,
         "dimension": 384
       },
-      "seconds": 0.01,
+      "seconds": 0.02,
       "metrics": {
         "ndcg_at_10": 0.5333070150658129,
         "recall_at_10": 0.20505730828311475,
@@ -929,7 +929,7 @@
         "normalized": true,
         "dimension": 384
       },
-      "seconds": 0.04,
+      "seconds": 0.01,
       "metrics": {
         "ndcg_at_10": 0.5549627339945311,
         "recall_at_10": 0.22315102012682655,
@@ -1293,7 +1293,7 @@
         "normalized": true,
         "dimension": 1024
       },
-      "seconds": 0.13,
+      "seconds": 0.07,
       "metrics": {
         "ndcg_at_10": 0.6481151709438412,
         "recall_at_10": 0.29646451219031866,

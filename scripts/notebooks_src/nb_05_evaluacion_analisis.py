@@ -130,7 +130,7 @@ def build_cells() -> list[NotebookNode]:
         ),
         markdown(
             r"""
-            Una fidelidad de 1.0 solo es creíble si se demuestra que la medición
+            Una fidelidad alta solo es creíble si se demuestra que la medición
             **puede** detectar pérdida. El barrido de `ef_search` (`make sweep-ef` →
             `.artifacts/evaluacion/barrido_ef_search.json`) mide dos grafos sobre el
             mismo catálogo: la configuración entregada (m=24, `ef_construct=120`,
@@ -169,21 +169,29 @@ def build_cells() -> list[NotebookNode]:
             r"""
             Dos lecciones, una por grafo:
 
-            1. **En el grafo entregado, `ef_search=128` no es adorno**: con 1024
-               dimensiones y el barrido medido justo tras la ingesta, `ef=10`
-               pierde de media un 10 % del top-10 (mínima 0.3 en una consulta) y
-               solo `ef=128` recupera fidelidad 1.0. El mismo barrido con la
-               primera configuración del proyecto (384d, grafo totalmente
-               optimizado) daba 1.0 plano en todos los valores: la fidelidad
-               depende de la dimensión y del *estado de optimización* del grafo
-               — exactamente la razón para medirla en cada cambio en lugar de
-               suponerla.
+            1. **En el grafo entregado, `ef_search` es un dial real — hasta que
+               deja de serlo**: `ef=10` pierde de media un 8 % del top-10 y la
+               fidelidad crece con `ef`… hasta saturar justo por debajo de 1.0
+               (0.995 en el barrido registrado, con DEV-31224 clavada en 0.9
+               desde `ef=24`): al grafo le falta una arista hacia ese vecino, y
+               ampliar la búsqueda no puede recorrer una arista que no existe.
+               Dos observaciones más completan la lección. La construcción
+               anterior de este mismo grafo (misma configuración, misma
+               colección) daba 1.000/1.000. Y la medición en vivo de la celda
+               anterior puede diferir del barrido registrado en ±una arista,
+               porque entre ambas ha habido escrituras (la demostración de
+               idempotencia del notebook 02 reescribe 256 puntos y los
+               optimizadores recolocan segmentos). **La fidelidad es una
+               propiedad del grafo tal y como está construido en el momento de
+               medirla**, no de la configuración — exactamente la razón para
+               re-medirla tras cada reconstrucción en lugar de suponerla.
             2. **Un grafo mal construido no se arregla buscando más**: con m=4 la
                fidelidad media cae a 0.49 a `ef=10` (con una consulta que pierde
                el top-10 **entero**, mínima 0.0) y, aunque sube con `ef`, se
-               queda en ~0.89 a `ef=128`: las aristas que no existen no se
-               pueden recorrer. La calidad se decide en `m`/`ef_construct` (en
-               construcción), y `ef_search` solo explota el grafo que hay.
+               queda en ~0.89 a `ef=128`. Es el mismo fenómeno que la meseta de
+               DEV-31224, pero a escala de colapso: la calidad se decide en
+               `m`/`ef_construct` (en construcción), y `ef_search` solo explota
+               el grafo que hay.
 
             Al crecer el catálogo, este barrido es la herramienta de re-calibración
             (y la separación entre «pérdida del índice» y «error del modelo» que
@@ -318,7 +326,8 @@ def build_cells() -> list[NotebookNode]:
             e5-base limpiaba la cabeza pero no la cola, y e5-large vuelve a
             tropezar — la familia E5 ancla el patrón «sin + sustantivo» en
             títulos cortos sin marca, y más parámetros no lo desaprenden. El
-            oráculo exacto devuelve lo mismo (fidelidad 1.0), luego **el vecino
+            oráculo exacto devuelve lo mismo (fidelidad 1.0 en esta consulta,
+            verificado con aserción bajo estas líneas), luego **el vecino
             exacto ya es malo: la capa responsable es la representación**.
             Mitigación razonable: señal de categoría en el texto o un reranking
             léxico ligero del top-50.
@@ -424,9 +433,13 @@ def build_cells() -> list[NotebookNode]:
             Esto cierra el método: cuando la fidelidad baja de 1.0, los productos
             perdidos son atribuibles al índice — y el remedio depende del origen
             (subir `ef_search` si el grafo es bueno; reconstruir con mejores
-            `m`/`ef_construct` si no lo es). Cuando es 1.0, como en la configuración
-            entregada, el índice queda fuera de toda sospecha y los fallos han de
-            buscarse en la representación o en los datos.
+            `m`/`ef_construct` si no lo es). En el grafo entregado la pérdida se
+            limita a **algún vecino suelto en consultas ajenas a los tres casos
+            analizados** (DEV-31224 en el barrido registrado) — y por eso el
+            descarte del índice se hizo **consulta a consulta** (las aserciones
+            de arriba, que fallarían ruidosamente si una reconstrucción moviera
+            la arista perdida a una consulta analizada), no fiándolo todo a la
+            media agregada.
 
             **Persistencia/consistencia**: cuarta capa del enunciado, sin fallos
             observados — las escrituras usan `wait=True`, las tres verificaciones de

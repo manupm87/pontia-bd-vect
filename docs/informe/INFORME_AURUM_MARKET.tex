@@ -437,8 +437,8 @@ resume la ejecución final.
     nDCG@10 & 0.527 \\
     Recall@10 (E$\cup$S) & 0.195 \\
     MRR@10 (E) & 0.719 \\
-    Latencia p50 / p95 & 2.72 / 3.05 ms \\
-    Fidelidad ANN@10 (media / mín.) & 1.000 / 1.000 \\
+    Latencia p50 / p95 & 2.75 / 3.05 ms \\
+    Fidelidad ANN@10 (media / mín.) & 0.995 / 0.9 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -460,33 +460,39 @@ que recupera el ANN--- se valida con un barrido de \code{ef\_search}
     \toprule
     Grafo & \code{ef} & Fid. media@10 & Fid. mín.@10 \\
     \midrule
-    $m{=}24$ (entregado) & 10 & 0.905 & 0.30 \\
-    $m{=}24$ (entregado) & 64 & 0.995 & 0.90 \\
-    $m{=}24$ (entregado) & 128 & \textbf{1.000} & \textbf{1.000} \\
+    $m{=}24$ (entregado) & 10 & 0.920 & 0.40 \\
+    $m{=}24$ (entregado) & 64 & 0.990 & 0.90 \\
+    $m{=}24$ (entregado) & 128 & \textbf{0.995} & \textbf{0.90} \\
     $m{=}4$ (débil) & 10 & 0.490 & 0.00 \\
     $m{=}4$ (débil) & 128 & 0.890 & 0.40 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Dos lecciones: en el grafo entregado, con 1024 dimensiones y el barrido
-medido justo tras la ingesta, \code{ef\_search} es un dial real
----\code{ef}${=}10$ pierde de media un 10\,\% del top-10 (mínima 0.30 en
-una consulta) y solo \code{ef}${=}128$ recupera fidelidad 1.0---, y un grafo
-mal construido \textbf{no se arregla buscando más}: con $m{=}4$ hay una
-consulta que pierde el top-10 \emph{entero} a \code{ef}${=}10$ y la
-fidelidad media se estanca en ${\sim}0.89$ incluso a \code{ef}${=}128$,
-porque las aristas que no existen no se pueden recorrer. La calidad se
-decide en construcción ($m$, \code{ef\_construct}); al crecer el catálogo
-este barrido es la herramienta de re-calibración.
+Dos lecciones. En el grafo entregado \code{ef\_search} es un dial real
+---\code{ef}${=}10$ pierde de media un 8\,\% del top-10--- pero satura en
+0.995: una consulta (DEV-31224) queda en 0.9 desde \code{ef}${=}24$ hasta
+\code{ef}${=}128$, porque al grafo le falta una arista hacia ese vecino y
+ampliar la búsqueda no puede recorrer una arista que no existe. La
+construcción anterior del mismo grafo (misma configuración) daba
+1.000/1.000: \textbf{la fidelidad es una propiedad del grafo construido,
+no de la configuración} ---cada reconstrucción reparte segmentos y aristas
+de otra forma---, y por eso se re-mide tras cada reingesta en vez de
+suponerse. Y un grafo mal construido \textbf{no se arregla buscando más}:
+con $m{=}4$ hay una consulta que pierde el top-10 \emph{entero} a
+\code{ef}${=}10$ y la fidelidad media se estanca en ${\sim}0.89$ incluso a
+\code{ef}${=}128$ ---la meseta de DEV-31224 a escala de colapso---. La
+calidad se decide en construcción ($m$, \code{ef\_construct}); al crecer el
+catálogo este barrido es la herramienta de re-calibración.
 
 \section{Atribución de errores}
 \label{sec:atribucion}
 
 Tres fallos representativos, con la capa responsable determinada por
-evidencia. La fidelidad ANN 1.000 en la configuración final descarta el
-índice en todos ellos: el vecino que devuelve HNSW es el vecino exacto
-(verificado consulta a consulta en el notebook 05).
+evidencia. El índice queda descartado en los tres \textbf{consulta a
+consulta} (aserciones del notebook 05): en cada una, el top-10 del HNSW es
+idéntico al del oráculo exacto ---la única pérdida del grafo entregado, un
+vecino de DEV-31224, no toca ninguno de los casos analizados---.
 
 \textbf{Caso 1 --- Representación: \guillemotleft estantes sin taladro
 habitacion\guillemotright{} (38249, nDCG 0.246).} Tres libros encabezan el
@@ -527,7 +533,7 @@ marca.
 débil del barrido ($m{=}4$, \code{ef\_search}${=}10$) el ANN llega a perder
 el top-10 completo que el oráculo recupera en una consulta, exactamente la
 forma de evidencia que define el enunciado; en la configuración entregada la
-pérdida es cero. En \textbf{persistencia/consistencia} no se observó
+pérdida se limita a un vecino de una consulta ajena a los casos analizados. En \textbf{persistencia/consistencia} no se observó
 discrepancia alguna: las escrituras usan \code{wait=True}, las tres
 verificaciones de visibilidad de la sección~\ref{sec:operaciones} convergen
 al primer intento y el estado final de los 24 eventos se valida registro a
