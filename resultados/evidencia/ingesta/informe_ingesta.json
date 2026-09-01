@@ -3,13 +3,13 @@
   "embedding_configuration": "e5_large_title",
   "batch_size": 256,
   "records_sent": 15000,
-  "count_before": 0,
+  "count_before": 15000,
   "count_after": 15000,
   "idempotent": true,
   "index_state": {
     "status": "green",
     "points_count": 15000,
-    "indexed_vectors_count": 15000
+    "indexed_vectors_count": 15152
   },
-  "ingestion_seconds": 7.71
+  "ingestion_seconds": 8.83
 }

@@ -161,11 +161,13 @@ Dos conclusiones salen ya de la tabla de desarrollo:
   frente al texto completo ($+0.02$ nDCG, $+0.018$ recall, $+0.11$ MRR). La
   suciedad no se corrigió a mano: se neutralizó eligiendo qué codificar, que
   es una decisión trazable del experimento.
-  \item \textbf{Cambiar de modelo se analizó, no solo se citó.} MiniLM, sin
-  prefijos y entrenado para paráfrasis genérica, se hunde (nDCG 0.273):
-  confirma que el prefijo \code{query:}/\code{passage:} y el entrenamiento de
-  recuperación de E5 son la parte que importa, no la dimensión (ambos son
-  384d).
+  \item \textbf{Cambiar de modelo se analizó, no solo se citó.} MiniLM,
+  entrenado para paráfrasis genérica, se hunde (nDCG 0.273): lo que importa
+  es el \emph{objetivo de entrenamiento} de recuperación ---con las
+  convenciones que cada modelo exige, en E5 los prefijos
+  \code{query:}/\code{passage:}---, no la dimensión (ambos son 384d); bge-m3
+  y Qwen3, sin prefijo de documento pero entrenados para recuperación, lo
+  corroboran desde el otro flanco.
 \end{enumerate}
 
 \textbf{La tercera conclusión exigió más datos.} Sobre 8 consultas cada una
@@ -178,7 +180,8 @@ pueden tomarse todas las consultas españolas publicadas ---excluidas las 8
 de desarrollo y las 4 consultas base de las 12 de evaluación ciega---,
 restringir sus juicios al catálogo de 15.000 y evaluar con el mismo oráculo
 exacto: 413 consultas con $\geq 5$ productos juzgados en catálogo (nivel de
-decisión) y 1.986 con $\geq 3$ (robustez). La comparación contra e5-base es
+decisión) y 1.986 con $\geq 3$ (robustez; los niveles están anidados: las
+413 forman parte de las 1.986). La comparación contra e5-base es
 \textbf{pareada}: delta medio por consulta, IC bootstrap al 95\,\% y p-valor
 de permutación por signos (tabla~\ref{tab:validacion}).
 
@@ -187,7 +190,9 @@ de permutación por signos (tabla~\ref{tab:validacion}).
   \caption{Validación ampliada (413 consultas, oráculo exacto). $\Delta$ =
   delta medio pareado frente a e5\_base\_title (permutación por signos,
   10.000 remuestreos, semilla 42); * = $p<0.05$ nominal, ** = sobrevive
-  además la corrección de Holm sobre los 18 contrastes del nivel.}
+  además la corrección de Holm sobre los 18 contrastes del nivel (6
+  configuraciones $\times$ 3 métricas; se omiten aquí las filas de
+  e5\_small\_full y minilm\_full, completas en el artefacto).}
   \label{tab:validacion}
   \begin{tabular}{@{}lccc@{}}
     \toprule
@@ -204,9 +209,9 @@ de permutación por signos (tabla~\ref{tab:validacion}).
 
 El conjunto grande invierte el veredicto del pequeño, dos veces.
 \textbf{e5-large, el ``peor'' en desarrollo, es el único modelo cuya mejora
-sobre e5-base sobrevive la corrección de Holm en nDCG y recall en el nivel
-de decisión} ($p$ corregido $0.002$; su MRR queda en evidencia solo
-nominal, $p{=}0.040$). Con $n{=}1986$ el veredicto es total: las tres
+sobre e5-base sobrevive la corrección de Holm a la vez en nDCG y recall en
+el nivel de decisión} ($p$ corregido $0.002$; su MRR queda en evidencia
+solo nominal, $p{=}0.040$; Qwen3 sobrevive Holm solo en recall). Con $n{=}1986$ el veredicto es total: las tres
 métricas sobreviven Holm ($0.002$) y e5-large gana los \textbf{pareados
 directos} ---persistidos en el propio artefacto, no calculados a mano---
 contra bge-m3 y Qwen3 también en las tres ($p$ corregido $\leq 0.008$); con
@@ -292,11 +297,15 @@ el sistema: la verificación del estado de indexación debe comprobar el
 índice, no el semáforo.
 
 \textbf{Ingesta por lotes e idempotente.} Lotes de 256 con \code{wait=True}
-y \emph{upsert} por \code{record\_id}: repetir la ingesta completa deja
-exactamente 15.000 registros (verificado en el informe de ingesta:
-\code{count\_before}${=}$\code{count\_after}${=}15000$,
-\code{idempotent=true}). La ingesta completa tarda ${\sim}8$~s en local y la
-colección puede reconstruirse desde cero con \code{AURUM\_ALLOW\_RESET=true}.
+y \emph{upsert} por \code{record\_id}. La idempotencia está verificada por
+tres rutas: el artefacto entregado registra una \textbf{repetición real de
+la ingesta completa} sobre la colección ya poblada
+(\code{count\_before}${=}$\code{count\_after}${=}15000$; una primera carga
+registra $0 \to 15000$), el notebook 02 reingesta un lote en vivo sin mover
+el recuento, y el test de integración \code{test\_ingest\_is\_idempotent}
+lo prueba de forma aislada. La ingesta completa tarda ${\sim}8$~s en local
+y la colección puede reconstruirse desde cero con
+\code{AURUM\_ALLOW\_RESET=true}.
 
 \section{Recuperación y filtros}
 
@@ -371,9 +380,8 @@ duplicados reales casi empatados con una segunda copia legítima).
 \textbf{Calibración solo con desarrollo.} Sobre los 14 casos etiquetados, la
 rejilla explora todos los umbrales que separan scores observados. Los 7
 duplicados puntúan en $[0.988, 1.000]$ y los 7 no duplicados en
-$[0.874, 0.898]$ ---con e5-large el hueco es más ancho que con e5-base
-(0.090 frente a 0.075): el modelo promovido también separa mejor los
-duplicados---. Cualquier umbral de score en ese hueco logra $F_1{=}1.0$. Se
+$[0.874, 0.898]$ ---un hueco de 0.090 de score, persistido en el artefacto
+de calibración---. Cualquier umbral de score en ese hueco logra $F_1{=}1.0$. Se
 eligió un umbral \textbf{centrado en el margen de separación} (0.943, punto
 medio 0.9431) en lugar del umbral máximo que devuelve la rejilla (0.9883),
 criterio \emph{max-margin} que no se pega a ningún caso concreto y
@@ -438,8 +446,8 @@ resume la ejecución final.
     nDCG@10 & 0.527 \\
     Recall@10 (E$\cup$S) & 0.195 \\
     MRR@10 (E) & 0.719 \\
-    Latencia p50 / p95 & 2.75 / 3.05 ms \\
-    Fidelidad ANN@10 (media / mín.) & 0.995 / 0.9 \\
+    Latencia p50 / p95 & 2.80 / 3.28 ms \\
+    Fidelidad ANN@10 (media / mín.) & 1.000 / 1.000 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -461,9 +469,9 @@ que recupera el ANN--- se valida con un barrido de \code{ef\_search}
     \toprule
     Grafo & \code{ef} & Fid. media@10 & Fid. mín.@10 \\
     \midrule
-    $m{=}24$ (entregado) & 10 & 0.920 & 0.40 \\
-    $m{=}24$ (entregado) & 64 & 0.990 & 0.90 \\
-    $m{=}24$ (entregado) & 128 & \textbf{0.995} & \textbf{0.90} \\
+    $m{=}24$ (entregado) & 10 & 0.870 & 0.20 \\
+    $m{=}24$ (entregado) & 64 & 0.985 & 0.90 \\
+    $m{=}24$ (entregado) & 128 & \textbf{1.000} & \textbf{1.000} \\
     $m{=}4$ (débil) & 10 & 0.490 & 0.00 \\
     $m{=}4$ (débil) & 128 & 0.890 & 0.40 \\
     \bottomrule
@@ -471,20 +479,23 @@ que recupera el ANN--- se valida con un barrido de \code{ef\_search}
 \end{table}
 
 Dos lecciones. En el grafo entregado \code{ef\_search} es un dial real
----\code{ef}${=}10$ pierde de media un 8\,\% del top-10--- pero satura en
-0.995: una consulta (DEV-31224) queda en 0.9 desde \code{ef}${=}24$ hasta
-\code{ef}${=}128$, porque al grafo le falta una arista hacia ese vecino y
-ampliar la búsqueda no puede recorrer una arista que no existe. La
-construcción anterior del mismo grafo (misma configuración) daba
-1.000/1.000: \textbf{la fidelidad es una propiedad del grafo construido,
-no de la configuración} ---cada reconstrucción reparte segmentos y aristas
-de otra forma---, y por eso se re-mide tras cada reingesta en vez de
+---\code{ef}${=}10$ pierde de media un 13\,\% del top-10 y en esta
+construcción \code{ef}${=}128$ recupera fidelidad 1.000---. El barrido se
+ha repetido tras varias reconstrucciones del mismo grafo (misma
+configuración, misma colección) y el final de la curva \textbf{no es
+estable entre construcciones}: una reconstrucción anterior saturó en 0.995
+con una consulta clavada en 0.9 a cualquier \code{ef} ---una arista
+ausente que ninguna amplitud de búsqueda puede recorrer---. \textbf{La
+fidelidad es una propiedad del grafo construido, no de la configuración}
+---cada reingesta reescribe puntos y los optimizadores recolocan segmentos
+y aristas---, y por eso se re-mide tras cada reingesta en vez de
 suponerse. Y un grafo mal construido \textbf{no se arregla buscando más}:
 con $m{=}4$ hay una consulta que pierde el top-10 \emph{entero} a
 \code{ef}${=}10$ y la fidelidad media se estanca en ${\sim}0.89$ incluso a
-\code{ef}${=}128$ ---la meseta de DEV-31224 a escala de colapso---. La
-calidad se decide en construcción ($m$, \code{ef\_construct}); al crecer el
-catálogo este barrido es la herramienta de re-calibración.
+\code{ef}${=}128$ ---el fenómeno de las aristas ausentes, a escala de
+colapso---. La calidad se decide en construcción ($m$,
+\code{ef\_construct}); al crecer el catálogo este barrido es la
+herramienta de re-calibración.
 
 \section{Atribución de errores}
 \label{sec:atribucion}
@@ -492,8 +503,8 @@ catálogo este barrido es la herramienta de re-calibración.
 Tres fallos representativos, con la capa responsable determinada por
 evidencia. El índice queda descartado en los tres \textbf{consulta a
 consulta} (aserciones del notebook 05): en cada una, el top-10 del HNSW es
-idéntico al del oráculo exacto ---la única pérdida del grafo entregado, un
-vecino de DEV-31224, no toca ninguno de los casos analizados---.
+idéntico al del oráculo exacto ---y en las reconstrucciones del grafo que
+sí perdieron algún vecino (0.995), la pérdida nunca tocó estos casos---.
 
 \textbf{Caso 1 --- Representación: \guillemotleft estantes sin taladro
 habitacion\guillemotright{} (38249, nDCG 0.246).} Tres libros encabezan el
@@ -533,8 +544,9 @@ marca.
 \textbf{índice} se demuestra provocándole una pérdida real: en el grafo
 débil del barrido ($m{=}4$, \code{ef\_search}${=}10$) el ANN llega a perder
 el top-10 completo que el oráculo recupera en una consulta, exactamente la
-forma de evidencia que define el enunciado; en la configuración entregada la
-pérdida se limita a un vecino de una consulta ajena a los casos analizados. En \textbf{persistencia/consistencia} no se observó
+forma de evidencia que define el enunciado; en la construcción entregada la
+pérdida es cero (y cuando reconstrucciones anteriores perdieron un vecino,
+cayó en una consulta ajena a los casos analizados). En \textbf{persistencia/consistencia} no se observó
 discrepancia alguna: las escrituras usan \code{wait=True}, las tres
 verificaciones de visibilidad de la sección~\ref{sec:operaciones} convergen
 al primer intento y el estado final de los 24 eventos se valida registro a

@@ -279,6 +279,17 @@ class CatalogVectorStore:
                 with_payload=True,
             )
         except Exception as error:
+            try:
+                collection_missing = not self._client.collection_exists(
+                    self._collection_name
+                )
+            except Exception:
+                collection_missing = False
+            if collection_missing:
+                raise EmptyCollectionError(
+                    f"La colección {self._collection_name!r} no existe. Ingiere "
+                    "el catálogo con `make ingest` antes de buscar."
+                ) from error
             raise VectorStoreUnavailableError(
                 f"La búsqueda contra {self._collection_name!r} falló. Comprueba "
                 "que Qdrant sigue disponible (`make up`)."

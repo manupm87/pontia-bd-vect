@@ -312,8 +312,8 @@ def build_cells() -> list[NotebookNode]:
             El conjunto grande **invierte la lectura del pequeño**, dos veces:
 
             1. **e5-large, el "peor" en desarrollo, es el único modelo cuya
-               mejora sobre e5-base sobrevive la corrección de Holm en nDCG y
-               recall en el nivel de decisión** (p corregido 0.002 en ambas; su
+               mejora sobre e5-base sobrevive la corrección de Holm a la vez en
+               nDCG y recall en el nivel de decisión** (p corregido 0.002 en ambas; su
                MRR queda en evidencia solo nominal, p=0.040 sin corregir). Con
                n=1986 el veredicto es total: las tres métricas sobreviven Holm
                (0.002) y gana los **pareados directos** contra bge-m3 y Qwen3

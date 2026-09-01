@@ -85,13 +85,13 @@
   "ann_fidelity": {
     "k": 10,
     "query_count": 20,
-    "mean_overlap": 0.9949999999999999,
-    "min_overlap": 0.9,
+    "mean_overlap": 1.0,
+    "min_overlap": 1.0,
     "per_query": {
       "DEV-13357": 1.0,
       "DEV-18868": 1.0,
       "DEV-28703": 1.0,
-      "DEV-31224": 0.9,
+      "DEV-31224": 1.0,
       "DEV-33633": 1.0,
       "DEV-38249": 1.0,
       "DEV-43240": 1.0,
@@ -112,8 +112,8 @@
     "oracle": "misma colección con búsqueda exhaustiva (SearchParams.exact)"
   },
   "latency": {
-    "p50_ms": 2.7492824992805254,
-    "p95_ms": 3.0537662520146114,
+    "p50_ms": 2.8011915001115995,
+    "p95_ms": 3.2845807501871604,
     "warmup": 5,
     "repeats": 30,
     "query_count": 12
@@ -140,7 +140,7 @@
     "Las latencias describen esta ejecución local y no comparan proveedores.",
     "development_rankings conserva los IDs recuperados por consulta."
   ],
-  "generated_at": "2026-09-01T15:40:44.173830+00:00",
+  "generated_at": "2026-09-01T16:10:24.999913+00:00",
   "schema_version": "1.0",
   "development_rankings": {
     "DEV-13357": [
@@ -188,8 +188,8 @@
       "B07FPFLGNL",
       "B07FPGC4H2",
       "B08MQF68VD",
-      "B082SVJLZQ",
-      "B0735BN46S"
+      "B09BVWQ4HR",
+      "B082SVJLZQ"
     ],
     "DEV-33633": [
       "B07NY97H69",

@@ -53,6 +53,26 @@ def main() -> None:
     )
     configured_report = confusion_metrics(cases, configured_rule)
 
+    duplicate_floor = min(
+        case.candidates[0].native_score for case in cases if case.is_duplicate
+    )
+    clean_ceiling = max(
+        case.candidates[0].native_score for case in cases if not case.is_duplicate
+    )
+    separation = {
+        "clean_ceiling": clean_ceiling,
+        "duplicate_floor": duplicate_floor,
+        "gap_width": duplicate_floor - clean_ceiling,
+        "max_margin_midpoint": (duplicate_floor + clean_ceiling) / 2,
+    }
+    if not clean_ceiling < configured_rule.score_threshold < duplicate_floor:
+        raise RuntimeError(
+            "El umbral configurado en config/run_config.yaml "
+            f"({configured_rule.score_threshold}) queda fuera del hueco de "
+            f"separación de desarrollo ({clean_ceiling:.4f}–{duplicate_floor:.4f}); "
+            "recalibra el umbral antes de la ejecución final."
+        )
+
     report = {
         "collection": collection_name,
         "embedding_configuration": config.embedding_configuration,
@@ -67,6 +87,7 @@ def main() -> None:
             for case in cases
         ],
         "calibration": calibration,
+        "separation": separation,
         "configured_rule": configured_report,
     }
     path = write_json_artifact(
@@ -78,6 +99,10 @@ def main() -> None:
         "Mejor regla en desarrollo: "
         f"score >= {best_rule['score_threshold']}, margen >= {best_rule['margin_threshold']} "
         f"(F1 {calibration['best']['f1']:.3f})"
+    )
+    print(
+        f"Hueco de separación: {clean_ceiling:.4f}–{duplicate_floor:.4f} "
+        f"(punto medio max-margin: {separation['max_margin_midpoint']:.4f})"
     )
     print(
         "Regla configurada: "

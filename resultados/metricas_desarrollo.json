@@ -2,8 +2,8 @@
   "ndcg_at_10": 0.5267,
   "recall_at_10": 0.1954,
   "mrr_at_10": 0.7188,
-  "latency_p50_ms": 2.75,
-  "latency_p95_ms": 3.05,
+  "latency_p50_ms": 2.8,
+  "latency_p95_ms": 3.28,
   "recall_relevant_labels": [
     "E",
     "S"
@@ -11,7 +11,7 @@
   "mrr_relevant_labels": [
     "E"
   ],
-  "ann_fidelity_mean_overlap_at_10": 0.995,
+  "ann_fidelity_mean_overlap_at_10": 1.0,
   "duplicados_desarrollo": {
     "precision": 1.0,
     "recall": 1.0,

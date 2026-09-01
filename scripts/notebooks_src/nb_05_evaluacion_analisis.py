@@ -169,22 +169,24 @@ def build_cells() -> list[NotebookNode]:
             r"""
             Dos lecciones, una por grafo:
 
-            1. **En el grafo entregado, `ef_search` es un dial real — hasta que
-               deja de serlo**: `ef=10` pierde de media un 8 % del top-10 y la
-               fidelidad crece con `ef`… hasta saturar justo por debajo de 1.0
-               (0.995 en el barrido registrado, con DEV-31224 clavada en 0.9
-               desde `ef=24`): al grafo le falta una arista hacia ese vecino, y
-               ampliar la búsqueda no puede recorrer una arista que no existe.
-               Dos observaciones más completan la lección. La construcción
-               anterior de este mismo grafo (misma configuración, misma
-               colección) daba 1.000/1.000. Y la medición en vivo de la celda
-               anterior puede diferir del barrido registrado en ±una arista,
-               porque entre ambas ha habido escrituras (la demostración de
-               idempotencia del notebook 02 reescribe 256 puntos y los
-               optimizadores recolocan segmentos). **La fidelidad es una
-               propiedad del grafo tal y como está construido en el momento de
-               medirla**, no de la configuración — exactamente la razón para
-               re-medirla tras cada reconstrucción en lugar de suponerla.
+            1. **En el grafo entregado, `ef_search` es un dial real**: a
+               `ef=10` la fidelidad media cae con fuerza y crece con `ef` hasta
+               el valor que muestra la tabla en `ef=128`. La parte instructiva
+               es que **el final de la curva no es estable entre
+               construcciones**: el barrido se ha repetido tras varias
+               reconstrucciones del mismo grafo (misma configuración, misma
+               colección) y una de ellas saturó en 0.995, con una consulta
+               clavada en 0.9 a cualquier `ef` — una arista que faltaba y que
+               ninguna amplitud de búsqueda podía recorrer —, mientras que
+               otra (la entregada) recupera 1.0. Cada reingesta reescribe
+               puntos (la demostración de idempotencia del notebook 02
+               incluida), los optimizadores recolocan segmentos, y el grafo
+               resultante puede ganar o perder una arista — por eso la medición
+               en vivo de la celda anterior puede diferir del barrido
+               registrado en ±una arista. **La fidelidad es una propiedad del
+               grafo tal y como está construido en el momento de medirla**, no
+               de la configuración: la razón para re-medirla tras cada
+               reconstrucción en lugar de suponerla.
             2. **Un grafo mal construido no se arregla buscando más**: con m=4 la
                fidelidad media cae a 0.49 a `ef=10` (con una consulta que pierde
                el top-10 **entero**, mínima 0.0) y, aunque sube con `ef`, se
@@ -433,13 +435,13 @@ def build_cells() -> list[NotebookNode]:
             Esto cierra el método: cuando la fidelidad baja de 1.0, los productos
             perdidos son atribuibles al índice — y el remedio depende del origen
             (subir `ef_search` si el grafo es bueno; reconstruir con mejores
-            `m`/`ef_construct` si no lo es). En el grafo entregado la pérdida se
-            limita a **algún vecino suelto en consultas ajenas a los tres casos
-            analizados** (DEV-31224 en el barrido registrado) — y por eso el
-            descarte del índice se hizo **consulta a consulta** (las aserciones
-            de arriba, que fallarían ruidosamente si una reconstrucción moviera
-            la arista perdida a una consulta analizada), no fiándolo todo a la
-            media agregada.
+            `m`/`ef_construct` si no lo es). En el grafo entregado la pérdida a
+            `ef=128` es cero — y en las reconstrucciones que sí perdieron algún
+            vecino, este cayó siempre en consultas ajenas a los tres casos
+            analizados. Por eso el descarte del índice se hace **consulta a
+            consulta** (las aserciones de arriba, que fallarían ruidosamente si
+            una reconstrucción moviera una arista perdida a una consulta
+            analizada), no fiándolo todo a la media agregada.
 
             **Persistencia/consistencia**: cuarta capa del enunciado, sin fallos
             observados — las escrituras usan `wait=True`, las tres verificaciones de

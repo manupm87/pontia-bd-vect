@@ -202,10 +202,11 @@ def build_cells() -> list[NotebookNode]:
             r"""
             Los 7 duplicados puntúan en [0.988, 1.000] y los 7 no duplicados en
             [0.874, 0.898]: **cualquier umbral de score dentro del hueco separa
-            perfectamente** el desarrollo (con margen exigido 0). Con e5-large el
-            hueco es incluso más ancho que con e5-base (0.090 frente a 0.075): el
-            modelo promovido no solo rankea mejor, también separa mejor los
-            duplicados. La rejilla explora 104 combinaciones de umbral × margen y
+            perfectamente** el desarrollo (con margen exigido 0). El hueco mide
+            0.090 de score — casi una décima entera de similitud coseno — y
+            desde esta ejecución queda persistido en el artefacto de calibración
+            (`separation`), que además aborta si el umbral configurado se sale
+            de él. La rejilla explora 104 combinaciones de umbral × margen y
             deja dos lecciones:
 
             - Sobre el **score**, todo umbral en el hueco alcanza F1=1.0. Elegir el

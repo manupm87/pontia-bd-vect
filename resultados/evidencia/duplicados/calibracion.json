@@ -434,6 +434,12 @@
       0.02
     ]
   },
+  "separation": {
+    "clean_ceiling": 0.89783835,
+    "duplicate_floor": 0.9883856,
+    "gap_width": 0.09054724999999997,
+    "max_margin_midpoint": 0.943111975
+  },
   "configured_rule": {
     "rule": {
       "score_threshold": 0.943,

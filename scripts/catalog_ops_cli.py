@@ -129,7 +129,14 @@ def ensure_seeded(store: CatalogVectorStore, config: RunConfig) -> None:
 def encode_document(
     configuration: EmbeddingConfiguration, title: str, brand: str, color: str
 ) -> tuple[str, list[float]]:
-    """Compose and encode one record the same way the catalog documents were."""
+    """Compose and encode one record from its structured fields.
+
+    A live intake only carries title/brand/color, so with a ``full_text``
+    configuration this deliberately falls back to the title composition
+    (``compose_document_text`` handles the empty ``text``); with the delivered
+    ``title_brand_color`` configuration it matches the catalog documents
+    exactly.
+    """
     row = pd.Series({"title": title, "brand": brand, "color": color, "text": ""})
     composed = compose_document_text(row, composition=configuration.composition)
     encoder = load_encoder(configuration.model_id)

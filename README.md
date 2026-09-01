@@ -197,7 +197,9 @@ validación del snapshot), `embeddings.py` (representación), `vector_store.py`
 | `make test` | Pruebas unitarias offline. |
 | `make test-integration` | Pruebas contra Qdrant (necesita `make up`). |
 | `make verify` | Lint + formato + pruebas unitarias. |
+| `make format` | Aplica lint --fix y formato a src, scripts y tests. |
 | `make informe` | Compila el informe LaTeX (`docs/informe/`) a `INFORME_AURUM_MARKET.pdf`. |
+| `make clean` | Borra `.artifacts/` y caches de Python/pytest/ruff (todo regenerable con `make pipeline`). |
 
 ## 7. Tiempos aproximados
 
