@@ -340,6 +340,15 @@ Ambas colecciones comparten esquema, configuración e ingesta.
   es.
 \end{itemize}
 
+\textbf{Operaciones en vivo.} Los tres tipos de operación pueden además
+provocarse interactivamente (\code{make alta}/\code{update}/\code{baja})
+sobre una colección \emph{sandbox} sembrada del catálogo prístino. El alta
+pasa primero por la regla de duplicados de la
+sección~\ref{sec:duplicados} y queda bloqueada para revisión humana si la
+regla la marca; la regla vigila solo fichas nuevas, porque el catálogo
+contiene variantes casi gemelas legítimas y editar una identidad existente
+no debe bloquearse por un gemelo preexistente.
+
 \textbf{Seguridad de las operaciones.} Toda operación valida que la
 colección empiece por el prefijo \code{aurum-market-eval} antes de construir
 el cliente; recrear una colección exige \code{AURUM\_ALLOW\_RESET=true};

@@ -41,13 +41,14 @@
   <rect x="250" y="50" width="200" height="330" class="capa"/>
   <text x="350" y="74" text-anchor="middle" class="titulo">Representación</text>
   <rect x="265" y="90" width="170" height="86" class="destacada"/>
-  <text x="350" y="112" text-anchor="middle" class="texto">multilingual-e5-small</text>
-  <text x="350" y="128" text-anchor="middle" class="detalle">384d · L2-normalizado</text>
+  <text x="350" y="112" text-anchor="middle" class="texto">multilingual-e5-large</text>
+  <text x="350" y="128" text-anchor="middle" class="detalle">1024d · L2-normalizado</text>
   <text x="350" y="144" text-anchor="middle" class="detalle">passage: / query:</text>
   <text x="350" y="160" text-anchor="middle" class="detalle">composición: título+marca+color</text>
-  <rect x="265" y="194" width="170" height="58" class="caja"/>
-  <text x="350" y="216" text-anchor="middle" class="texto">alternativas evaluadas</text>
-  <text x="350" y="232" text-anchor="middle" class="detalle">texto completo · MiniLM · BM25</text>
+  <rect x="265" y="194" width="170" height="72" class="caja"/>
+  <text x="350" y="216" text-anchor="middle" class="texto">rejilla y validación</text>
+  <text x="350" y="232" text-anchor="middle" class="detalle">E5 · bge-m3 · Qwen3 · MiniLM · BM25</text>
+  <text x="350" y="248" text-anchor="middle" class="detalle">validación ampliada ESCI (413/1986)</text>
   <rect x="265" y="270" width="170" height="72" class="caja"/>
   <text x="350" y="292" text-anchor="middle" class="texto">data/embeddings/</text>
   <text x="350" y="308" text-anchor="middle" class="detalle">.npy + metadatos SHA-256</text>
@@ -81,11 +82,11 @@
   <rect x="745" y="194" width="180" height="86" class="destacada"/>
   <text x="835" y="216" text-anchor="middle" class="texto">Control de altas</text>
   <text x="835" y="232" text-anchor="middle" class="detalle">candidatos vectoriales</text>
-  <text x="835" y="248" text-anchor="middle" class="detalle">umbral + margen calibrados</text>
+  <text x="835" y="248" text-anchor="middle" class="detalle">umbral 0.943 (max-margin)</text>
   <text x="835" y="264" text-anchor="middle" class="detalle">señala product_id concreto</text>
   <rect x="745" y="298" width="180" height="58" class="caja"/>
   <text x="835" y="320" text-anchor="middle" class="texto">CLI / servicio</text>
-  <text x="835" y="336" text-anchor="middle" class="detalle">resultados normalizados</text>
+  <text x="835" y="336" text-anchor="middle" class="detalle">search · alta / update / baja</text>
 
   <!-- Capa evaluación -->
   <rect x="250" y="410" width="690" height="200" class="capa"/>
@@ -115,7 +116,7 @@
   <path class="flecha" d="M350,176 L350,192"/>
   <path class="flecha" d="M350,252 L350,268"/>
   <path class="flecha" d="M435,306 L493,150"/>
-  <path class="flecha" d="M205,209 L350,209 L350,194" stroke-dasharray="4 3"/>
+  <path class="flecha" d="M205,209 L263,160" stroke-dasharray="4 3"/>
   <path class="flecha" d="M205,361 L493,338"/>
   <path class="flecha" d="M687,150 L743,133"/>
   <path class="flecha" d="M687,150 L743,237"/>
