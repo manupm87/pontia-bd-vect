@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: setup up down down-volumes embeddings ingest experiments evaluate sweep-ef search-results duplicates events evidence pipeline metrics search notebook execute-notebook lab test test-integration lint format verify informe clean
+.PHONY: setup up down down-volumes embeddings ingest experiments evaluate sweep-ef search-results duplicates events evidence pipeline metrics search alta update baja sandbox-estado notebook execute-notebook lab test test-integration lint format verify informe clean
 
 setup:
 	bash scripts/setup.sh
@@ -51,6 +51,21 @@ metrics: evaluate
 search:
 	@test -n "$(q)" || (echo 'Falta la consulta: make search q="taladro 24v"' && exit 1)
 	uv run python scripts/search_cli.py "$(q)" --top-k $(or $(k),10) $(if $(brand),--brand "$(brand)")
+
+alta:
+	@test -n "$(title)" || (echo 'Falta el título: make alta title="taladro percutor 24v" [brand=...] [color=...] [id=...] [check=1] [force=1]' && exit 1)
+	uv run python scripts/catalog_ops_cli.py alta --title "$(title)" $(if $(brand),--brand "$(brand)") $(if $(color),--color "$(color)") $(if $(id),--product-id "$(id)") $(if $(check),--check-only) $(if $(force),--force)
+
+update:
+	@test -n "$(id)" || (echo 'Falta el id: make update id=B0... [title=...] [brand=...] [color=...]' && exit 1)
+	uv run python scripts/catalog_ops_cli.py update --product-id "$(id)" $(if $(title),--title "$(title)") $(if $(brand),--brand "$(brand)") $(if $(color),--color "$(color)")
+
+baja:
+	@test -n "$(id)" || (echo 'Falta el id: make baja id=B0...' && exit 1)
+	uv run python scripts/catalog_ops_cli.py baja --product-id "$(id)"
+
+sandbox-estado:
+	uv run python scripts/catalog_ops_cli.py estado
 
 notebook:
 	uv run python scripts/build_notebook.py

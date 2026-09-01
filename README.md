@@ -105,6 +105,29 @@ make search q="taladro sin cable potente"
 make search q="zapatillas para correr" brand=NIKE
 ```
 
+### Operaciones de catálogo en vivo
+
+El recorrido de control de altas del enunciado, como comandos interactivos:
+el alta pasa **primero** por la regla de duplicados calibrada (score ≥ 0.943)
+y solo publica si la regla no bloquea; la actualización y la baja verifican
+la visibilidad del cambio por ID y por búsqueda. La regla solo vigila fichas
+**nuevas**: el catálogo contiene variantes casi gemelas legítimas, y editar
+una identidad existente no debe bloquearse por un gemelo que ya estaba ahí. Todo ocurre en una colección *sandbox* separada (se siembra sola
+desde el catálogo en el primer uso, ~10 s), así que las colecciones del
+catálogo y de eventos conservan intactos sus artefactos reproducibles.
+
+```bash
+make alta title="Taladro percutor inalámbrico 24V" brand=BOSCH   # bloqueada si ya existe algo casi idéntico
+make alta title="..." check=1                                     # solo la decisión, sin publicar
+make alta title="..." force=1                                     # publica aunque la regla marque duplicado
+make update id=CLI-XXXX title="Nuevo título"                      # sube catalog_version y re-verifica
+make baja id=CLI-XXXX                                             # elimina y demuestra la ausencia
+make sandbox-estado                                               # recuento e indexación del sandbox
+```
+
+Un alta bloqueada termina con código de salida 2 e indica el `product_id`
+del duplicado detectado, con score y margen sobre el segundo candidato.
+
 ## 4. Variables de entorno
 
 Copia `.env.example` como `.env` (lo hace `make setup`). Ninguna variable
@@ -117,6 +140,7 @@ contiene secretos obligatorios: todo el recorrido evaluado es local.
 | `QDRANT_API_KEY` | Vacío en local; solo para un Qdrant remoto protegido. |
 | `QDRANT_COLLECTION` | Colección principal del catálogo. |
 | `QDRANT_EVENTS_COLLECTION` | Colección dedicada a la prueba de eventos. |
+| `QDRANT_SANDBOX_COLLECTION` | Colección de las operaciones en vivo (`make alta/update/baja`). |
 | `GEMINI_API_KEY` | Opcional. Activa el experimento `gemini_v2_title` (sesión 01); sin clave se omite. |
 | `AURUM_ALLOW_RESET` | `false` por defecto. Permite recrear colecciones desde cero. |
 | `AURUM_CONFIRM_CLEANUP` | Vacío por defecto. Exige `DELETE:<coleccion>` para borrar. |
@@ -156,6 +180,8 @@ validación del snapshot), `embeddings.py` (representación), `vector_store.py`
 | `make evaluate` / `make metrics` | Regenera `resultados/metricas_desarrollo.json`. |
 | `make search-results` | Genera `resultados_busqueda.csv` y verifica los filtros de marca. |
 | `make events` | Aplica los 24 eventos (dos veces), verifica el estado registro a registro y mide la visibilidad. |
+| `make alta` / `make update` / `make baja` | Operaciones de catálogo en vivo sobre el sandbox, con la regla de duplicados como puerta del alta. |
+| `make sandbox-estado` | Recuento y estado de indexación de la colección sandbox. |
 | `make sweep-ef` | Barrido de `ef_search`: fidelidad ANN y latencia por valor. |
 | `make evidence` | Copia la evidencia de la ejecución final a `resultados/evidencia/`. |
 | `make pipeline` | Todo lo anterior en orden. |
