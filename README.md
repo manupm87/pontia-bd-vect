@@ -48,17 +48,26 @@ No hace falta activar el entorno manualmente: todos los comandos van vía `uv ru
 
 ## 3. Recorrido principal
 
-Preparar entorno, levantar el motor, ingerir, evaluar y limpiar:
+Preparar entorno, levantar el motor, ingerir, evaluar y limpiar — cinco
+comandos, en este orden (en una sola línea:
+`make setup && make up && make embeddings && make pipeline && make down`):
 
 ```bash
-make setup        # 1. entorno Python
-make up           # 2. Qdrant en Docker (espera al healthcheck)
-make embeddings   # 3. genera los embeddings de las 7 configuraciones locales
-make pipeline     # 4. ingesta + experimentos + duplicados + métricas + barrido + resultados + eventos + evidencia
-make down         # 5. detiene Qdrant (conserva el volumen)
+make setup        # 1. preparar: entorno Python + .env
+make up           # 2. levantar: Qdrant en Docker (espera al healthcheck)
+make embeddings   # 3. representar: embeddings de las 7 configuraciones locales
+make pipeline     # 4. ingerir y evaluar: ingesta + experimentos + duplicados + métricas + barrido + resultados + eventos + evidencia
+make down         # 5. limpiar: detiene Qdrant (conserva el volumen)
 ```
 
-`make pipeline` encadena, en este orden: `embeddings` (se omite si ya existen),
+Al terminar, los entregables quedan en `resultados/`
+(`resultados_busqueda.csv`, `resultados_duplicados.csv`,
+`metricas_desarrollo.json` y la evidencia de la ejecución) — todo
+regenerable, y las métricas por sí solas con `make metrics`. La limpieza
+completa es `make down-volumes` (borra también el volumen de Qdrant); no
+queda ningún servicio cloud ni coste residual.
+
+En detalle, `make pipeline` encadena: `embeddings` (se omite si ya existen),
 `ingest` (ingesta idempotente por
 lotes con verificación de recuento e indexación), `experiments` (comparativa de
 representaciones frente a un oráculo exacto), `duplicates` (calibración de la
@@ -70,8 +79,6 @@ latencia frente a `ef_search` en el grafo entregado y en uno débil),
 `resultados/resultados_busqueda.csv`), `events` (24 eventos aplicados dos veces
 con verificación de idempotencia y visibilidad) y `evidence` (copia la
 evidencia regenerable a `resultados/evidencia/`).
-
-Las métricas se regeneran desde un único comando: `make metrics`.
 
 ### Los notebooks de I+D
 
@@ -205,6 +212,10 @@ multiplica la fase de embeddings por ~8.
 | `make experiments` | ~1 min (BM25 domina el coste) |
 | `make duplicates` + `make evaluate` + `make search-results` | ~2 min |
 | `make events` | ~30 s |
+
+El recorrido completo desde un entorno limpio (setup + embeddings +
+pipeline) ronda los 15 minutos con GPU; sin GPU, la fase de embeddings
+domina y conviene contar con ~1 hora.
 
 ## 8. Solución de fallos previsibles
 
